@@ -3429,8 +3429,13 @@ function badgeSync(texto) {
 
 // ── Inicializacao ───────────────────────────────────────────────
 if (CONFIG_PENDENTE) {
-  document.getElementById('btn-google').disabled = true;
-  msgLogin('Firebase ainda nao configurado neste arquivo.', 'erro');
+  // Sem Firebase o app nao pode ficar refem do login: roda em modo
+  // local, guardando tudo so no localStorage deste navegador.
+  console.warn('Firebase nao configurado — rodando em modo local.');
+  document.getElementById('login-gate').style.display = 'none';
+  badgeSync('modo local (sem sincronizacao)');
+  document.addEventListener('DOMContentLoaded', bootApp);
+  if (document.readyState !== 'loading') bootApp();
 } else {
   firebase.initializeApp(FIREBASE_CONFIG);
   auth = firebase.auth();
