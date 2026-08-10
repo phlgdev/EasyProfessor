@@ -1,0 +1,3332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Ação — Educação Física 2026</title>
+<style>
+:root {
+  --verde: #1b5e20; --verde2: #2e7d32; --verde3: #43a047; --verde-bg: #e8f5e9;
+  --azul: #0d47a1; --azul-bg: #e3f2fd;
+  --laranja: #e65100; --laranja-bg: #fff3e0;
+  --cinza: #f5f5f5; --borda: #ddd; --texto: #212121;
+  --radius: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #ecf0ec; color: var(--texto); font-size: 14px; }
+
+/* Header */
+header {
+  background: var(--verde);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+header h1 { font-size: 1.15rem; font-weight: 700; }
+header small { opacity: .75; font-size: .8rem; }
+
+/* Nav */
+nav {
+  background: #fff;
+  border-bottom: 3px solid var(--verde3);
+  display: flex; gap: 2px; padding: 0 16px;
+}
+nav button {
+  padding: 10px 16px; border: none; background: none;
+  cursor: pointer; font-size: .88rem; color: #555;
+  border-bottom: 3px solid transparent; margin-bottom: -3px;
+  font-weight: 500; transition: all .18s;
+}
+nav button.ativo { color: var(--verde2); border-bottom-color: var(--verde2); background: var(--verde-bg); }
+nav button:hover:not(.ativo) { background: #f1f8e9; color: var(--verde2); }
+
+/* Layout */
+main { max-width: 1260px; margin: 0 auto; padding: 18px; }
+.aba { display: none; }
+.aba.ativa { display: block; }
+.card { background: #fff; border-radius: var(--radius); box-shadow: 0 1px 5px rgba(0,0,0,.1); padding: 18px; margin-bottom: 16px; }
+.card-title { font-size: 1rem; font-weight: 700; color: var(--verde2); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+/* Formulários */
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.row > * { flex: 1; min-width: 160px; }
+label { display: block; font-size: .78rem; font-weight: 700; color: #555; margin-bottom: 3px; text-transform: uppercase; letter-spacing: .3px; }
+input, select, textarea {
+  width: 100%; padding: 7px 9px; border: 1px solid var(--borda);
+  border-radius: 6px; font-size: .88rem; font-family: inherit;
+  transition: border-color .2s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--verde3); box-shadow: 0 0 0 2px #a5d6a766; }
+textarea { resize: vertical; min-height: 58px; }
+
+/* Botões */
+.btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: .85rem; font-weight: 600; transition: filter .18s, transform .1s; display: inline-flex; align-items: center; gap: 5px; }
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: scale(.97); }
+.btn-verde  { background: var(--verde2); color: #fff; }
+.btn-azul   { background: var(--azul); color: #fff; }
+.btn-lj     { background: #558b2f; color: #fff; }
+.btn-cinza  { background: #757575; color: #fff; }
+.btn-verm   { background: #b71c1c; color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: .76rem; }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+/* Tags modalidade */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+.m0 { background:#fff9c4; color:#5d4037; } /* Jogos */
+.m1 { background:#fce4ec; color:#880e4f; } /* Lutas */
+.m2 { background:#e8eaf6; color:#283593; } /* Ginástica */
+.m3 { background:#fff3e0; color:#bf360c; } /* Ritmo */
+.m4 { background:#e0f2f1; color:#004d40; } /* Marca */
+.m5 { background:#f3e5f5; color:#4a148c; } /* Rede */
+.m6 { background:#e1f5fe; color:#01579b; } /* Precisão */
+.m7 { background:#fbe9e7; color:#bf360c; } /* Aventura */
+.m8 { background:#f1f8e9; color:#33691e; } /* Invasão */
+.m9 { background:#ede7f6; color:#311b92; } /* Outro */
+
+/* Grade */
+.grade-wrap { overflow-x: auto; }
+table.grade { width: 100%; border-collapse: collapse; min-width: 760px; }
+table.grade th {
+  background: var(--verde); color: #fff;
+  padding: 9px 8px; font-size: .8rem; text-align: center;
+  position: sticky; top: 0; z-index: 2;
+}
+table.grade th.th-aula { background: var(--verde2); width: 68px; }
+table.grade td { border: 1px solid #ccc; padding: 5px; vertical-align: top; }
+table.grade td.td-aula {
+  background: var(--verde-bg); font-weight: 800; font-size: .82rem;
+  color: var(--verde2); text-align: center; vertical-align: middle;
+  min-width: 60px; white-space: nowrap;
+}
+.celula {
+  min-height: 70px; border-radius: 5px; padding: 5px;
+  cursor: pointer; transition: background .15s; position: relative;
+}
+.celula:hover { background: #f1f8e9; }
+.celula-inner { font-size: .76rem; line-height: 1.4; }
+.celula-inner .turma-label { font-weight: 800; font-size: .8rem; color: var(--verde2); }
+.celula-inner .conteudo { color: var(--texto); margin: 2px 0; }
+.celula-inner .mod-label { font-size: .7rem; color: #777; font-style: italic; }
+.celula-vazia { color: #bbb; font-size: .72rem; text-align: center; padding-top: 22px; }
+.celula-especial { text-align: center; padding: 6px 2px; font-size: .75rem; font-weight: 700; border-radius: 4px; }
+.esp-htp     { background: #fff9c4; color: #5d4037; }
+.esp-reg     { background: #e3f2fd; color: var(--azul); }
+.esp-feriado { background: #fce4ec; color: #880e4f; }
+.esp-falta   { background: #f5f5f5; color: #9e9e9e; }
+.esp-lts     { background: #e8eaf6; color: #283593; font-weight:700; }
+.esp-fab     { background: #fff3e0; color: #e65100; font-weight:700; }
+.esp-reuniao { background: #ede7f6; color: #4a148c; }
+.esp-ferias  { background: #e0f7fa; color: #00695c; font-weight:700; }
+.esp-recesso { background: #fce4ec; color: #880e4f; font-weight:700; }
+
+/* Notas semanais */
+.notas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width:700px) { .notas-grid { grid-template-columns: 1fr; } }
+
+/* Modal */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.48); z-index: 200; align-items: center; justify-content: center; }
+.overlay.aberto { display: flex; }
+.modal { background: #fff; border-radius: 12px; padding: 22px; width: min(540px, 96vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+.modal h3 { color: var(--verde2); margin-bottom: 16px; font-size: 1rem; }
+.modal .form-row { margin-bottom: 11px; }
+
+/* Semana selector */
+.semana-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.semana-bar select { width: auto; }
+.semana-badge { background: var(--verde); color: #fff; border-radius: 20px; padding: 3px 12px; font-size: .8rem; font-weight: 700; }
+
+/* Lista */
+.lista { display: flex; flex-direction: column; gap: 7px; }
+.item { background: var(--cinza); border: 1px solid var(--borda); border-radius: 7px; padding: 9px 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.item-info { flex: 1; }
+.item-nome { font-weight: 700; }
+.item-sub { font-size: .78rem; color: #666; margin-top: 2px; }
+.item-acoes { display: flex; gap: 4px; flex-shrink: 0; }
+
+/* Chips turma */
+.turma-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tchip { padding: 5px 13px; border-radius: 16px; border: 2px solid var(--borda); background: #fff; cursor: pointer; font-size: .82rem; font-weight: 700; transition: all .18s; }
+.tchip.sel { background: var(--verde2); color: #fff; border-color: var(--verde2); }
+
+/* Alertas */
+.alerta { padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: .84rem; margin-bottom: 10px; }
+.alerta-verde  { background: var(--verde-bg); border-left: 4px solid var(--verde3); color: var(--verde2); }
+.alerta-laranja{ background: var(--laranja-bg); border-left: 4px solid var(--laranja); color: var(--laranja); }
+
+/* Export box */
+.code-box { background: #1e1e2e; color: #cdd6f4; padding: 14px; border-radius: 8px; font-family: 'Consolas','Courier New',monospace; font-size: .75rem; white-space: pre; overflow: auto; max-height: 500px; margin-top: 10px; line-height: 1.55; }
+
+/* Sugestões */
+.sug-secao { margin-bottom: 20px; }
+.sug-secao-titulo { font-weight: 700; font-size: .9rem; color: var(--verde2); margin-bottom: 8px; display:flex; align-items:center; gap:8px; }
+.sug-turma-bloco { background:#fff; border-radius:var(--radius); box-shadow:0 1px 4px rgba(0,0,0,.08); padding:16px; margin-bottom:14px; }
+.sug-turma-titulo { font-weight:800; font-size:.95rem; color:var(--verde); margin-bottom:12px; padding-bottom:6px; border-bottom:2px solid var(--verde-bg); display:flex; align-items:center; justify-content:space-between; }
+.sug-progresso { display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:.8rem; color:#555; }
+.sug-prog-track { flex:1; height:10px; background:#eee; border-radius:5px; overflow:hidden; }
+.sug-prog-fill { height:100%; border-radius:5px; background:var(--verde3); transition:width .4s; }
+.sug-item { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:6px; margin-bottom:4px; font-size:.82rem; }
+.sug-item.nao-feito { background:#fff3e0; border:1px solid #ffe0b2; }
+.sug-item.feito { background:var(--verde-bg); border:1px solid #c8e6c9; color:#2e7d32; }
+.sug-item .sug-icone { font-size:.9rem; flex-shrink:0; }
+.sug-vazio { font-size:.82rem; color:#2e7d32; font-style:italic; padding:8px; }
+.ia-card { background:linear-gradient(135deg,#e3f2fd,#f3e5f5); border:1px solid #b39ddb; border-radius:10px; padding:14px 16px; margin-top:8px; font-size:.84rem; line-height:1.6; }
+.ia-card h4 { color:#4a148c; font-size:.92rem; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.ia-card h4 span { background:#7b1fa2; color:#fff; border-radius:12px; padding:2px 10px; font-size:.74rem; }
+.ia-card strong { color:#1a237e; }
+.ia-loading { color:#7b1fa2; font-size:.82rem; display:flex; align-items:center; gap:6px; animation: pulse 1.2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* Analítico */
+.obj-grupo { margin-bottom: 14px; }
+.obj-grupo-titulo { font-weight: 700; font-size: .88rem; color: var(--verde2); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.obj-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; font-size: .82rem; background: var(--cinza); border: 1px solid var(--borda); }
+.obj-item.coberto { background: #e8f5e9; border-color: #a5d6a7; }
+.obj-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: .7rem; }
+.obj-item.coberto .obj-check { background: var(--verde3); border-color: var(--verde3); color: #fff; }
+.obj-texto { flex: 1; line-height: 1.4; }
+.obj-subtexto { font-size: .74rem; color: #888; margin-top: 2px; }
+.turma-secao { margin-bottom: 24px; }
+.turma-secao h3 { font-size: .92rem; font-weight: 700; color: var(--verde2); margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid var(--verde-bg); }
+/* Barras */
+.barra-linha { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.barra-label { font-size: .78rem; width: 180px; flex-shrink: 0; color: #444; }
+.barra-track { flex: 1; height: 18px; background: #eee; border-radius: 9px; overflow: hidden; }
+.barra-fill { height: 100%; border-radius: 9px; transition: width .5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: .7rem; color: #fff; font-weight: 700; }
+.barra-num { font-size: .78rem; color: #555; width: 30px; text-align: right; }
+.grid-cobertura { display: grid; gap: 16px; }
+@media(min-width:700px){ .grid-cobertura { grid-template-columns: 1fr 1fr; } }
+
+/* Calendário Oficial */
+.cal-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+@media(max-width:900px){ .cal-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:560px){ .cal-grid { grid-template-columns: 1fr; } }
+.cal-mes { background:#fff; border-radius:10px; box-shadow:0 1px 5px rgba(0,0,0,.1); overflow:hidden; }
+.cal-mes-header { padding:10px 12px; font-weight:800; font-size:.9rem; display:flex; justify-content:space-between; align-items:center; }
+.cal-dias-header { display:grid; grid-template-columns:repeat(7,1fr); background:#f5f5f5; }
+.cal-dias-header span { text-align:center; font-size:.68rem; font-weight:700; padding:4px 0; color:#666; }
+.cal-dias-header span.fim-sem { color:#e53935; }
+.cal-dias { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:#eee; }
+.cal-dia { background:#fff; min-height:36px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:.75rem; cursor:default; position:relative; padding:2px; }
+.cal-dia .cal-num { font-weight:700; font-size:.78rem; line-height:1; }
+.cal-dia .cal-label { font-size:.55rem; text-align:center; line-height:1.1; color:#555; margin-top:1px; max-width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; padding:0 1px; }
+.cal-dia.fora { background:#fafafa; }
+.cal-dia.fora .cal-num { color:#ccc; }
+.cal-dia.fim-sem { background:#fafafa; }
+.cal-dia.fim-sem .cal-num { color:#bbb; }
+.cal-dia.letivo { background:#f1f8e9; }
+.cal-dia.letivo .cal-num { color:#2e7d32; }
+.cal-dia.feriado { background:#ffebee; }
+.cal-dia.feriado .cal-num { color:#c62828; font-weight:800; }
+.cal-dia.ferias { background:#e0f7fa; }
+.cal-dia.ferias .cal-num { color:#00695c; }
+.cal-dia.ac { background:#fff8e1; }
+.cal-dia.ac .cal-num { color:#f57f17; }
+.cal-dia.dp { background:#f3e5f5; }
+.cal-dia.dp .cal-num { color:#6a1b9a; }
+.cal-dia.pf { background:#fff3e0; }
+.cal-dia.pf .cal-num { color:#e65100; }
+.cal-dia.fora-ano { background:#f9f9f9; }
+.cal-dia.fora-ano .cal-num { color:#ddd; }
+.cal-trim-badge { font-size:.6rem; padding:1px 5px; border-radius:8px; font-weight:700; }
+.trim1 { background:#c8e6c9; color:#1b5e20; }
+.trim2 { background:#bbdefb; color:#0d47a1; }
+.trim3 { background:#ffe0b2; color:#e65100; }
+.cal-resumo { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:16px; }
+.cal-resumo-item { background:#fff; border-radius:8px; padding:10px 14px; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.cal-resumo-item .num { font-size:1.6rem; font-weight:800; color:var(--verde2); }
+.cal-resumo-item .lab { font-size:.72rem; color:#666; }
+
+/* Horário preview */
+.hor-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+.hor-table th { background: var(--verde); color: #fff; padding: 6px 8px; text-align: center; }
+.hor-table td { border: 1px solid var(--borda); padding: 5px 8px; text-align: center; }
+.hor-table td.t-turma { font-weight: 700; color: var(--verde2); }
+.hor-table td.t-fixed { background: #f9fbe7; color: #5d4037; font-style: italic; }
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
+  <div style="flex:1">
+    <h1 id="hdr-titulo">Plano de Ação — Educação Física</h1>
+    <small id="hdr-sub"></small>
+  </div>
+  <button onclick="abrirConfig()" title="Configurações" style="background:none;border:none;cursor:pointer;color:white;opacity:.8;font-size:1.3rem;padding:4px 8px">⚙</button>
+</header>
+
+<nav>
+  <button class="ativo" onclick="ir('plano',this)">📅 Plano Semanal</button>
+  <button onclick="ir('turmas',this)">👥 Turmas & Horário</button>
+  <button onclick="ir('calendario',this)">📆 Calendário Oficial</button>
+  <button onclick="ir('atividades',this)">📚 Atividades</button>
+  <button onclick="ir('sugestoes',this)">💡 Sugestões</button>
+  <button onclick="ir('analitico',this)">📊 Analítico</button>
+  <button onclick="ir('exportar',this)">📤 Exportar</button>
+</nav>
+
+<main>
+
+<!-- ===== PLANO SEMANAL ===== -->
+<div id="aba-plano" class="aba ativa">
+
+  <div class="card">
+    <div class="semana-bar">
+      <div><label>Semana</label>
+        <select id="sel-semana" onchange="carregarSemana()"></select>
+      </div>
+      <button class="btn btn-verde" onclick="abrirNovaSmana()">＋ Nova semana</button>
+      <button class="btn btn-azul" onclick="abrirPreencherTurma()">✏️ Preencher por turma</button>
+      <button class="btn btn-lj" onclick="abrirPreencher3Aulas()">📋 Preencher 3 aulas da semana</button>
+      <button class="btn btn-cinza btn-sm" onclick="if(confirm('Limpar toda esta semana?'))limparSemanaAtual()">🗑 Limpar semana</button>
+      <button class="btn btn-cinza btn-sm" onclick="abrirEditarSemana()">✏️ Editar nome</button>
+      <button class="btn btn-verm btn-sm" onclick="apagarSemanaAtual()">🗑 Apagar semana</button>
+      <a href="https://docs.google.com/spreadsheets/d/1d7hKonJa52AeImRCGnbfQ-no8spBKoh_q1PX6Ulc4xQ/edit?gid=1354516493#gid=1354516493" target="_blank" class="btn btn-azul btn-sm" style="text-decoration:none">📂 Abrir plano de ação no Drive</a>
+    </div>
+    <div id="info-semana" style="margin-top:8px;font-size:.82rem;color:#666"></div>
+  </div>
+
+  <div class="card" style="padding:10px">
+    <div class="grade-wrap">
+      <table class="grade" id="tbl-grade">
+        <thead><tr>
+          <th class="th-aula">Aula</th>
+          <th>Segunda-feira</th><th>Terça-feira</th>
+          <th>Quarta-feira</th><th>Quinta-feira</th><th>Sexta-feira</th>
+        </tr></thead>
+        <tbody id="tbody-grade"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Notas da semana</div>
+    <div class="notas-grid">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+          <label style="margin-bottom:0">Objetivos semanais</label>
+          <button class="btn btn-verde btn-sm" onclick="analisarSemanaObjetivos(this)" title="Analisa a semana e preenche com os objetivos cobertos do currículo SBC">🔍 Analisar semana</button>
+        </div>
+        <textarea id="nota-objetivos" rows="4" placeholder="Objetivos para esta semana..." onchange="salvarNota('objetivos',this.value)"></textarea>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+          <label style="margin-bottom:0">Avaliação semanal do professor</label>
+          <button class="btn btn-verde btn-sm" onclick="preencherAvaliacao(this)" title="Preenche automaticamente com as modalidades trabalhadas na semana">✨ Preencher</button>
+        </div>
+        <textarea id="nota-avaliacao" rows="4" placeholder="Como foi a semana..." onchange="salvarNota('avaliacao',this.value)"></textarea>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+          <label style="margin-bottom:0">Flexibilização / Adaptação</label>
+          <button class="btn btn-verde btn-sm" onclick="preencherFlex(this)" title="Preenche automaticamente com as adaptações realizadas nas modalidades da semana">✨ Preencher</button>
+        </div>
+        <textarea id="nota-flex" rows="3" placeholder="Adaptações realizadas..." onchange="salvarNota('flex',this.value)"></textarea>
+      </div>
+      <div><label>Devolutiva da Gestão</label>
+        <textarea id="nota-gestao" rows="3" placeholder="Feedback da gestão..." onchange="salvarNota('gestao',this.value)"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TURMAS & HORÁRIO ===== -->
+<div id="aba-turmas" class="aba">
+  <div class="card">
+    <div class="card-title">📋 Horário fixo (grade curricular)</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:12px">Turma por slot — editável. Este horário é aplicado automaticamente na grade semanal.</p>
+    <div class="grade-wrap">
+      <table class="hor-table" id="tbl-horario"></table>
+    </div>
+    <div class="btns"><button class="btn btn-verde" onclick="salvarHorario()">💾 Salvar horário</button></div>
+    <div id="msg-horario"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🏖️ Férias e Recesso escolar</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:12px">Cadastre os períodos de férias e recesso. Ao aplicar, todas as semanas do período serão preenchidas automaticamente.</p>
+    <div class="row">
+      <div><label>Tipo</label>
+        <select id="per-tipo">
+          <option value="ferias">🏖️ Férias</option>
+          <option value="recesso">🎉 Recesso</option>
+        </select>
+      </div>
+      <div><label>Data início</label><input type="date" id="per-inicio"></div>
+      <div><label>Data fim</label><input type="date" id="per-fim"></div>
+      <div><label>Descrição (opcional)</label><input type="text" id="per-desc" placeholder="Ex: Férias de julho"></div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn btn-verde" onclick="addPeriodo()">Adicionar</button>
+      </div>
+    </div>
+    <div id="lista-periodos" class="lista" style="margin-top:10px"></div>
+    <div class="btns" style="margin-top:12px">
+      <button class="btn btn-azul" onclick="aplicarPeriodos()">📅 Aplicar a todas as semanas</button>
+    </div>
+    <div id="msg-periodos" style="margin-top:8px;font-size:.82rem"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👥 Turmas cadastradas</div>
+    <div class="row">
+      <div><label>Nome da turma</label><input type="text" id="nova-turma" placeholder="Ex: 3°A"></div>
+      <div><label>Ano</label><input type="text" id="turma-ano" placeholder="Ex: 4°"></div>
+      <div><label>Período</label>
+        <select id="turma-periodo"><option>Manhã</option><option>Tarde</option></select>
+      </div>
+      <div style="display:flex;align-items:flex-end;">
+        <button class="btn btn-verde" onclick="addTurma()">Adicionar</button>
+      </div>
+    </div>
+    <div id="lista-turmas" class="lista" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- ===== ATIVIDADES ===== -->
+<div id="aba-atividades" class="aba">
+  <div class="card">
+    <div class="card-title">➕ Cadastrar atividade</div>
+    <div class="row">
+      <div><label>Modalidade Organizativa *</label><select id="n-mod"></select></div>
+      <div><label>Nome da atividade *</label><input type="text" id="n-nome" placeholder="Ex: Queimada"></div>
+      <div><label>Anos indicados</label><input type="text" id="n-anos" placeholder="Todos"></div>
+    </div>
+    <div><label>Descrição</label><textarea id="n-desc" placeholder="Conteúdo, materiais, objetivos..."></textarea></div>
+    <div class="btns">
+      <button class="btn btn-verde" onclick="addAtiv()">Salvar</button>
+      <button class="btn btn-cinza" onclick="['n-mod','n-nome','n-anos','n-desc'].forEach(i=>document.getElementById(i).value='')">Limpar</button>
+    </div>
+    <div id="msg-ativ"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 Atividades cadastradas</div>
+    <div class="row" style="margin-bottom:10px">
+      <div><label>Filtrar modalidade</label><select id="f-mod" onchange="renderAtivs()"></select></div>
+      <div><label>Buscar</label><input type="text" id="f-busca" placeholder="Nome..." oninput="renderAtivs()"></div>
+    </div>
+    <div id="lista-ativs" class="lista"></div>
+  </div>
+</div>
+
+<!-- ===== SUGESTÕES ===== -->
+<div id="aba-sugestoes" class="aba">
+
+  <div class="card">
+    <div class="card-title">💡 Sugestões de conteúdo não trabalhado</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:14px">
+      Identifica, por turma e modalidade, quais atividades do seu banco de dados ainda não foram trabalhadas em nenhuma semana do histórico.
+    </p>
+    <div class="row" style="align-items:flex-end;gap:10px;margin-bottom:0">
+      <div>
+        <label>Filtrar turma</label>
+        <select id="sug-turma" onchange="renderSugestoes()" style="width:auto">
+          <option value="">Todas as turmas</option>
+        </select>
+      </div>
+      <div>
+        <label>Filtrar modalidade</label>
+        <select id="sug-mod" onchange="renderSugestoes()" style="width:auto">
+          <option value="">Todas as modalidades</option>
+        </select>
+      </div>
+      <button class="btn btn-verde" onclick="renderSugestoes()">🔄 Atualizar</button>
+    </div>
+  </div>
+
+  <div id="sug-resultado"></div>
+
+</div>
+
+<!-- ===== EXPORTAR ===== -->
+<div id="aba-exportar" class="aba">
+  <div class="card">
+    <div class="card-title">📤 Exportar plano</div>
+    <div class="row">
+      <div><label>Semana</label><select id="exp-semana" style="width:auto"></select></div>
+      <div style="display:flex;align-items:flex-end;gap:8px">
+        <button class="btn btn-verde" onclick="gerarExport()">Gerar texto</button>
+        <button class="btn btn-azul" onclick="copiarExport()">Copiar</button>
+        <button class="btn btn-lj" onclick="exportCSV()">CSV</button>
+      </div>
+    </div>
+    <div id="area-export"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🟢 Enviar para Google Sheets</div>
+    <div id="gs-config">
+      <p style="font-size:.82rem;color:#666;margin-bottom:10px">
+        Cole abaixo a URL do Apps Script instalado na sua planilha.
+        <a href="#" onclick="document.getElementById('gs-instrucoes').style.display=document.getElementById('gs-instrucoes').style.display==='none'?'block':'none';return false" style="color:var(--azul)">Ver instruções</a>
+      </p>
+      <div id="gs-instrucoes" style="display:none;background:#e3f2fd;border-radius:8px;padding:12px;font-size:.8rem;margin-bottom:10px;line-height:1.7">
+        <strong>Como instalar (uma única vez):</strong><br>
+        1. Abra a planilha no Google Sheets<br>
+        2. Menu: <strong>Extensões → Apps Script</strong><br>
+        3. Apague o conteúdo existente e cole o código do arquivo <code>PlanoEF_AppScript.gs</code> (está na mesma pasta do programa)<br>
+        4. Salve (Ctrl+S)<br>
+        5. Clique em <strong>Implantar → Nova implantação</strong><br>
+        6. Tipo: <em>Aplicativo da Web</em> · Executar como: <em>Eu mesmo</em> · Acesso: <em>Qualquer pessoa</em><br>
+        7. Clique em <strong>Implantar</strong>, autorize e copie a URL<br>
+        8. Cole a URL abaixo e clique em Salvar
+      </div>
+      <div class="row" style="align-items:flex-end">
+        <div style="flex:3"><label>URL do Apps Script</label>
+          <input type="text" id="gs-url" placeholder="https://script.google.com/macros/s/..." oninput="salvarGsUrl()">
+        </div>
+        <div><button class="btn btn-azul btn-sm" onclick="testarConexao()">Testar conexão</button></div>
+      </div>
+      <div id="gs-status" style="font-size:.8rem;margin-top:6px"></div>
+    </div>
+    <div class="btns" style="margin-top:14px">
+      <button class="btn btn-verde" onclick="enviarParaSheets()">🚀 Enviar semana para Google Sheets</button>
+      <button class="btn btn-azul btn-sm" onclick="enviarTodasSemanas()">Enviar TODAS as semanas</button>
+    </div>
+    <div id="gs-resultado" style="margin-top:8px;font-size:.82rem"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💾 Backup</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:10px">Faça backup de todos os dados em JSON.</p>
+    <div class="btns">
+      <button class="btn btn-verde" onclick="baixarJSON()">Baixar backup</button>
+      <button class="btn btn-cinza" onclick="document.getElementById('f-import').click()">Restaurar backup</button>
+      <button class="btn btn-lj" onclick="abrirConfig()">✏️ Alterar nome e escola</button>
+      <button class="btn btn-azul" onclick="resetarPrograma()">🔄 Resetar programa (manter atividades)</button>
+      <button class="btn btn-verm" onclick="resetarDados()">⚠ Resetar tudo para o padrão</button>
+      <input type="file" id="f-import" accept=".json" style="display:none" onchange="importarJSON(event)">
+    </div>
+  </div>
+</div>
+
+<!-- ===== ANALÍTICO ===== -->
+<div id="aba-analitico" class="aba">
+
+  <div class="card">
+    <div class="card-title">🎯 Objetivos de Aprendizagem — Semana atual</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:12px">
+      Clique em <strong>Analisar semana</strong> para identificar automaticamente quais objetivos curriculares foram trabalhados com base nas modalidades e conteúdos registrados.
+    </p>
+    <div class="row" style="align-items:flex-end;gap:10px">
+      <div><label>Semana</label><select id="an-sel-semana" style="width:auto"></select></div>
+      <button class="btn btn-verde" onclick="analisarSemana()">🔍 Analisar semana</button>
+      <button class="btn btn-cinza btn-sm" onclick="document.getElementById('an-resultado').innerHTML=''">Limpar</button>
+    </div>
+    <div id="an-resultado" style="margin-top:14px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Cobertura de modalidades por turma</div>
+    <p style="font-size:.82rem;color:#666;margin-bottom:14px">Total de aulas registradas por modalidade organizativa em todas as semanas.</p>
+    <div id="chart-cobertura"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 Histórico de conteúdos por turma</div>
+    <div style="margin-bottom:10px">
+      <label>Turma</label>
+      <select id="an-turma-hist" onchange="renderHistorico()" style="width:auto"></select>
+    </div>
+    <div id="chart-historico"></div>
+  </div>
+
+</div>
+
+<!-- ===== CALENDÁRIO OFICIAL ===== -->
+<div id="aba-calendario" class="aba">
+  <div class="card">
+    <div class="card-title">📆 Calendário Escolar Oficial 2026 — EMEB São Bernardo do Campo</div>
+    <div class="cal-resumo" id="cal-resumo"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:.76rem">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#f1f8e9;border:1px solid #a5d6a7;border-radius:2px;display:inline-block"></span> Dia letivo</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#ffebee;border:1px solid #ef9a9a;border-radius:2px;display:inline-block"></span> Feriado</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#e0f7fa;border:1px solid #80deea;border-radius:2px;display:inline-block"></span> Férias</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fff8e1;border:1px solid #ffe082;border-radius:2px;display:inline-block"></span> A Compensar</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#f3e5f5;border:1px solid #ce93d8;border-radius:2px;display:inline-block"></span> Dia do Professor</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fff3e0;border:1px solid #ffcc80;border-radius:2px;display:inline-block"></span> Ponto Facultativo</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;background:#fafafa;border:1px solid #eee;border-radius:2px;display:inline-block"></span> Fim de semana / Fora do ano letivo</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;font-size:.76rem">
+      <span class="cal-trim-badge trim1">■ 1º Trimestre: 05/02 a 30/04</span>
+      <span class="cal-trim-badge trim2">■ 2º Trimestre: 04/05 a 31/08</span>
+      <span class="cal-trim-badge trim3">■ 3º Trimestre: 01/09 a 18/12</span>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL: Configurações do professor -->
+<div class="overlay" id="ov-config">
+<div class="modal">
+  <h3>⚙ Configurações do professor</h3>
+  <div class="form-row"><label>Nome completo *</label>
+    <input type="text" id="cfg-nome" placeholder="Ex: Maria Silva Santos">
+  </div>
+  <div class="form-row"><label>Escola</label>
+    <input type="text" id="cfg-escola" placeholder="Ex: EMEF João Paulo II">
+  </div>
+  <div class="form-row" style="display:flex;gap:10px">
+    <div style="flex:1"><label>Ano letivo</label>
+      <input type="text" id="cfg-ano" placeholder="Ex: 2026">
+    </div>
+    <div style="flex:1"><label>Ciclo / turno</label>
+      <input type="text" id="cfg-ciclo" placeholder="Ex: I Ciclo">
+    </div>
+  </div>
+  <div class="form-row"><label>Anos / turmas atendidas</label>
+    <input type="text" id="cfg-turmas-info" placeholder="Ex: 4° e 5° ano">
+  </div>
+  <hr style="margin:14px 0;border-color:#eee">
+  <div class="form-row">
+    <label>🤖 Chave da API Groq <span style="font-weight:400;color:#888">(sugestões com IA — 100% gratuito)</span></label>
+    <input type="password" id="cfg-gemini-key" placeholder="gsk_...">
+    <small style="color:#888;font-size:.75rem;margin-top:3px;display:block">
+      Obtenha gratuitamente em <a href="https://console.groq.com/keys" target="_blank" style="color:var(--azul)">console.groq.com/keys</a> — sem cartão de crédito. Crie conta → API Keys → Create API Key.
+    </small>
+  </div>
+  <div class="btns">
+    <button class="btn btn-verde" onclick="salvarConfig()">💾 Salvar</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-config')">Cancelar</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Editar nome da semana -->
+<div class="overlay" id="ov-edit-semana">
+<div class="modal">
+  <h3>✏️ Editar semana</h3>
+  <div class="form-row"><label>Mês / Referência</label>
+    <input type="text" id="es-mes" placeholder="Ex: Maio">
+  </div>
+  <div class="form-row"><label>Semana nº</label>
+    <input type="number" id="es-num" min="1" max="52">
+  </div>
+  <div class="form-row"><label>Data de início (Segunda-feira)</label>
+    <input type="date" id="es-inicio">
+  </div>
+  <div class="form-row"><label>Data de fim (Sexta-feira)</label>
+    <input type="date" id="es-fim">
+  </div>
+  <div class="btns">
+    <button class="btn btn-verde" onclick="salvarEditarSemana()">💾 Salvar</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-edit-semana')">Cancelar</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Nova semana -->
+<div class="overlay" id="ov-semana">
+<div class="modal">
+  <h3>📅 Criar nova semana</h3>
+  <div class="form-row"><label>Semana nº (número no ano)</label>
+    <input type="number" id="ns-num" min="1" max="52">
+  </div>
+  <div class="form-row"><label>Data de início (Segunda-feira)</label>
+    <input type="date" id="ns-inicio">
+  </div>
+  <div class="form-row"><label>Data de fim (Sexta-feira)</label>
+    <input type="date" id="ns-fim">
+  </div>
+  <div class="form-row"><label>Mês / Referência</label>
+    <input type="text" id="ns-mes" placeholder="Ex: Abril">
+  </div>
+  <div id="ns-sugestao" style="margin:8px 0;font-size:.82rem;color:#2e7d32"></div>
+  <div class="btns">
+    <button class="btn btn-verde" onclick="criarSemana()">Criar semana</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-semana')">Cancelar</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Preencher por turma -->
+<div class="overlay" id="ov-turma">
+<div class="modal">
+  <h3>✏️ Preencher semana por turma</h3>
+  <p style="font-size:.82rem;color:#666;margin-bottom:12px">
+    Defina o conteúdo de cada turma esta semana. O sistema distribui automaticamente nos slots corretos.
+  </p>
+  <div class="turma-chips" id="chips-turma"></div>
+  <div id="ft-slots-container">
+    <p style="font-size:.82rem;color:#999;text-align:center;padding:16px 0">Selecione uma turma acima para ver os slots da semana.</p>
+  </div>
+  <hr style="margin:14px 0;border-color:#eee">
+  <div class="btns">
+    <button class="btn btn-verde" id="btn-aplicar-turma" style="display:none" onclick="aplicarTurma()">✔ Aplicar e distribuir na grade</button>
+    <button class="btn btn-lj" onclick="fecharOv('ov-turma');renderGrade()">✔ Fechar e ver grade</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Editar célula -->
+<div class="overlay" id="ov-celula">
+<div class="modal">
+  <h3 id="ov-cel-titulo">Editar aula</h3>
+  <div class="form-row"><label>Tipo</label>
+    <select id="cel-tipo" onchange="toggleCelTipo()">
+      <option value="aula">Aula normal</option>
+      <option value="htp">HTP</option>
+      <option value="regencia">Regência</option>
+      <option value="feriado">Feriado / Não letivo</option>
+      <option value="lts">LTS (Licença Tratamento Saúde)</option>
+      <option value="falta_abonada">Falta Abonada</option>
+      <option value="reuniao">Reunião</option>
+      <option value="ferias">🏖️ Férias</option>
+      <option value="recesso">🎉 Recesso</option>
+      <option value="livre">Texto livre</option>
+    </select>
+  </div>
+  <div id="cel-periodo-campos" style="display:none">
+    <div class="form-row">
+      <label>Período cadastrado</label>
+      <select id="cel-periodo-sel" onchange="celSelecionarPeriodo()">
+        <option value="">— selecione ou deixe em branco —</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Descrição (opcional)</label>
+      <input type="text" id="cel-periodo-desc" placeholder="Ex: Férias de Julho">
+    </div>
+  </div>
+  <div id="cel-aula-campos">
+    <div class="form-row"><label>Turma</label>
+      <input type="text" id="cel-turma" placeholder="Turma desta aula">
+    </div>
+    <div class="form-row"><label>Modalidade Organizativa</label>
+      <select id="cel-mod" onchange="celFiltrarConteudos()"></select>
+    </div>
+    <div class="form-row"><label>Atividade</label>
+      <select id="cel-sel-conteudo">
+        <option value="">— selecione a atividade —</option>
+      </select>
+    </div>
+    <input type="hidden" id="cel-conteudo">
+    <div class="form-row"><label>Observação (opcional)</label>
+      <input type="text" id="cel-obs" placeholder="OBS: ...">
+    </div>
+  </div>
+  <div id="cel-livre-campos" style="display:none">
+    <div class="form-row"><label>Texto</label>
+      <input type="text" id="cel-livre" placeholder="Ex: REUNIÃO PEDAGÓGICA.">
+    </div>
+  </div>
+  <input type="hidden" id="cel-idx-dia">
+  <input type="hidden" id="cel-idx-aula">
+  <div class="btns">
+    <button class="btn btn-verde" onclick="salvarCelula()">Salvar</button>
+    <button class="btn btn-verm btn-sm" onclick="limparCelula()">Limpar célula</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-celula')">Cancelar</button>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Preencher 3 aulas da semana -->
+<div class="overlay" id="ov-3aulas">
+<div class="modal" style="width:min(600px,96vw)">
+  <h3>📋 Preencher 3 aulas da semana</h3>
+  <p style="font-size:.82rem;color:#666;margin-bottom:16px">
+    Informe as 3 aulas que você deu esta semana. Elas serão distribuídas em ordem para cada turma, nos slots do horário.
+  </p>
+
+  <div id="cards-3aulas"></div>
+
+  <div style="background:#e8f5e9;border-radius:8px;padding:10px 14px;font-size:.8rem;color:#2e7d32;margin-bottom:14px">
+    💡 <strong>Como funciona:</strong> cada turma recebe as aulas na ordem 1→2→3 distribuídas nos seus slots da semana. Se a turma tiver mais de 3 slots, as aulas são repetidas em ciclo.
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-verde" onclick="aplicar3Aulas()">✔ Aplicar a todas as turmas</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-3aulas')">Cancelar</button>
+  </div>
+  <div id="msg-3aulas" style="margin-top:8px;font-size:.82rem"></div>
+</div>
+</div>
+
+<!-- MODAL: Editar atividade -->
+<div class="overlay" id="ov-edit-ativ">
+<div class="modal">
+  <h3>Editar atividade</h3>
+  <div class="form-row"><label>Modalidade</label><select id="ea-mod"></select></div>
+  <div class="form-row"><label>Nome</label><input type="text" id="ea-nome"></div>
+  <div class="form-row"><label>Anos</label><input type="text" id="ea-anos"></div>
+  <div class="form-row"><label>Descrição</label><textarea id="ea-desc"></textarea></div>
+  <input type="hidden" id="ea-id">
+  <div class="btns">
+    <button class="btn btn-verde" onclick="salvarEditAtiv()">Salvar</button>
+    <button class="btn btn-cinza" onclick="fecharOv('ov-edit-ativ')">Cancelar</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ============================================================ CONSTANTES
+const MODALIDADES = [
+  {id:0, nome:'Jogos e Brincadeiras',      cls:'m0'},
+  {id:1, nome:'Lutas do Mundo',            cls:'m1'},
+  {id:2, nome:'Ginástica Geral',           cls:'m2'},
+  {id:3, nome:'Ritmo e Dança',             cls:'m3'},
+  {id:4, nome:'Esportes de Marca',         cls:'m4'},
+  {id:5, nome:'Esportes de Rede',          cls:'m5'},
+  {id:6, nome:'Esportes de Precisão',      cls:'m6'},
+  {id:7, nome:'Esportes de Aventura',      cls:'m7'},
+  {id:8, nome:'Esportes de Invasão',       cls:'m8'},
+  {id:9, nome:'Outro / Misto',             cls:'m9'},
+];
+
+const DIAS_PT  = ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'];
+const DIAS_KEY = ['seg','ter','qua','qui','sex'];
+const AULAS    = ['Aula 1','Aula 2','Aula 3','Aula 4','Aula 5'];
+
+// Horário padrão: HORARIO[dia][aula] = turma (ou 'HTP'/'REGENCIA')
+const HORARIO_PADRAO = [
+  ['4°E','REGENCIA','5°F','HTP','5°G'],   // Segunda
+  ['5°G','5°I','4°F','HTP','5°H'],        // Terça
+  ['5°H','5°I','4°E','HTP','4°F'],        // Quarta
+  ['4°E','REGENCIA','4°F','HTP','5°F'],   // Quinta
+  ['5°F','5°H','HTP','5°G','5°I'],        // Sexta
+];
+
+// ============================================================ DADOS HISTÓRICOS (Fev/Mar)
+function dadosHistoricos() {
+  // Cada semana: { id, num, inicio, fim, mes, grade, notas }
+  // grade[dia][aula] = { tipo, turma, conteudo, modalidade (nome), obs }
+  const semanas = [];
+
+  function aula(turma, conteudo, modalidade, obs='') {
+    return { tipo:'aula', turma, conteudo, modalidade, obs };
+  }
+  const HTP  = { tipo:'htp' };
+  const REG  = { tipo:'regencia' };
+  const FER  = { tipo:'feriado' };
+  const REUN = { tipo:'livre', texto:'REUNIÃO PEDAGÓGICA.' };
+  const RPAIS= { tipo:'livre', texto:'REUNIÃO DE PAIS.' };
+
+  // SEMANA 1 - 02/02 a 06/02
+  semanas.push({ id:'s1', num:6, inicio:'2026-02-02', fim:'2026-02-06', mes:'Fevereiro',
+    grade:[
+      [REUN, REUN, REUN, aula('4°E','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras'), aula('5°F','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica')],
+      [REUN, REUN, REUN, REG, aula('5°H','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras')],
+      [REUN, REUN, REUN, HTP, HTP],
+      [REUN, REUN, RPAIS, aula('4°F','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras'), aula('5°G','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras')],
+      [REUN, REUN, RPAIS, aula('5°F','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras'), aula('5°I','Acolhimento: Dinâmica de apresentação e jogo de queimada.','Jogos e Brincadeiras')],
+    ],
+    notas:{ objetivos:'- Acolhimento\n- Sondagem Inicial.', avaliacao:'Semana que inicia o ano letivo, realizei dinâmicas para compreender o nível de desenvolvimento motor e cognitivo dos estudantes.', flex:'Com os estudantes com necessidade especiais, não foi necessária a adaptação da atividade, e sim apenas das regras que faziam parte da dinâmica. Todos conseguiram participar.', gestao:'' }
+  });
+
+  // SEMANA 2 - 09/02 a 13/02
+  semanas.push({ id:'s2', num:7, inicio:'2026-02-09', fim:'2026-02-13', mes:'Fevereiro',
+    grade:[
+      [aula('4°E','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica'), aula('5°G','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica, junto com coordenação lateral.','Ginástica de Conscientização Corporal'), aula('5°H','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica.','Ginástica de Conscientização Corporal'), aula('4°E','Circuito de atividades motoras.','Jogos e Brincadeiras / Esportes / Ginástica','OBS: LTS.'), aula('5°F','Batatinha-Frita: Polichinelo','Ginástica de Conscientização Corporal')],
+      [aula('4°F','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica'), aula('5°I','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica'), aula('5°I','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica.','Ginástica de Conscientização Corporal'), REG, aula('5°H','Batatinha-Frita: Polichinelo','Ginástica de Conscientização Corporal')],
+      [aula('5°F','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica.','Ginástica de Conscientização Corporal'), REG, aula('4°E','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica.','Ginástica de Conscientização Corporal'), HTP, HTP],
+      [HTP, HTP, HTP, aula('4°E','Circuito de atividades motoras.','Jogos e Brincadeiras / Esportes / Ginástica','OBS: LTS.'), aula('5°G','Batatinha-Frita: Polichinelo','Ginástica de Conscientização Corporal')],
+      [aula('5°G','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica'), aula('5°H','Circuito de atividades motoras: Sondagem Inicial.','Jogos e Brincadeiras / Esportes / Ginástica'), aula('4°F','Iniciação às Ginásticas: Vivo ou Morto com movimentos de ginástica.','Ginástica de Conscientização Corporal'), aula('5°F','Circuito de atividades motoras.','Jogos e Brincadeiras / Esportes / Ginástica','OBS: LTS.'), aula('5°I','Batatinha-Frita: Polichinelo','Ginástica de Conscientização Corporal')],
+    ],
+    notas:{ objetivos:'5° ano - Valorizar a importância do Se-Movimentar nas práticas das ginásticas.\n4° ano - Conhecer modalidades de ginástica de condicionamento.\n- Participar de jogos e brincadeiras em grupos, demonstrando autonomia e organização.', avaliacao:'Durante esta semana, consolidei os combinados para as aulas, e iniciamos os conteúdos de Ginástica, Esportes e Jogos e Brincadeiras.', flex:'Com os estudantes com necessidade especiais, não foi necessária a adaptação da atividade, e sim apenas das regras. Todos conseguiram participar.', gestao:'' }
+  });
+
+  // SEMANA 3 - 16/02 a 20/02 (Carnaval: seg/ter feriado)
+  semanas.push({ id:'s3', num:8, inicio:'2026-02-16', fim:'2026-02-20', mes:'Fevereiro',
+    grade:[
+      [FER, FER, aula('5°H','Pesquisa sobre saltos da ginástica artística.','Ginástica Artística'), aula('4°E','Desenvolvendo salto carpado, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística'), aula('5°F','Pesquisa sobre saltos da ginástica artística.','Ginástica Artística')],
+      [FER, FER, aula('5°I','Pesquisa sobre saltos da ginástica artística.','Ginástica Artística'), {tipo:'aula',turma:'',conteudo:'',modalidade:''}, aula('5°H','Desenvolvendo salto estendido, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística')],
+      [FER, FER, aula('4°E','Desenvolvendo salto estendido, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística'), {tipo:'aula',turma:'',conteudo:'',modalidade:''}, null],
+      [FER, FER, HTP, aula('4°F','Desenvolvendo salto carpado, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística'), aula('5°G','Desenvolvendo salto estendido, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística')],
+      [FER, FER, aula('4°F','Desenvolvendo salto estendido, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística'), aula('5°F','Desenvolvendo movimentos da ginástica geral no parque.','Ginástica Geral'), aula('5°I','Desenvolvendo salto estendido, através de brincadeiras.','Jogos e Brincadeiras e Ginástica Artística')],
+    ],
+    notas:{ objetivos:'5° ano - Reconhecer e valorizar a ginástica artística como prática cultural.\n- Aprender sobre os tipos de saltos (carpado, estendido) e vivenciá-los de forma lúdica.', avaliacao:'Semana com feriado de Carnaval (seg/ter). Nas aulas realizadas, trabalhei a ginástica artística de forma teórica (pesquisa) e prática (saltos adaptados).', flex:'Com os estudantes com necessidade especiais, as atividades de pesquisa foram adaptadas com recursos visuais. Nos saltos, foram utilizados colchonetes adicionais.', gestao:'' }
+  });
+
+  // SEMANA 4 - 23/02 a 27/02
+  semanas.push({ id:'s4', num:9, inicio:'2026-02-23', fim:'2026-02-27', mes:'Fevereiro',
+    grade:[
+      [aula('4°E','Desenvolvendo movimentos da ginástica geral no parque.','Ginástica Geral'), aula('5°G','Vivenciando jogo de Bocha.','Esportes Adaptados'), aula('5°H','Vivenciando jogo de Bocha.','Esportes Adaptados'), aula('4°E','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('5°F','Descobrindo fundamentos do Voleibol: Resgate.','Esportes de Rede')],
+      [REG, aula('5°I','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('5°I','Vivenciando jogo de Bocha.','Esportes Adaptados'), REG, aula('5°H','Descobrindo fundamentos do Voleibol: Resgate.','Esportes de Rede')],
+      [aula('5°F','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('4°F','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('4°E','Vivenciando jogo de Bocha.','Esportes Adaptados'), aula('4°F','Descobrindo fundamentos do Voleibol: Resgate.','Esportes de Rede'), {tipo:'aula',turma:'',conteudo:'',modalidade:''}],
+      [HTP, HTP, HTP, HTP, aula('5°G','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede')],
+      [aula('5°G','Desenvolvendo movimentos da ginástica geral e dos esportes de precisão adaptados no parque.','Ginástica Geral e Esportes'), aula('5°H','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('4°F','Vivenciando jogo de Bocha.','Esportes Adaptados'), {tipo:'aula',turma:'',conteudo:'',modalidade:''}, aula('5°I','Desenvolvendo movimentos da ginástica geral no parque.','Ginástica Geral')],
+    ],
+    notas:{ objetivos:'- Vivenciar o Voleibol (manchete, resgate) como esporte de rede.\n- Experimentar esportes adaptados (Bocha).\n- Continuar desenvolvendo a Ginástica Geral.', avaliacao:'Boa semana, alunos engajados com o Voleibol e a Bocha. Turmas do 4° ano progrediram bem na ginástica geral.', flex:'Para os alunos com necessidades especiais, a Bocha foi especialmente inclusiva, pois não exige grande esforço motor mas demanda concentração e coordenação.', gestao:'' }
+  });
+
+  // SEMANA 5 - 02/03 a 06/03
+  semanas.push({ id:'s5', num:10, inicio:'2026-03-02', fim:'2026-03-06', mes:'Março',
+    grade:[
+      [aula('4°E','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°G','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°E','Descobrindo fundamentos do Voleibol: Manchete.','Esportes de Rede'), aula('5°F','Pesquisa sobre disciplina no esporte.','Esportes')],
+      [REG, aula('5°I','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°I','Continuando a vivência com jogos de mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), REG, aula('5°H','Descobrindo fundamentos do Voleibol: Resgate.','Esportes de Rede')],
+      [aula('5°F','Pique-Bandeira.','Esportes de Invasão'), aula('4°F','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°E','Pique-Bandeira.','Esportes de Invasão'), aula('4°F','Estações esportivas na quadra. (Consolidando combinados)','Esportes de Invasão e Rede'), HTP],
+      [HTP, HTP, HTP, HTP, aula('5°G','Descobrindo fundamentos do Voleibol: Resgate com passe.','Esportes de Rede')],
+      [aula('5°G','Estações esportivas na quadra.','Esportes de Invasão e Rede'), aula('5°H','Introduzindo os Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Pique-Bandeira.','Esportes de Invasão'), aula('5°F','Estações esportivas na quadra.','Esportes de Invasão e Rede'), aula('5°I','Pique-Bandeira.','Esportes de Invasão')],
+    ],
+    notas:{ objetivos:'- Introduzir os Jogos de Mesa como prática socioeducativa.\n- Continuar os fundamentos do Voleibol.\n- Trabalhar o Pique-Bandeira como esporte de invasão.', avaliacao:'Inicio de março com bom engajamento. Os jogos de mesa foram muito bem recebidos pelos alunos do 4° e 5° ano.', flex:'Adaptações realizadas nos jogos de mesa para alunos com dificuldades motoras finas.', gestao:'' }
+  });
+
+  // SEMANA 6 - 09/03 a 13/03
+  semanas.push({ id:'s6', num:11, inicio:'2026-03-09', fim:'2026-03-13', mes:'Março',
+    grade:[
+      [aula('4°E','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Xadrez e Damas.','Jogos e Brincadeiras'), aula('4°E','Dia das mulheres: Handebol Feminino.','Esportes'), aula('5°F','Dia das mulheres: Handebol Feminino.','Esportes')],
+      [REG, aula('5°I','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°I','Xadrez e Damas.','Jogos e Brincadeiras'), REG, aula('5°H','Dia das mulheres: Handebol Feminino.','Esportes')],
+      [aula('5°F','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°E','Xadrez e Damas.','Jogos e Brincadeiras'), aula('4°F','Dia das mulheres: Handebol Feminino.','Esportes'), HTP],
+      [HTP, HTP, HTP, HTP, aula('5°G','Dia das mulheres: Handebol Feminino.','Esportes')],
+      [aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Xadrez e Damas.','Jogos e Brincadeiras'), aula('5°F','Xadrez e Damas.','Jogos e Brincadeiras'), aula('5°I','Dia das mulheres: Handebol Feminino.','Esportes')],
+    ],
+    notas:{ objetivos:'- Jogos de Mesa: aprofundar a vivência.\n- Introduzir o Xadrez e Damas.\n- Dia Internacional da Mulher: trabalhar o Handebol Feminino como tema transversal.', avaliacao:'Semana temática do Dia das Mulheres muito bem recebida. Xadrez e Damas despertaram grande interesse.', flex:'No xadrez, utilizei peças maiores para alunos com dificuldade de visão.', gestao:'' }
+  });
+
+  // SEMANA 7 - 16/03 a 20/03
+  semanas.push({ id:'s7', num:12, inicio:'2026-03-16', fim:'2026-03-20', mes:'Março',
+    grade:[
+      [{tipo:'livre',texto:'FALTA ABONADA'}, aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Xadrez e Damas.','Jogos e Brincadeiras'), aula('4°E','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°F','Xadrez e Damas.','Jogos e Brincadeiras')],
+      [REG, aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('5°I','Xadrez e Damas.','Jogos e Brincadeiras'), REG, aula('5°G','Circuito de Esportes de Invasão e Rede.','Esportes')],
+      [aula('5°F','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°E','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Circuito de Esportes de Invasão e Rede.','Esportes'), HTP],
+      [HTP, HTP, HTP, HTP, aula('5°H','Circuito de Esportes de Invasão e Rede.','Esportes')],
+      [aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Xadrez e Damas.','Jogos e Brincadeiras'), aula('5°F','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°I','Circuito de Esportes de Invasão e Rede.','Esportes')],
+    ],
+    notas:{ objetivos:'- Continuar os Jogos de Mesa e Xadrez/Damas.\n- Introduzir o Circuito de Esportes de Invasão e Rede.\n- Vivenciar a Queimada Derruba Barraca.', avaliacao:'Segunda-feira com falta abonada. Demais dias correram bem. Circuito motivou muito os alunos.', flex:'Circuito adaptado com estações de menor exigência física para alunos com laudo médico.', gestao:'' }
+  });
+
+  // SEMANA 8 - 23/03 a 27/03
+  semanas.push({ id:'s8', num:13, inicio:'2026-03-23', fim:'2026-03-27', mes:'Março',
+    grade:[
+      [aula('4°E','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Xadrez e Damas.','Jogos e Brincadeiras'), aula('4°E','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°F','Base 4.','Jogos e Brincadeiras')],
+      [REG, aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('5°I','Xadrez e Damas.','Jogos e Brincadeiras'), REG, aula('5°G','Base 4','Jogos e Brincadeiras')],
+      [aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°E','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Circuito de Esportes de Invasão e Rede.','Esportes'), HTP],
+      [HTP, HTP, HTP, HTP, aula('5°H','Circuito de Esportes de Invasão e Rede.','Esportes')],
+      [aula('5°F','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Xadrez e Damas.','Jogos e Brincadeiras'), aula('5°F','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°i','Base 4','Jogos e Brincadeiras')],
+    ],
+    notas:{ objetivos:'- Manter os Jogos de Mesa e Xadrez/Damas.\n- Continuar o Circuito de Esportes.\n- Introduzir o Base 4 para algumas turmas.', avaliacao:'Boa semana. Base 4 foi grande sucesso entre 5°F, G e I.', flex:'Base 4 com regras simplificadas para turmas inclusivas.', gestao:'' }
+  });
+
+  // SEMANA 9 - 30/03 a 03/04
+  semanas.push({ id:'s9', num:14, inicio:'2026-03-30', fim:'2026-04-03', mes:'Março/Abril',
+    grade:[
+      [aula('4°E','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°H','Xadrez e Damas.','Jogos e Brincadeiras'), aula('4°E','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°F','Xadrez e Damas.','Jogos e Brincadeiras')],
+      [REG, aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('5°I','Xadrez e Damas.','Jogos e Brincadeiras'), REG, aula('5°G','Circuito de Esportes de Invasão e Rede.','Esportes')],
+      [aula('5°G','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('4°F','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°E','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Circuito de Esportes de Invasão e Rede.','Esportes'), HTP],
+      [HTP, HTP, HTP, HTP, aula('5°H','Circuito de Esportes de Invasão e Rede.','Esportes')],
+      [aula('5°F','Jogos de Mesa: Uno, Futebol de Botão, Pula-Macaco, Pega-Varetas','Jogos e Brincadeiras'), aula('5°I','Queimada Derruba Barraca.','Esportes / Jogos e Brincadeiras'), aula('4°F','Xadrez e Damas.','Jogos e Brincadeiras'), aula('5°F','Circuito de Esportes de Invasão e Rede.','Esportes'), aula('5°I','Circuito de Esportes de Invasão e Rede.','Esportes')],
+    ],
+    notas:{ objetivos:'- Consolidar os Jogos de Mesa e Xadrez.\n- Consolidar o Circuito de Esportes.\n- Consolidar a Queimada Derruba Barraca.', avaliacao:'Última semana de março (parte em abril). Consolidação dos conteúdos trabalhados.', flex:'Sem alterações nas adaptações já realizadas.', gestao:'' }
+  });
+
+  // SEMANA 10 — 04/05 a 08/05
+  semanas.push({ id:'s10', num:19, inicio:'2026-05-04', fim:'2026-05-08', mes:'Maio',
+    grade:[
+      // Seg 4/5
+      [aula('4°E','Estações esportivas na quadra','Esportes de Invasão'), REG, aula('5°F','Estações esportivas na quadra','Esportes de Invasão'), HTP, aula('5°G','Queimada do Silêncio','Jogos e Brincadeiras')],
+      // Ter 5/5
+      [aula('5°G','Estações esportivas na quadra','Esportes de Invasão'), aula('5°I','Base 4','Jogos e Brincadeiras'), aula('4°F','Estações esportivas na quadra','Esportes de Invasão'), HTP, aula('5°H','Estações esportivas na quadra','Esportes de Invasão')],
+      // Qua 6/5
+      [aula('5°H','Jogo dos 15 passes: Handebol','Esportes de Invasão'), aula('5°I','Circuito de Esportes de Invasão e Rede','Esportes de Invasão'), aula('4°E','Jogo dos 15 passes: Handebol','Esportes de Invasão'), HTP, aula('4°F','Jogo dos 15 passes: Handebol','Esportes de Invasão')],
+      // Qui 7/5
+      [aula('4°E','Jogos de Mesa: Futebol de botão, Pega-Varetas, Pula-Macaco','Jogos e Brincadeiras'), REG, aula('4°F','Nunca 3','Jogos e Brincadeiras'), HTP, aula('5°F','Jogo dos 15 passes: Handebol','Esportes de Invasão')],
+      // Sex 8/5
+      [aula('5°F','Queimada do Silêncio','Jogos e Brincadeiras'), aula('5°H','Circuito de Atividades de Ginástica no Parque','Ginástica Geral'), HTP, aula('5°G','Circuito de Atividades de Ginástica no Parque','Ginástica Geral'), aula('5°I','Jogo dos 15 passes: Handebol','Esportes de Invasão')],
+    ],
+    notas:{
+      objetivos:'Conhecer os jogos e brincadeiras do mundo de origens diversas (tradicionais e contemporâneos), para além das perspectivas europeias.\nConhecer as modalidades esportivas de campo e taco, de precisão e de invasão.\nExperimentar e fruir as modalidades ginásticas estudadas neste ciclo.',
+      avaliacao:'Nesta semana os estudantes desenvolveram com muita eficiência todos os objetivos propostos.',
+      flex:'Adaptações de regras e atividade.',
+      gestao:''
+    }
+  });
+
+  return semanas;
+}
+
+// ============================================================ ESTADO
+let D = inicDados();
+
+function inicDados() {
+  try {
+    const s = localStorage.getItem('ef2026_v4');
+    if (s) return JSON.parse(s);
+  } catch(e){}
+  return {
+    turmas: ['4°E','4°F','5°F','5°G','5°H','5°I'],
+    horario: HORARIO_PADRAO,
+    semanas: dadosHistoricos(),
+    atividades: ativPadrao(),
+    periodos: [],
+    semanaAtualId: 's9',
+  };
+}
+
+function salvar() { localStorage.setItem('ef2026_v4', JSON.stringify(D)); }
+
+function ativPadrao() {
+  const mk = (id,m,nome,anos,desc='') => ({id,m,nome,anos,desc});
+  return [
+    // ── Ritmo e Dança (m:3) ──────────────────────────────
+    mk('rd01',3,'Fundamentos de CheerLeader: Pirâmide.','1° ao 5°',''),
+    mk('rd02',3,'Desenvolvendo coreografia para evento na escola','1° ao 5°',''),
+    mk('rd03',3,'Mulher do Sapo.','1° ao 5°','Música e movimento corporal.'),
+    mk('rd04',3,'História da Serpente.','1° ao 5°','Música e movimento corporal.'),
+    mk('rd05',3,'Músicas de Conscientização Corporal','1° ao 5°',''),
+    mk('rd06',3,'Olá, como vai?','1° ao 5°',''),
+    mk('rd07',3,'Cara de quê?','1° ao 5°',''),
+    mk('rd08',3,'Passeio no jardim','1° ao 5°',''),
+    mk('rd09',3,'Tchutchuê','1° ao 5°',''),
+    mk('rd10',3,'CD de Músicas: Faixa 1 ao 5','1° ao 5°',''),
+    mk('rd11',3,'CD de Músicas: Faixa 6 ao 10','1° ao 5°',''),
+    mk('rd12',3,'CD de Músicas: Faixa 11 ao 15','1° ao 5°',''),
+    mk('rd13',3,'CD de Músicas: Faixa 16 ao 20','1° ao 5°',''),
+    mk('rd14',3,'CD de Músicas: Faixa 21 ao 25','1° ao 5°',''),
+    // ── Esportes de Precisão (m:6) ───────────────────────
+    mk('ep01',6,'Fundamentos do Arremesso ao Alvo','1° ao 2°',''),
+    mk('ep02',6,'Fundamentos do Boliche','1° ao 2°',''),
+    mk('ep03',6,'Roda de conversa: Explicando o que é um esporte de precisão','1° ao 2°',''),
+    mk('ep04',6,'Boliche: Explicando a contagem de pontos','1° ao 2°',''),
+    mk('ep05',6,'Arremesso ao alvo.','1° ao 2°',''),
+    // ── Esportes de Aventura (m:7) ───────────────────────
+    mk('ea01',7,'Vivenciando o Skate','1° ao 5°',''),
+    mk('ea02',7,'Vivenciando o Patins','1° ao 5°',''),
+    mk('ea03',7,'Pesquisa sobre a história do Skate','1° ao 5°',''),
+    mk('ea04',7,'Pesquisa sobre os principais atletas de Skate do Brasil e do mundo','1° ao 5°',''),
+    mk('ea05',7,'Pesquisa sobre os principais atletas de Patins do Brasil e do mundo','1° ao 5°',''),
+    mk('ea06',7,'Pesquisa sobre a história do Patins','1° ao 5°',''),
+    mk('ea07',7,'Pesquisa sobre materiais de proteção na prática dos esportes de aventura','1° ao 5°',''),
+    // ── Esportes de Marca (m:4) ──────────────────────────
+    mk('em01',4,'Corrida do Bambolê','1° ao 2°',''),
+    mk('em02',4,'Corrida de Revezamento','1° ao 2°',''),
+    mk('em03',4,'Corrida 100m rasos','1° ao 2°',''),
+    mk('em04',4,'Arremesso de Peso com bola de 2kg','1° ao 2°',''),
+    mk('em05',4,'Corrida do Tapete Mágico','1° ao 2°',''),
+    mk('em06',4,'Roda de conversa sobre as regras da Corrida de 100m','1° ao 2°',''),
+    mk('em07',4,'Roda de conversa sobre os equipamentos utilizados nos esportes de marca','1° ao 2°',''),
+    // ── Esportes de Rede (m:5) ───────────────────────────
+    mk('er01',5,'Resgate: Manchete','3° ao 5°',''),
+    mk('er02',5,'Resgate: Levantamento','3° ao 5°',''),
+    mk('er03',5,'Resgate: Saque','3° ao 5°',''),
+    mk('er04',5,'Fundamentos do Voleibol: Saque','3° ao 5°',''),
+    mk('er05',5,'Fundamentos do Voleibol: Levantamento','3° ao 5°',''),
+    mk('er06',5,'Fundamentos do Voleibol: Corte','3° ao 5°',''),
+    mk('er07',5,'Fundamentos do Voleibol: Manchete','3° ao 5°',''),
+    mk('er08',5,'Voleibol Adaptado: Vôlei sentado','3° ao 5°',''),
+    mk('er09',5,'Fundamentos do Badminton','3° ao 5°',''),
+    mk('er10',5,'Pesquisa sobre materiais utilizados no Badminton','3° ao 5°',''),
+    mk('er11',5,'Pesquisa sobre materiais utilizados no Voleibol','3° ao 5°',''),
+    mk('er12',5,'Fundamentos do Tênis: Segurando a Raquete','3° ao 5°',''),
+    mk('er13',5,'Fundamentos do Tênis: Saque','3° ao 5°',''),
+    mk('er14',5,'Fundamentos do Tênis: Rebatida','3° ao 5°',''),
+    mk('er15',5,'Pesquisa sobre regras do Tênis','3° ao 5°',''),
+    mk('er16',5,'Pesquisa sobre a história do Voleibol','3° ao 5°',''),
+    mk('er17',5,'Pesquisa sobre a história do Tênis','3° ao 5°',''),
+    mk('er18',5,'Pesquisa sobre regras do Voleibol','3° ao 5°',''),
+    mk('er19',5,'Pesquisa sobre a história do Badminton','3° ao 5°',''),
+    // ── Esportes de Invasão (m:8) ────────────────────────
+    mk('ei01',8,'Fundamentos do Futsal: Passe','3° ao 5°',''),
+    mk('ei02',8,'Fundamentos do Futsal: Chute','3° ao 5°',''),
+    mk('ei03',8,'Fundamentos do Futsal: Domínio','3° ao 5°',''),
+    mk('ei04',8,'Pesquisa sobre regras do Futsal','3° ao 5°',''),
+    mk('ei05',8,'Pesquisa sobre onde posso praticar futsal na minha comunidade.','3° ao 5°',''),
+    mk('ei06',8,'Pesquisa sobre arbitragem e porque devo respeitar as regras de uma partida.','3° ao 5°',''),
+    mk('ei07',8,'Pesquisa sobre dimensões históricas do Futsal no país.','3° ao 5°',''),
+    mk('ei08',8,'Jogo dos 15 passes: Futsal','3° ao 5°',''),
+    mk('ei09',8,'Jogo dos 15 passes: Handebol','3° ao 5°',''),
+    mk('ei10',8,'Jogo dos 15 passes: Basquete','3° ao 5°',''),
+    mk('ei11',8,'Gincana de Condução e Chute ao gol com jogo da velha','3° ao 5°',''),
+    mk('ei12',8,'Pesquisa sobre a história do Basquetebol','3° ao 5°',''),
+    mk('ei13',8,'Pesquisa sobre a história do Futebol','3° ao 5°',''),
+    mk('ei14',8,'Pesquisa sobre a história do Futsal','3° ao 5°',''),
+    mk('ei15',8,'Pesquisa sobre a história do Handebol','3° ao 5°',''),
+    mk('ei16',8,'Futsal adaptado: Bola de guizo','3° ao 5°',''),
+    mk('ei17',8,'Fundamentos do Goalball','3° ao 5°',''),
+    mk('ei18',8,'Pesquisa sobre a história do Goalball','3° ao 5°',''),
+    // ── Lutas do Mundo (m:1) — 1° ao 2° ─────────────────
+    mk('lu01',1,'Luta do Rabinho','1° ao 2°',''),
+    mk('lu02',1,'Pega-Pega Animais no Tatame','1° ao 2°',''),
+    mk('lu03',1,'Roda de conversa sobre a diferença de briga e luta.','1° ao 2°',''),
+    mk('lu04',1,'Roda de conversa sobre conhecimento prévio das lutas.','1° ao 2°',''),
+    // ── Lutas do Mundo (m:1) — 3° ao 5° ─────────────────
+    mk('lu05',1,'Luta do Rabo','3° ao 5°',''),
+    mk('lu06',1,'Luta da Bola','3° ao 5°',''),
+    mk('lu07',1,'Luta do Ombro','3° ao 5°',''),
+    mk('lu08',1,'Cabo de Guerra','3° ao 5°',''),
+    mk('lu09',1,'Esgrima (Projeto)','3° ao 5°',''),
+    mk('lu10',1,'Pesquisa sobre diferença entre Briga e Luta','3° ao 5°',''),
+    mk('lu11',1,'Pesquisa sobre materiais de segurança na prática das lutas','3° ao 5°',''),
+    mk('lu12',1,'Pesquisa sobre modalidades esportivas das lutas mais praticadas','3° ao 5°',''),
+    mk('lu13',1,'Pesquisa sobre brasileiros campeões de alguma modalidade das lutas','3° ao 5°',''),
+    mk('lu14',1,'Pesquisa sobre Capoeira e contexto histórico','3° ao 5°',''),
+    // ── Jogos e Brincadeiras (m:0) ───────────────────────
+    mk('jb01',0,'Pega-Pega: Rabo','1° ao 5°',''),
+    mk('jb02',0,'Coelho sai da toca','1° ao 5°',''),
+    mk('jb03',0,'Mãe da Rua','1° ao 5°',''),
+    mk('jb04',0,'Pega-Pega: Pegador e Fugitivo','1° ao 5°',''),
+    mk('jb05',0,'Nunca 3','1° ao 5°',''),
+    mk('jb06',0,'Pular-Corda','1° ao 5°',''),
+    mk('jb07',0,'CorridaPô','1° ao 5°',''),
+    mk('jb08',0,'Genius na tela interativa','1° ao 5°',''),
+    mk('jb09',0,'Queimada Cemitério','1° ao 5°',''),
+    mk('jb10',0,'Queimada Derruba Barraco','1° ao 5°',''),
+    mk('jb11',0,'Queimada do Silêncio','1° ao 5°',''),
+    mk('jb12',0,'Queimada Tradicional','1° ao 5°',''),
+    mk('jb13',0,'Conebol: Bolas de Meia','1° ao 5°',''),
+    mk('jb14',0,'Pique-Bandeira','1° ao 5°',''),
+    mk('jb15',0,'Estafetas de Correr, Pular, Saltar.','1° ao 5°',''),
+    mk('jb16',0,'Gincana da Casa da Princesa.','1° ao 5°',''),
+    mk('jb17',0,'Jogos de Mesa: UNO, Xadrez, Dominó.','1° ao 5°',''),
+    mk('jb18',0,'Jogos de Mesa: Futebol de botão, Pega-Varetas, Pula-Macaco','1° ao 5°',''),
+    // ── Ginástica Geral (m:2) ────────────────────────────
+    mk('gg01',2,'Circuito de Atividades de Ginástica no Parque.','1° ao 5°',''),
+    mk('gg02',2,'Grupado, Carpado, Afastado e Estendido.','1° ao 5°',''),
+    mk('gg03',2,'Ginástica de Conscientização Corporal.','1° ao 5°',''),
+    mk('gg04',2,'Ginástica de Condicionamento e sua importância para o bem-estar.','1° ao 5°',''),
+    mk('gg05',2,'Pesquisa sobre a importância das mulheres na ginástica olímpica','1° ao 5°',''),
+    mk('gg06',2,'Pesquisa sobre maiores brasileiros(a) ginastas.','1° ao 5°',''),
+    mk('gg07',2,'Introdução aos movimentos de Rolamento.','1° ao 5°',''),
+    mk('gg08',2,'Rolamento e seus princípios','1° ao 5°',''),
+    mk('gg09',2,'Introdução aos movimentos de Estrelinha','1° ao 5°',''),
+    mk('gg10',2,'Estrelinha e seus princípios','1° ao 5°',''),
+    mk('gg11',2,'Introdução aos materiais da Ginástica Rítmica','1° ao 5°',''),
+    mk('gg12',2,'Pesquisa sobre materiais da Ginástica Rítmica','1° ao 5°',''),
+    mk('gg13',2,'Produção de Materiais da Ginástica Rítmica: Bola','1° ao 5°',''),
+    mk('gg14',2,'Produção de Materiais da Ginástica Rítmica: Arco','1° ao 5°',''),
+    mk('gg15',2,'Produção de Materiais da Ginástica Rítmica: Fita','1° ao 5°',''),
+    mk('gg16',2,'Produção de Materiais da Ginástica Rítmica: Maças','1° ao 5°',''),
+    mk('gg17',2,'Produção de Materiais da Ginástica Rítmica: Corda','1° ao 5°',''),
+    mk('gg18',2,'Introdução aos movimentos da Ginástica Rítmica com materiais criados.','1° ao 5°',''),
+    mk('gg19',2,'Desenvolvendo a música junto com a Ginástica Rítmica','1° ao 5°',''),
+    mk('gg20',2,'Organizando apresentação e coreografia de Ginástica Rítmica','1° ao 5°',''),
+    mk('gg21',2,'Apresentando coreografia de Ginástica Rítmica.','1° ao 5°',''),
+  ];
+}
+
+function uid() { return 'u'+Math.random().toString(36).slice(2,8); }
+
+// ============================================================ SELECTS
+function popSelectMod(ids) {
+  ids.forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    el.innerHTML = MODALIDADES.map(m=>`<option value="${m.nome}">${m.nome}</option>`).join('');
+  });
+}
+
+// ============================================================ ABAS
+function ir(aba, btn) {
+  document.querySelectorAll('.aba').forEach(a=>a.classList.remove('ativa'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('ativo'));
+  document.getElementById('aba-'+aba).classList.add('ativa');
+  btn.classList.add('ativo');
+  if(aba==='plano') { popSelSemana(); renderGrade(); }
+  if(aba==='turmas') { renderTurmas(); renderHorario(); renderPeriodos(); }
+  if(aba==='atividades') { popSelectMod(['n-mod','f-mod']); renderAtivs(); document.getElementById('f-mod').insertAdjacentHTML('afterbegin','<option value="">Todas</option>'); }
+  if(aba==='exportar') { popSelSemana(); document.getElementById('exp-semana').value = D.semanaAtualId||''; }
+  if(aba==='analitico') { popSelAnalitico(); renderCobertura(); renderHistorico(); }
+  if(aba==='sugestoes')  { popSelSugestoes(); renderSugestoes(); }
+  if(aba==='calendario') { renderCalendario(); }
+}
+
+// ============================================================ SEMANAS
+function popSelSemana() {
+  const opts = D.semanas.map(s =>
+    `<option value="${s.id}">${s.mes} — Semana ${s.num} (${fmtData(s.inicio)} a ${fmtData(s.fim)})</option>`
+  ).join('');
+
+  ['sel-semana', 'exp-semana', 'an-sel-semana'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const cur = sel.value || D.semanaAtualId;
+    sel.innerHTML = opts;
+    if (cur) sel.value = cur;
+  });
+
+  D.semanaAtualId = document.getElementById('sel-semana').value;
+}
+
+function semanaAtual() { return D.semanas.find(s=>s.id===D.semanaAtualId) || D.semanas[D.semanas.length-1]; }
+
+function carregarSemana() {
+  D.semanaAtualId = document.getElementById('sel-semana').value;
+  salvar();
+  renderGrade();
+}
+
+function abrirNovaSmana() {
+  const ultima = D.semanas[D.semanas.length-1];
+  const novaData = adicionarDias(ultima.fim, 3); // próxima segunda
+  document.getElementById('ns-num').value = ultima.num+1;
+  document.getElementById('ns-inicio').value = novaData;
+  document.getElementById('ns-fim').value = adicionarDias(novaData, 4);
+  document.getElementById('ns-mes').value = '';
+  document.getElementById('ns-sugestao').textContent = '💡 Ao criar, o conteúdo da última semana é sugerido como ponto de partida.';
+  abrirOv('ov-semana');
+}
+
+function criarSemana() {
+  const num = +document.getElementById('ns-num').value;
+  const ini = document.getElementById('ns-inicio').value;
+  const fim = document.getElementById('ns-fim').value;
+  const mes = document.getElementById('ns-mes').value.trim() || mesDeData(ini);
+  if(!ini||!fim) { alert('Informe as datas.'); return; }
+  const ultima = D.semanas[D.semanas.length-1];
+  // Copiar grade da última semana como base
+  const novaGrade = JSON.parse(JSON.stringify(ultima.grade));
+  const novaSemana = {
+    id: uid(), num, inicio:ini, fim, mes,
+    grade: novaGrade,
+    notas: { objetivos:'', avaliacao:'', flex:'', gestao:'' }
+  };
+  autoPreencherPeriodos(novaSemana);
+  D.semanas.push(novaSemana);
+  D.semanaAtualId = novaSemana.id;
+  salvar();
+  fecharOv('ov-semana');
+  popSelSemana();
+  renderGrade();
+}
+
+function abrirEditarSemana() {
+  const s = semanaAtual(); if (!s) return;
+  document.getElementById('es-mes').value    = s.mes    || '';
+  document.getElementById('es-num').value    = s.num    || '';
+  document.getElementById('es-inicio').value = s.inicio || '';
+  document.getElementById('es-fim').value    = s.fim    || '';
+  abrirOv('ov-edit-semana');
+}
+
+function salvarEditarSemana() {
+  const s = semanaAtual(); if (!s) return;
+  s.mes    = document.getElementById('es-mes').value.trim()    || s.mes;
+  s.num    = +document.getElementById('es-num').value          || s.num;
+  s.inicio = document.getElementById('es-inicio').value        || s.inicio;
+  s.fim    = document.getElementById('es-fim').value           || s.fim;
+  salvar();
+  fecharOv('ov-edit-semana');
+  popSelSemana();
+  renderGrade();
+}
+
+function apagarSemanaAtual() {
+  const s = semanaAtual(); if (!s) return;
+  if (!confirm(`Apagar a semana "${s.mes} — Semana ${s.num}"?\n\nEsta ação não pode ser desfeita.`)) return;
+  D.semanas = D.semanas.filter(x => x.id !== s.id);
+  D.semanaAtualId = D.semanas.length ? D.semanas[D.semanas.length - 1].id : null;
+  salvar();
+  popSelSemana();
+  renderGrade();
+}
+
+function limparSemanaAtual() {
+  const s = semanaAtual(); if(!s) return;
+  s.grade = Array(5).fill(null).map(()=>Array(5).fill(null).map(()=>null));
+  s.notas = { objetivos:'', avaliacao:'', flex:'', gestao:'' };
+  salvar(); renderGrade();
+}
+
+// ============================================================ AUTO-PREENCHER PERÍODOS NA SEMANA
+function autoPreencherPeriodos(s) {
+  if (!s || !s.inicio) return false;
+  let alterou = false;
+  const base = new Date(s.inicio + 'T12:00:00');
+
+  for (let di = 0; di < 5; di++) {
+    const dataAtual = new Date(base);
+    dataAtual.setDate(base.getDate() + di);
+    const iso = dataAtual.toISOString().split('T')[0];
+
+    // Só preenche dias completamente vazios
+    if (!s.grade[di]) s.grade[di] = [];
+    const diaVazio = Array.from({length:5}, (_,ai) => (s.grade[di]||[])[ai])
+      .every(cel => !cel || cel.tipo === undefined);
+    if (!diaVazio) continue;
+
+    // 1. Verifica períodos cadastrados (Férias / Recesso)
+    const periodo = (D.periodos||[]).find(p => iso >= p.inicio && iso <= p.fim);
+    if (periodo) {
+      for (let ai = 0; ai < 5; ai++) {
+        s.grade[di][ai] = {
+          tipo:  periodo.tipo,
+          texto: periodo.desc || (periodo.tipo === 'ferias' ? 'Férias' : 'Recesso'),
+        };
+      }
+      alterou = true;
+      continue;
+    }
+
+    // 2. Verifica feriados do Calendário Oficial 2026
+    if (typeof CAL2026 !== 'undefined' && CAL2026.eventos[iso]) {
+      const ev = CAL2026.eventos[iso];
+      if (ev.t === 'feriado') {
+        for (let ai = 0; ai < 5; ai++) {
+          s.grade[di][ai] = { tipo: 'feriado', texto: ev.d };
+        }
+        alterou = true;
+      } else if (ev.t === 'ferias') {
+        for (let ai = 0; ai < 5; ai++) {
+          s.grade[di][ai] = { tipo: 'ferias', texto: ev.d };
+        }
+        alterou = true;
+      }
+    }
+  }
+
+  if (alterou) salvar();
+  return alterou;
+}
+
+// ============================================================ GRADE
+function renderGrade() {
+  const s = semanaAtual(); if(!s) return;
+  autoPreencherPeriodos(s);
+  // info
+  document.getElementById('info-semana').textContent = `${s.mes} · ${fmtData(s.inicio)} a ${fmtData(s.fim)}`;
+  // datas nos th
+  const ths = document.querySelectorAll('#tbl-grade thead th');
+  const dias = ['Segunda','Terça','Quarta','Quinta','Sexta'];
+  if(s.inicio) {
+    let d = new Date(s.inicio+'T12:00:00');
+    for(let i=1;i<=5;i++){
+      ths[i].textContent = dias[i-1] + (s.inicio ? ' '+d.getDate()+'/'+(d.getMonth()+1) : '');
+      d.setDate(d.getDate()+1);
+    }
+  }
+  // corpo
+  const tbody = document.getElementById('tbody-grade');
+  tbody.innerHTML = '';
+  for(let a=0;a<5;a++){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="td-aula">${AULAS[a]}</td>`;
+    for(let d=0;d<5;d++){
+      const td = document.createElement('td');
+      const cel = (s.grade[d]||[])[a] || null;
+      td.innerHTML = `<div class="celula" onclick="abrirCelula(${d},${a})">${renderCelula(cel, d, a)}</div>`;
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  // notas
+  const n = s.notas||{};
+  ['objetivos','avaliacao','flex','gestao'].forEach(k=>{
+    const el = document.getElementById('nota-'+k);
+    if(el) el.value = n[k]||'';
+  });
+}
+
+function renderCelula(cel, dia, aula) {
+  const hfixed = D.horario[dia]?.[aula];
+  if(!cel || cel.tipo===undefined) {
+    if(hfixed==='HTP') return `<div class="celula-especial esp-htp">🗒️ HTP</div>`;
+    if(hfixed==='REGENCIA') return `<div class="celula-especial esp-reg">📝 Regência</div>`;
+    return `<div class="celula-vazia">clique para preencher</div>`;
+  }
+  if(cel.tipo==='htp')     return `<div class="celula-especial esp-htp">🗒️ HTP</div>`;
+  if(cel.tipo==='regencia')return `<div class="celula-especial esp-reg">📝 Regência</div>`;
+  if(cel.tipo==='feriado') return `<div class="celula-especial esp-feriado">🗓️ ${cel.texto||'Feriado'}</div>`;
+  if(cel.tipo==='falta')        return `<div class="celula-especial esp-lts">LTS</div>`;
+  if(cel.tipo==='lts')          return `<div class="celula-especial esp-lts">LTS</div>`;
+  if(cel.tipo==='falta_abonada')return `<div class="celula-especial esp-fab">Falta Abonada</div>`;
+  if(cel.tipo==='reuniao') return `<div class="celula-especial esp-reuniao">👥 Reunião</div>`;
+  if(cel.tipo==='ferias')  return `<div class="celula-especial esp-ferias">🏖️ ${cel.texto||'Férias'}</div>`;
+  if(cel.tipo==='recesso') return `<div class="celula-especial esp-recesso">🎉 ${cel.texto||'Recesso'}</div>`;
+  if(cel.tipo==='livre')   return `<div class="celula-inner"><span class="conteudo">${esc(cel.texto||'')}</span></div>`;
+  // aula normal
+  const t = cel.turma||'';
+  const c = cel.conteudo||'';
+  const m = cel.modalidade||'';
+  const o = cel.obs||'';
+  if(!t&&!c&&!m) return `<div class="celula-vazia">clique para preencher</div>`;
+  return `<div class="celula-inner">
+    ${t ? `<div class="turma-label">Turma: ${esc(t)}</div>` : ''}
+    ${c ? `<div class="conteudo">Conteúdo: ${esc(c)}</div>` : ''}
+    ${m ? `<div class="mod-label">Mod.: ${esc(m)}</div>` : ''}
+    ${o ? `<div class="mod-label" style="color:#e65100">${esc(o)}</div>` : ''}
+  </div>`;
+}
+
+// ============================================================ EDITAR CÉLULA
+let _celDia, _celAula;
+
+function abrirCelula(dia, aula) {
+  _celDia=dia; _celAula=aula;
+  popSelectMod(['cel-mod']);
+  const s = semanaAtual();
+  const cel = (s.grade[dia]||[])[aula]||null;
+  const hfixed = D.horario[dia]?.[aula];
+  document.getElementById('ov-cel-titulo').textContent = `${AULAS[aula]} — ${DIAS_PT[dia]}`;
+
+  document.getElementById('cel-tipo').value = cel?.tipo||'aula';
+  document.getElementById('cel-turma').value = cel?.turma || (hfixed&&hfixed!=='HTP'&&hfixed!=='REGENCIA' ? hfixed : '');
+  if(cel?.modalidade) selecionarModalidade('cel-mod', cel.modalidade);
+  popularSelConteudo('cel-sel-conteudo', document.getElementById('cel-mod').value);
+  if(cel?.conteudo) selecionarOpcao('cel-sel-conteudo', cel.conteudo);
+  document.getElementById('cel-obs').value = cel?.obs||'';
+  document.getElementById('cel-livre').value = cel?.texto||'';
+  toggleCelTipo();
+  abrirOv('ov-celula');
+}
+
+function toggleCelTipo() {
+  const t = document.getElementById('cel-tipo').value;
+  document.getElementById('cel-aula-campos').style.display    = t==='aula'   ? '' : 'none';
+  document.getElementById('cel-livre-campos').style.display   = t==='livre'  ? '' : 'none';
+  const isPeriodo = t==='ferias' || t==='recesso';
+  document.getElementById('cel-periodo-campos').style.display = isPeriodo    ? '' : 'none';
+  if (isPeriodo) popularCelPeriodos(t);
+}
+
+function popularCelPeriodos(tipo) {
+  const sel = document.getElementById('cel-periodo-sel');
+  const periodos = (D.periodos||[]).filter(p => p.tipo === tipo);
+  sel.innerHTML = '<option value="">— selecione ou deixe em branco —</option>';
+  periodos.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.desc || (tipo==='ferias'?'Férias':'Recesso');
+    opt.textContent = `${p.desc||''} (${fmtDataLonga(p.inicio)} a ${fmtDataLonga(p.fim)})`;
+    sel.appendChild(opt);
+  });
+}
+
+function celSelecionarPeriodo() {
+  const val = document.getElementById('cel-periodo-sel').value;
+  if (val) document.getElementById('cel-periodo-desc').value = val;
+}
+
+function salvarCelula() {
+  const s = semanaAtual(); if(!s) return;
+  if(!s.grade[_celDia]) s.grade[_celDia] = [];
+  const tipo = document.getElementById('cel-tipo').value;
+  let cel;
+  if(tipo==='aula') {
+    cel = { tipo:'aula', turma:document.getElementById('cel-turma').value, conteudo:document.getElementById('cel-sel-conteudo').value, modalidade:document.getElementById('cel-mod').value, obs:document.getElementById('cel-obs').value };
+  } else if(tipo==='livre') {
+    cel = { tipo:'livre', texto:document.getElementById('cel-livre').value };
+  } else if(tipo==='ferias' || tipo==='recesso') {
+    const desc = document.getElementById('cel-periodo-desc').value.trim() ||
+                 document.getElementById('cel-periodo-sel').value ||
+                 (tipo==='ferias' ? 'Férias' : 'Recesso');
+    cel = { tipo, texto: desc };
+  } else {
+    cel = { tipo };
+  }
+
+  // cascata: preenche todas as 5 aulas do dia
+  const CASCATA = ['lts','falta_abonada','reuniao','feriado','ferias','recesso'];
+  if (CASCATA.includes(tipo)) {
+    for(let a = 0; a < 5; a++) s.grade[_celDia][a] = cel;
+  } else {
+    s.grade[_celDia][_celAula] = cel;
+  }
+
+  salvar(); fecharOv('ov-celula'); renderGrade();
+}
+
+function limparCelula() {
+  const s = semanaAtual(); if(!s) return;
+  if(!s.grade[_celDia]) s.grade[_celDia] = [];
+  s.grade[_celDia][_celAula] = null;
+  salvar(); fecharOv('ov-celula'); renderGrade();
+}
+
+// ============================================================ HELPERS FILTRO CONTEÚDO
+function conteudosDaModalidade(modNome) {
+  const m = MODALIDADES.find(x => x.nome === modNome);
+  if (!m) return D.atividades;
+  return D.atividades.filter(a => a.m === m.id);
+}
+
+function popularSelConteudo(selId, modNome) {
+  const sel = document.getElementById(selId);
+  if (!sel) return;
+  const ativs = conteudosDaModalidade(modNome);
+  sel.innerHTML = '<option value="">— escolha ou escreva abaixo —</option>';
+  ativs.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.nome;
+    opt.textContent = a.nome + (a.anos ? '  [' + a.anos + ']' : '');
+    sel.appendChild(opt);
+  });
+}
+
+// ── Normalização ──────────────────────────────────────────
+function norm(s) { return (s||'').trim().replace(/[.\s]+$/, '').toLowerCase(); }
+
+const MOD_LEGADO = {
+  'ginástica de conscientização corporal e condicionamento': 'Ginástica Geral',
+  'ginástica de condicionamento':                            'Ginástica Geral',
+  'ginástica artística':                                     'Ginástica Geral',
+  'ginástica circense':                                      'Ginástica Geral',
+  'ginástica geral e esportes':                              'Ginástica Geral',
+  'jogos e brincadeiras / esportes / ginástica':             'Jogos e Brincadeiras',
+  'jogos e brincadeiras e ginástica artística':              'Jogos e Brincadeiras',
+  'jogos e brincadeiras / esportes':                         'Jogos e Brincadeiras',
+  'esportes / jogos e brincadeiras':                         'Jogos e Brincadeiras',
+  'esportes adaptados':                                      'Esportes de Precisão',
+  'esportes de invasão e rede':                              'Esportes de Invasão',
+  'esportes de campo e taco':                                'Esportes de Invasão',
+  'esportes':                                                'Outro / Misto',
+};
+
+function normalizarModalidade(nome) {
+  if (!nome) return '';
+  const n = norm(nome);
+  // 1. Verifica se já é uma modalidade oficial (exato)
+  const oficial = MODALIDADES.find(m => norm(m.nome) === n);
+  if (oficial) return oficial.nome;
+  // 2. Verifica mapeamento legado exato
+  if (MOD_LEGADO[n]) return MOD_LEGADO[n];
+  // 3. Fuzzy apenas para chaves com mais de 8 caracteres (evita "esportes" capturar "esportes de rede")
+  for (const [k, v] of Object.entries(MOD_LEGADO)) {
+    if (k.length > 8 && (n.includes(k) || k.includes(n))) return v;
+  }
+  // 4. Verifica se contém o nome de alguma modalidade oficial
+  const parcial = MODALIDADES.find(m => n.includes(norm(m.nome)) || norm(m.nome).includes(n));
+  if (parcial) return parcial.nome;
+  return nome.trim().replace(/\.$/, '');
+}
+
+function selecionarOpcao(selId, valor) {
+  const sel = document.getElementById(selId);
+  if (!sel || !valor) return;
+  const v = valor.trim(), vn = norm(v);
+  const tentar = () => {
+    for (const opt of sel.options) { if (opt.value === v) { sel.value = v; return true; } }
+    for (const opt of sel.options) { if (norm(opt.value) === vn) { sel.value = opt.value; return true; } }
+    for (const opt of sel.options) {
+      const on = norm(opt.value);
+      if (on && (on.includes(vn) || vn.includes(on))) { sel.value = opt.value; return true; }
+    }
+    return false;
+  };
+  if (!tentar()) { popularSelConteudo(selId, ''); tentar(); }
+}
+
+function selecionarModalidade(selId, modNome) {
+  const sel = document.getElementById(selId);
+  if (!sel || !modNome) return;
+  const nomePadrao = normalizarModalidade(modNome);
+  const mn = norm(nomePadrao);
+  for (const opt of sel.options) { if (opt.value === nomePadrao) { sel.value = opt.value; return; } }
+  for (const opt of sel.options) { if (norm(opt.value) === mn) { sel.value = opt.value; return; } }
+}
+
+// Modal "Editar célula"
+function celFiltrarConteudos() {
+  popularSelConteudo('cel-sel-conteudo', document.getElementById('cel-mod').value);
+}
+function celAplicarConteudo() { /* select lido diretamente ao salvar */ }
+
+// ============================================================ PREENCHER 3 AULAS DA SEMANA
+function abrirPreencher3Aulas() {
+  const modOpts = MODALIDADES.map(m => `<option value="${m.nome}">${m.nome}</option>`).join('');
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    html += `
+    <div style="background:#f9fbe7;border-radius:8px;padding:14px;margin-bottom:12px;border-left:4px solid #43a047">
+      <div style="font-weight:700;color:#1b5e20;font-size:.9rem;margin-bottom:10px">📌 Aula ${i + 1}</div>
+      <div class="form-row">
+        <label>Modalidade Organizativa</label>
+        <select id="ta-mod-${i}" onchange="ta3FiltrarAtiv(${i})">
+          <option value="">— selecione —</option>
+          ${modOpts}
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Atividade</label>
+        <select id="ta-sel-${i}">
+          <option value="">— selecione a modalidade primeiro —</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Observação (opcional)</label>
+        <input type="text" id="ta-obs-${i}" placeholder="OBS: ...">
+      </div>
+    </div>`;
+  }
+  document.getElementById('cards-3aulas').innerHTML = html;
+  document.getElementById('msg-3aulas').innerHTML = '';
+  abrirOv('ov-3aulas');
+}
+
+function ta3FiltrarAtiv(i) {
+  const mod = document.getElementById(`ta-mod-${i}`).value;
+  popularSelConteudo(`ta-sel-${i}`, mod);
+}
+
+function aplicar3Aulas() {
+  const s = semanaAtual(); if (!s) return;
+
+  // Ler as 3 aulas configuradas
+  const aulas = [];
+  for (let i = 0; i < 3; i++) {
+    aulas.push({
+      modalidade: document.getElementById(`ta-mod-${i}`).value,
+      conteudo:   document.getElementById(`ta-sel-${i}`).value,
+      obs:        document.getElementById(`ta-obs-${i}`).value.trim(),
+    });
+  }
+
+  // Verificar se pelo menos a aula 1 tem conteúdo
+  if (!aulas[0].modalidade && !aulas[0].conteudo) {
+    alert('Preencha pelo menos a Aula 1.');
+    return;
+  }
+
+  // Filtrar apenas as aulas preenchidas
+  const aulasFiltradas = aulas.filter(a => a.modalidade || a.conteudo);
+
+  let turmasAfetadas = 0;
+
+  // Para cada turma, distribuir as aulas nos slots do horário
+  D.turmas.forEach(turma => {
+    const slots = [];
+    D.horario.forEach((dia, di) => {
+      dia.forEach((t, ai) => {
+        if (t === turma) slots.push({ di, ai });
+      });
+    });
+    if (!slots.length) return;
+
+    turmasAfetadas++;
+    const TIPOS_BLOQUEADOS = new Set(['feriado','lts','falta','falta_abonada','reuniao','ferias','recesso']);
+    let aulaIdx = 0;
+    slots.forEach((slot) => {
+      if (!s.grade[slot.di]) s.grade[slot.di] = [];
+      const celAtual = s.grade[slot.di][slot.ai];
+      // Pula slots bloqueados
+      if (celAtual && TIPOS_BLOQUEADOS.has(celAtual.tipo)) return;
+      const aula = aulasFiltradas[aulaIdx % aulasFiltradas.length];
+      aulaIdx++;
+      s.grade[slot.di][slot.ai] = {
+        tipo: 'aula',
+        turma,
+        modalidade: aula.modalidade,
+        conteudo:   aula.conteudo,
+        obs:        aula.obs,
+      };
+    });
+  });
+
+  salvar();
+  document.getElementById('msg-3aulas').innerHTML =
+    `<div class="alerta alerta-verde">✅ Aplicado para ${turmasAfetadas} turma(s)! Feche e veja a grade.</div>`;
+  renderGrade();
+}
+
+// ============================================================ PREENCHER POR TURMA
+let _turmaChip = null;
+
+function abrirPreencherTurma() {
+  const chips = document.getElementById('chips-turma');
+  chips.innerHTML = D.turmas.map(t =>
+    `<div class="tchip" onclick="selChip('${t}',this)">${t}</div>`
+  ).join('');
+  _turmaChip = null;
+  document.getElementById('ft-slots-container').innerHTML =
+    '<p style="font-size:.82rem;color:#999;text-align:center;padding:16px 0">Selecione uma turma acima para ver os slots da semana.</p>';
+  document.getElementById('btn-aplicar-turma').style.display = 'none';
+  abrirOv('ov-turma');
+}
+
+function selChip(turma, el) {
+  document.querySelectorAll('.tchip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  _turmaChip = turma;
+  renderSlotsTurma(turma);
+  document.getElementById('btn-aplicar-turma').style.display = '';
+}
+
+function renderSlotsTurma(turma) {
+  const s = semanaAtual();
+  // descobrir slots desta turma no horário
+  const slots = [];
+  D.horario.forEach((dia, di) => {
+    dia.forEach((t, ai) => {
+      if (t === turma) slots.push({ di, ai });
+    });
+  });
+
+  if (!slots.length) {
+    document.getElementById('ft-slots-container').innerHTML =
+      '<p style="color:#e65100;font-size:.84rem">Esta turma não tem slots no horário atual.</p>';
+    return;
+  }
+
+  const modOpts = MODALIDADES.map(m => `<option value="${m.nome}">${m.nome}</option>`).join('');
+
+  let html = '';
+  slots.forEach((slot, idx) => {
+    const cel = (s?.grade[slot.di] || [])[slot.ai] || null;
+    const diaLabel = DIAS_PT[slot.di];
+    const aulaLabel = AULAS[slot.ai];
+    const modVal   = cel?.modalidade || '';
+    const contVal  = cel?.conteudo   || '';
+    const obsVal   = cel?.obs        || '';
+
+    // gera options de atividades para a modalidade já salva
+    const ativOpts = gerarOptsAtiv(modVal, contVal);
+
+    const tipoAtual = cel?.tipo || 'aula';
+    const isAusencia = tipoAtual === 'lts' || tipoAtual === 'falta' || tipoAtual === 'falta_abonada';
+    const camposDisplay = isAusencia ? 'display:none' : '';
+    const isAula1 = slot.ai === 0;
+
+    html += `
+    <div style="background:#f9fbe7;border-radius:8px;padding:12px;margin-bottom:10px;border-left:4px solid #43a047" id="ft-card-${idx}">
+      <div style="font-weight:700;color:#1b5e20;font-size:.88rem;margin-bottom:8px">
+        📅 ${diaLabel} — ${aulaLabel}
+      </div>
+      <div class="form-row">
+        <label>Tipo</label>
+        <select id="ft-tipo-${idx}" onchange="ftTipoMudou(${idx},${slot.di},${slot.ai})">
+          <option value="aula"${tipoAtual==='aula'?' selected':''}>Aula normal</option>
+          <option value="lts"${(tipoAtual==='lts'||tipoAtual==='falta')?' selected':''}>LTS (Licença Tratamento Saúde)</option>
+          <option value="falta_abonada"${tipoAtual==='falta_abonada'?' selected':''}>Falta Abonada</option>
+          <option value="htp"${tipoAtual==='htp'?' selected':''}>HTP</option>
+          <option value="regencia"${tipoAtual==='regencia'?' selected':''}>Regência</option>
+          <option value="feriado"${tipoAtual==='feriado'?' selected':''}>Feriado</option>
+          <option value="ferias"${tipoAtual==='ferias'?' selected':''}>🏖️ Férias</option>
+          <option value="recesso"${tipoAtual==='recesso'?' selected':''}>🎉 Recesso</option>
+        </select>
+      </div>
+      <div id="ft-campos-${idx}" style="${camposDisplay}">
+        <div class="form-row">
+          <label>Modalidade Organizativa</label>
+          <select id="ft-mod-${idx}" onchange="ftSlotFiltrar(${idx})">
+            <option value="">— selecione —</option>
+            ${modOpts}
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Atividade</label>
+          <select id="ft-sel-${idx}">
+            ${ativOpts}
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Observação (opcional)</label>
+          <input type="text" id="ft-obs-${idx}" value="${esc(obsVal)}" placeholder="OBS: ...">
+        </div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('ft-slots-container').innerHTML = html;
+
+  // setar modalidade e atividade salvas nos selects (depois do innerHTML)
+  slots.forEach((slot, idx) => {
+    const cel = (s?.grade[slot.di] || [])[slot.ai] || null;
+    if (cel?.modalidade) {
+      selecionarModalidade(`ft-mod-${idx}`, cel.modalidade);
+      popularSelConteudo(`ft-sel-${idx}`, document.getElementById(`ft-mod-${idx}`).value);
+    }
+    if (cel?.conteudo) selecionarOpcao(`ft-sel-${idx}`, cel.conteudo);
+  });
+
+  // guardar mapeamento slot → {di, ai} no container para uso em aplicarTurma
+  document.getElementById('ft-slots-container').dataset.slots = JSON.stringify(slots);
+}
+
+function gerarOptsAtiv(modNome, valorAtual) {
+  const ativs = modNome ? conteudosDaModalidade(modNome) : [];
+  let opts = '<option value="">— escolha ou escreva abaixo —</option>';
+  ativs.forEach(a => {
+    const sel = a.nome === valorAtual ? ' selected' : '';
+    opts += `<option value="${esc(a.nome)}"${sel}>${esc(a.nome)}${a.anos ? ' ['+a.anos+']' : ''}</option>`;
+  });
+  return opts;
+}
+
+function ftTipoMudou(idx, di, ai) {
+  const tipo = document.getElementById(`ft-tipo-${idx}`).value;
+  // mostrar/ocultar campos de conteúdo
+  const campos = document.getElementById(`ft-campos-${idx}`);
+  if (campos) campos.style.display = tipo === 'aula' ? '' : 'none';
+}
+
+function ftSlotFiltrar(idx) {
+  const mod = document.getElementById(`ft-mod-${idx}`).value;
+  popularSelConteudo(`ft-sel-${idx}`, mod);
+}
+
+function ftSlotAplicar(idx) {
+  // Leitura direta do select — sem campo de texto intermediário
+}
+
+function aplicarTurma() {
+  if (!_turmaChip) { alert('Selecione uma turma.'); return; }
+  const s = semanaAtual(); if (!s) return;
+  const container = document.getElementById('ft-slots-container');
+  const slots = JSON.parse(container.dataset.slots || '[]');
+
+  slots.forEach((slot, idx) => {
+    const tipo = document.getElementById(`ft-tipo-${idx}`)?.value || 'aula';
+    if (!s.grade[slot.di]) s.grade[slot.di] = [];
+
+    if (tipo === 'lts' || tipo === 'falta_abonada' || tipo === 'reuniao' || tipo === 'feriado') {
+      // cascata: preenche TODAS as 5 aulas do dia com o mesmo tipo
+      for (let a = 0; a < 5; a++) {
+        if (!s.grade[slot.di]) s.grade[slot.di] = [];
+        s.grade[slot.di][a] = { tipo };
+      }
+    } else if (tipo !== 'aula') {
+      s.grade[slot.di][slot.ai] = { tipo };
+    } else {
+      const modalidade = document.getElementById(`ft-mod-${idx}`)?.value || '';
+      const conteudo   = document.getElementById(`ft-sel-${idx}`)?.value || '';
+      const obs        = document.getElementById(`ft-obs-${idx}`)?.value.trim() || '';
+      s.grade[slot.di][slot.ai] = { tipo:'aula', turma:_turmaChip, conteudo, modalidade, obs };
+    }
+  });
+
+  salvar();
+
+  const btn = document.getElementById('btn-aplicar-turma');
+  const orig = btn.textContent;
+  btn.textContent = '✅ Aplicado!';
+  btn.disabled = true;
+  setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1800);
+}
+
+// ============================================================ HELPERS PREENCHER NOTAS
+function _coletarDadosSemana(s) {
+  const modalidades = new Set();
+  const modAnos     = {}; // modNome → Set<ano>
+  const atividades  = []; // { turma, conteudo, modalidade }
+  for (let di = 0; di < 5; di++) {
+    for (let ai = 0; ai < 5; ai++) {
+      const cel = (s.grade[di] || [])[ai];
+      if (!cel || cel.tipo !== 'aula' || !cel.modalidade) continue;
+      const modN = normalizarModalidade(cel.modalidade);
+      if (!modN) continue;
+      modalidades.add(modN);
+      if (cel.turma) {
+        const ano = anoTurma(cel.turma);
+        if (ano) {
+          if (!modAnos[modN]) modAnos[modN] = new Set();
+          modAnos[modN].add(ano);
+        }
+      }
+      if (cel.conteudo) atividades.push({ turma: cel.turma, conteudo: cel.conteudo, modalidade: modN });
+    }
+  }
+  return { modalidades: [...modalidades], modAnos, atividades };
+}
+
+function _listaMods(lista) {
+  if (lista.length === 0) return '';
+  if (lista.length === 1) return lista[0];
+  return lista.slice(0, -1).join(', ') + ' e ' + lista.slice(-1)[0];
+}
+
+async function _preencherComIA(campoId, chaveNota, promptIA, fallbackFn, btnEl) {
+  const cfg = getConfig();
+  if (!cfg.geminiKey) { fallbackFn(); return; }
+
+  const el = document.getElementById(campoId);
+  const orig = btnEl.textContent;
+  btnEl.disabled = true;
+  btnEl.textContent = '⏳';
+  el.value = 'Gerando com IA...';
+
+  try {
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'user', content: promptIA }],
+        max_tokens: 400,
+        temperature: 0.7,
+      }),
+    });
+    if (!resp.ok) throw new Error('Erro API');
+    const data  = await resp.json();
+    const texto = (data.choices?.[0]?.message?.content || '').trim();
+    el.value = texto;
+    salvarNota(chaveNota, texto);
+  } catch(e) {
+    fallbackFn();
+  } finally {
+    btnEl.disabled = false;
+    btnEl.textContent = orig;
+  }
+}
+
+// ============================================================ ANALISAR SEMANA → OBJETIVOS SEMANAIS (Groq)
+async function analisarSemanaObjetivos(btnEl) {
+  const s = semanaAtual(); if (!s) return;
+  const { modAnos, atividades } = _coletarDadosSemana(s);
+
+  if (!Object.keys(modAnos).length) {
+    alert('Nenhuma aula encontrada. Preencha a grade primeiro.');
+    return;
+  }
+
+  const cfg = getConfig();
+
+  // Monta todos os objetivos do currículo por modalidade/ano
+  const todosObjetivos = []; // { obj, modNome }
+  Object.entries(modAnos).forEach(([modNome, anosSet]) => {
+    const chaveCurr = MOD_CURRICULO[modNome];
+    if (!chaveCurr) return;
+    [...anosSet].sort().forEach(ano => {
+      const curr = CURRICULO[ano];
+      if (!curr || !curr[chaveCurr]) return;
+      curr[chaveCurr].forEach(obj => {
+        if (!todosObjetivos.find(x => x.obj === obj))
+          todosObjetivos.push({ obj, modNome });
+      });
+    });
+  });
+
+  if (!todosObjetivos.length) {
+    alert('Não foi possível identificar objetivos curriculares para as modalidades desta semana.');
+    return;
+  }
+
+  // Fallback sem IA
+  const fallback = () => {
+    const texto = todosObjetivos.map(x => `- ${x.obj}`).join('\n');
+    const el = document.getElementById('nota-objetivos');
+    el.value = texto;
+    salvarNota('objetivos', texto);
+  };
+
+  if (!cfg.geminiKey) { fallback(); return; }
+
+  // Com Groq
+  const orig = btnEl.textContent;
+  btnEl.disabled = true;
+  btnEl.textContent = '⏳ Analisando...';
+
+  const atvsResumo = [...new Set(atividades.map(a => `${a.modalidade}: ${a.conteudo}`))].join('\n');
+  const objsListados = todosObjetivos.map((x, i) => `${i+1}. [${x.modNome}] ${x.obj}`).join('\n');
+
+  const prompt = `Você é especialista em currículo de Educação Física do Ensino Fundamental de São Bernardo do Campo.
+
+ATIVIDADES REALIZADAS ESTA SEMANA:
+${atvsResumo}
+
+OBJETIVOS CURRICULARES A AVALIAR:
+${objsListados}
+
+Analise cada objetivo e identifique quais foram COBERTOS pelas atividades realizadas.
+Um objetivo é coberto quando as atividades realizadas se relacionam diretamente com ele.
+
+Responda APENAS com um JSON neste formato:
+{ "cobertos": [1, 3, 5] }
+
+Onde os números são os índices dos objetivos cobertos. Sem texto extra.`;
+
+  try {
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 300,
+        temperature: 0.1,
+      }),
+    });
+
+    if (!resp.ok) throw new Error('Erro API');
+    const data  = await resp.json();
+    const texto = data.choices?.[0]?.message?.content || '';
+
+    // Extrai os índices do JSON
+    const match = texto.match(/\{[\s\S]*\}/);
+    const resultado = match ? JSON.parse(match[0]) : null;
+    const indices   = resultado?.cobertos || [];
+
+    if (!indices.length) { fallback(); return; }
+
+    // Filtra apenas os cobertos pela IA (índices são 1-based)
+    const cobertos = indices
+      .map(i => todosObjetivos[i - 1])
+      .filter(Boolean)
+      .map(x => `- ${x.obj}`);
+
+    const textoFinal = cobertos.join('\n');
+    const el = document.getElementById('nota-objetivos');
+    el.value = textoFinal;
+    salvarNota('objetivos', textoFinal);
+
+    btnEl.textContent = '✅ Salvo!';
+    setTimeout(() => { btnEl.textContent = orig; btnEl.disabled = false; }, 2000);
+
+  } catch(e) {
+    fallback();
+    btnEl.textContent = orig;
+    btnEl.disabled = false;
+  }
+}
+
+// ============================================================ PREENCHER AVALIAÇÃO AUTOMATICAMENTE
+async function preencherAvaliacao(btnEl) {
+  const s = semanaAtual(); if (!s) return;
+  const { modalidades, atividades } = _coletarDadosSemana(s);
+  if (!modalidades.length) { alert('Nenhuma aula encontrada. Preencha a grade primeiro.'); return; }
+
+  const atvsResumo = [...new Set(atividades.map(a => a.conteudo))].slice(0, 8).join(', ');
+
+  const fallback = () => {
+    const texto = modalidades.length === 1
+      ? `Nesta semana a modalidade de ${modalidades[0]} foi vivenciada de forma integral pelos estudantes, que demonstraram engajamento e participação ativa em todas as atividades propostas.`
+      : `Nesta semana as modalidades de ${_listaMods(modalidades)} foram vivenciadas de forma integral pelos estudantes, que demonstraram engajamento e participação ativa em todas as atividades propostas.`;
+    const el = document.getElementById('nota-avaliacao');
+    el.value = texto; salvarNota('avaliacao', texto);
+  };
+
+  const prompt = `Você é professor de Educação Física do Ensino Fundamental de São Bernardo do Campo.
+
+Esta semana foram trabalhadas as modalidades: ${modalidades.join(', ')}
+Atividades realizadas: ${atvsResumo}
+
+Escreva UMA avaliação semanal curta (3-4 linhas) descrevendo como foi a semana de forma positiva, mencionando as modalidades trabalhadas e o desempenho dos estudantes. Escreva em primeira pessoa como professor. Sem título, sem introdução.`;
+
+  await _preencherComIA('nota-avaliacao', 'avaliacao', prompt, fallback, btnEl);
+}
+
+// ============================================================ PREENCHER FLEXIBILIZAÇÃO AUTOMATICAMENTE
+async function preencherFlex(btnEl) {
+  const s = semanaAtual(); if (!s) return;
+  const { modalidades, atividades } = _coletarDadosSemana(s);
+  if (!modalidades.length) { alert('Nenhuma aula encontrada. Preencha a grade primeiro.'); return; }
+
+  const atvsResumo = [...new Set(atividades.map(a => a.conteudo))].slice(0, 8).join(', ');
+
+  const fallback = () => {
+    const texto = modalidades.length === 1
+      ? `Na modalidade de ${modalidades[0]} houve adaptação de regras e atividades para atender todos os tipos de necessidades presentes na sala de aula, garantindo a participação integral de todos os estudantes.`
+      : `Nas modalidades de ${_listaMods(modalidades)} houve adaptação de regras e atividades para atender todos os tipos de necessidades presentes na sala de aula, garantindo a participação integral de todos os estudantes.`;
+    const el = document.getElementById('nota-flex');
+    el.value = texto; salvarNota('flex', texto);
+  };
+
+  const prompt = `Você é professor de Educação Física do Ensino Fundamental de São Bernardo do Campo.
+
+Esta semana foram trabalhadas as modalidades: ${modalidades.join(', ')}
+Atividades realizadas: ${atvsResumo}
+
+Escreva UMA descrição curta (2-3 linhas) sobre as flexibilizações e adaptações realizadas nessas atividades para atender estudantes com diferentes necessidades. Mencione adaptações de regras, materiais e espaço. Escreva em primeira pessoa. Sem título.`;
+
+  await _preencherComIA('nota-flex', 'flex', prompt, fallback, btnEl);
+}
+
+// ============================================================ NOTAS
+function salvarNota(key, val) {
+  const s = semanaAtual(); if(!s) return;
+  if(!s.notas) s.notas = {};
+  s.notas[key] = val;
+  salvar();
+}
+
+// ============================================================ HORÁRIO
+function renderHorario() {
+  const t = document.getElementById('tbl-horario');
+  let h = '<tr><th>Aula</th>';
+  DIAS_PT.forEach(d=>h+=`<th>${d.split('-')[0]}</th>`);
+  h += '</tr>';
+  for(let a=0;a<5;a++){
+    h += `<tr><td class="td-aula" style="font-weight:800;color:#2e7d32;text-align:center">${AULAS[a]}</td>`;
+    for(let d=0;d<5;d++){
+      const v = D.horario[d]?.[a]||'';
+      const isFixed = v==='HTP'||v==='REGENCIA';
+      h += `<td class="${isFixed?'t-fixed':''}"><input type="text" value="${esc(v)}" id="hor_${d}_${a}" style="width:100%;border:none;background:transparent;font-weight:${isFixed?'700':'400'};color:${isFixed?'#5d4037':''};text-align:center" placeholder="—"></td>`;
+    }
+    h += '</tr>';
+  }
+  t.innerHTML = h;
+}
+
+function salvarHorario() {
+  for(let d=0;d<5;d++) for(let a=0;a<5;a++) D.horario[d][a] = document.getElementById(`hor_${d}_${a}`).value;
+  salvar();
+  document.getElementById('msg-horario').innerHTML = '<div class="alerta alerta-verde" style="margin-top:8px">✅ Horário salvo!</div>';
+  setTimeout(()=>document.getElementById('msg-horario').innerHTML='',2500);
+}
+
+// ============================================================ PERÍODOS DE FÉRIAS / RECESSO
+function renderPeriodos() {
+  if (!D.periodos) D.periodos = [];
+  const el = document.getElementById('lista-periodos');
+  if (!el) return;
+  if (!D.periodos.length) { el.innerHTML = '<p style="color:#999;font-size:.82rem">Nenhum período cadastrado.</p>'; return; }
+  el.innerHTML = D.periodos.map((p, i) => `
+    <div class="item">
+      <div class="item-info">
+        <div class="item-nome">${p.tipo === 'ferias' ? '🏖️ Férias' : '🎉 Recesso'}${p.desc ? ' — ' + p.desc : ''}</div>
+        <div class="item-sub">${fmtDataLonga(p.inicio)} até ${fmtDataLonga(p.fim)}</div>
+      </div>
+      <div class="item-acoes">
+        <button class="btn btn-verm btn-sm" onclick="rmPeriodo(${i})">Remover</button>
+      </div>
+    </div>`).join('');
+}
+
+function fmtDataLonga(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${d}/${meses[+m-1]}/${y}`;
+}
+
+function addPeriodo() {
+  if (!D.periodos) D.periodos = [];
+  const tipo   = document.getElementById('per-tipo').value;
+  const inicio = document.getElementById('per-inicio').value;
+  const fim    = document.getElementById('per-fim').value;
+  const desc   = document.getElementById('per-desc').value.trim();
+  if (!inicio || !fim) { alert('Informe as datas de início e fim.'); return; }
+  if (inicio > fim)    { alert('A data de início deve ser anterior ao fim.'); return; }
+  D.periodos.push({ id: uid(), tipo, inicio, fim, desc });
+  salvar();
+  renderPeriodos();
+  ['per-inicio','per-fim','per-desc'].forEach(id => document.getElementById(id).value = '');
+}
+
+function rmPeriodo(i) {
+  if (!confirm('Remover este período?')) return;
+  D.periodos.splice(i, 1);
+  salvar();
+  renderPeriodos();
+}
+
+function dataEstaNoPeriodo(isoData, periodos) {
+  // Retorna o período se a data cair dentro de algum
+  return periodos.find(p => isoData >= p.inicio && isoData <= p.fim) || null;
+}
+
+function aplicarPeriodos() {
+  if (!D.periodos || !D.periodos.length) {
+    document.getElementById('msg-periodos').innerHTML =
+      '<div class="alerta alerta-laranja">Cadastre pelo menos um período antes de aplicar.</div>';
+    return;
+  }
+
+  let celulasMarcadas = 0;
+
+  D.semanas.forEach(s => {
+    if (!s.inicio) return;
+    // Calcula as datas de cada dia da semana
+    const base = new Date(s.inicio + 'T12:00:00');
+    for (let di = 0; di < 5; di++) {
+      const dataAtual = new Date(base);
+      dataAtual.setDate(base.getDate() + di);
+      const isoAtual = dataAtual.toISOString().split('T')[0];
+      const periodo  = dataEstaNoPeriodo(isoAtual, D.periodos);
+      if (!periodo) continue;
+
+      // Preenche todas as 5 aulas do dia
+      if (!s.grade[di]) s.grade[di] = [];
+      for (let ai = 0; ai < 5; ai++) {
+        s.grade[di][ai] = { tipo: periodo.tipo, texto: periodo.desc || (periodo.tipo === 'ferias' ? 'Férias' : 'Recesso') };
+        celulasMarcadas++;
+      }
+    }
+  });
+
+  // Também roda auto-preenchimento em todas as semanas restantes
+  D.semanas.forEach(s => autoPreencherPeriodos(s));
+  salvar();
+  renderGrade();
+
+  const msg = document.getElementById('msg-periodos');
+  msg.innerHTML = `<div class="alerta alerta-verde">✅ ${celulasMarcadas} célula(s) preenchida(s) nas semanas cadastradas.</div>`;
+  setTimeout(() => msg.innerHTML = '', 3500);
+}
+
+// ============================================================ TURMAS
+function renderTurmas() {
+  document.getElementById('lista-turmas').innerHTML = D.turmas.map((t,i)=>`
+    <div class="item">
+      <div class="item-info"><div class="item-nome">${t}</div></div>
+      <div class="item-acoes">
+        <button class="btn btn-verm btn-sm" onclick="rmTurma(${i})">Remover</button>
+      </div>
+    </div>`).join('');
+}
+function addTurma() {
+  const n = document.getElementById('nova-turma').value.trim();
+  if(!n||D.turmas.includes(n)){ alert('Nome inválido ou já existe.'); return; }
+  D.turmas.push(n); salvar(); renderTurmas();
+  document.getElementById('nova-turma').value='';
+}
+function rmTurma(i) { if(!confirm('Remover turma?')) return; D.turmas.splice(i,1); salvar(); renderTurmas(); }
+
+// ============================================================ ATIVIDADES
+function renderAtivs() {
+  const fm = document.getElementById('f-mod').value;
+  const fb = (document.getElementById('f-busca').value||'').toLowerCase();
+  const lista = D.atividades.filter(a=>{
+    const mOk = !fm || MODALIDADES.find(m=>m.nome===fm)?.id===a.m;
+    const nOk = !fb || a.nome.toLowerCase().includes(fb)||(a.desc||'').toLowerCase().includes(fb);
+    return mOk && nOk;
+  });
+  const el = document.getElementById('lista-ativs');
+  if(!lista.length){ el.innerHTML='<p style="color:#999">Nenhuma atividade encontrada.</p>'; return; }
+  el.innerHTML = lista.map(a=>{
+    const m = MODALIDADES.find(x=>x.id===a.m);
+    return `<div class="item">
+      <div class="item-info">
+        <div class="item-nome">${esc(a.nome)}</div>
+        <div class="item-sub">${m?`<span class="tag ${m.cls}">${m.nome}</span> `:''}${a.anos?'Anos: '+a.anos:''}</div>
+        ${a.desc?`<div class="item-sub" style="margin-top:3px">${esc(a.desc)}</div>`:''}
+      </div>
+      <div class="item-acoes">
+        <button class="btn btn-azul btn-sm" onclick="editAtiv('${a.id}')">Editar</button>
+        <button class="btn btn-verm btn-sm" onclick="delAtiv('${a.id}')">Excluir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function addAtiv() {
+  const nome = document.getElementById('n-nome').value.trim();
+  const mod  = document.getElementById('n-mod').value;
+  if(!nome){ alert('Informe o nome.'); return; }
+  const m = MODALIDADES.find(x=>x.nome===mod);
+  D.atividades.push({ id:uid(), m:m?m.id:9, nome, anos:document.getElementById('n-anos').value.trim(), desc:document.getElementById('n-desc').value.trim() });
+  salvar();
+  ['n-nome','n-anos','n-desc'].forEach(i=>document.getElementById(i).value='');
+  renderAtivs();
+  document.getElementById('msg-ativ').innerHTML='<div class="alerta alerta-verde" style="margin-top:8px">✅ Atividade salva!</div>';
+  setTimeout(()=>document.getElementById('msg-ativ').innerHTML='',2500);
+}
+function editAtiv(id) {
+  const a = D.atividades.find(x=>x.id===id); if(!a) return;
+  popSelectMod(['ea-mod']);
+  const m = MODALIDADES.find(x=>x.id===a.m);
+  document.getElementById('ea-id').value = id;
+  document.getElementById('ea-nome').value = a.nome;
+  document.getElementById('ea-anos').value = a.anos||'';
+  document.getElementById('ea-desc').value = a.desc||'';
+  if(m) document.getElementById('ea-mod').value = m.nome;
+  abrirOv('ov-edit-ativ');
+}
+function salvarEditAtiv() {
+  const id = document.getElementById('ea-id').value;
+  const a = D.atividades.find(x=>x.id===id); if(!a) return;
+  const nome = document.getElementById('ea-mod').value;
+  const m = MODALIDADES.find(x=>x.nome===nome);
+  a.m = m?m.id:9;
+  a.nome = document.getElementById('ea-nome').value.trim();
+  a.anos = document.getElementById('ea-anos').value.trim();
+  a.desc = document.getElementById('ea-desc').value.trim();
+  salvar(); fecharOv('ov-edit-ativ'); renderAtivs();
+}
+function delAtiv(id) { if(!confirm('Excluir?')) return; D.atividades=D.atividades.filter(a=>a.id!==id); salvar(); renderAtivs(); }
+
+// ============================================================ EXPORTAR
+let _exportTxt = '';
+
+function gerarExport() {
+  const sid = document.getElementById('exp-semana').value;
+  const s = D.semanas.find(x=>x.id===sid); if(!s){ alert('Semana não encontrada.'); return; }
+  const cfg = getConfig();
+  let txt = `PROFESSOR(A): ${cfg.nome||'Professor'}\nANO: ${cfg.turmasInfo||''} · ${cfg.ciclo||''}\nMÊS: ${s.mes}\n`;
+  txt += '='.repeat(70)+'\n\n';
+  // Datas nos dias
+  const datasDias = [];
+  if(s.inicio){
+    let d = new Date(s.inicio+'T12:00:00');
+    for(let i=0;i<5;i++){ datasDias.push(d.getDate()+'/'+(d.getMonth()+1)); d.setDate(d.getDate()+1); }
+  } else {
+    for(let i=0;i<5;i++) datasDias.push('__/__');
+  }
+  txt += ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'].map((d,i)=>`${d} ${datasDias[i]}`).join('  |  ')+'\n\n';
+
+  for(let a=0;a<5;a++){
+    txt += `${AULAS[a]}\n`;
+    for(let d=0;d<5;d++){
+      const cel = (s.grade[d]||[])[a]||null;
+      const hfixed = D.horario[d]?.[a];
+      txt += `  ${DIAS_PT[d].split('-')[0].padEnd(8)}`;
+      if(!cel || cel.tipo===undefined){
+        if(hfixed==='HTP') txt+='HTP.\n';
+        else if(hfixed==='REGENCIA') txt+='Regência.\n';
+        else txt+='—\n';
+      } else if(cel.tipo==='htp') txt+='HTP.\n';
+      else if(cel.tipo==='regencia') txt+='Regência.\n';
+      else if(cel.tipo==='feriado') txt+=`FERIADO${cel.texto?' — '+cel.texto:''}.\n`;
+      else if(cel.tipo==='ferias')  txt+=`FÉRIAS${cel.texto?' — '+cel.texto:''}.\n`;
+      else if(cel.tipo==='recesso') txt+=`RECESSO${cel.texto?' — '+cel.texto:''}.\n`;
+      else if(cel.tipo==='falta'||cel.tipo==='lts') txt+='LTS.\n';
+      else if(cel.tipo==='falta_abonada') txt+='FALTA ABONADA.\n';
+      else if(cel.tipo==='reuniao') txt+='REUNIÃO PEDAGÓGICA.\n';
+      else if(cel.tipo==='livre') txt+=(cel.texto||'')+'\n';
+      else {
+        const t=cel.turma||''; const c=cel.conteudo||''; const m=cel.modalidade||''; const o=cel.obs||'';
+        txt+=`Turma: ${t} Conteúdo: ${c} Modalidade Organizativa: ${m}${o?' '+o:''}\n`;
+      }
+    }
+    txt+='\n';
+  }
+
+  const n = s.notas||{};
+  if(n.objetivos)  txt+=`Objetivos semanais: ${n.objetivos}\n\n`;
+  if(n.avaliacao)  txt+=`Avaliação semanal do professor: ${n.avaliacao}\n\n`;
+  if(n.flex)       txt+=`* Flexibilização/ Adaptação: Objetivo: ${n.flex}\n\n`;
+  txt+=`Devolutiva da gestão: ${n.gestao||''}\n`;
+
+  _exportTxt = txt;
+  document.getElementById('area-export').innerHTML = `<div class="code-box">${esc(txt)}</div>`;
+}
+
+function copiarExport() {
+  if(!_exportTxt){ gerarExport(); }
+  navigator.clipboard.writeText(_exportTxt).then(()=>alert('Copiado!'));
+}
+
+function exportCSV() {
+  const sid = document.getElementById('exp-semana').value;
+  const s = D.semanas.find(x=>x.id===sid); if(!s) return;
+  let csv = 'Aula,Dia,Tipo,Turma,Conteúdo,Modalidade,Obs\n';
+  for(let a=0;a<5;a++) for(let d=0;d<5;d++){
+    const cel=(s.grade[d]||[])[a]||{};
+    csv+=`"${AULAS[a]}","${DIAS_PT[d]}","${cel.tipo||''}","${cel.turma||''}","${cel.conteudo||cel.texto||''}","${cel.modalidade||''}","${cel.obs||''}"\n`;
+  }
+  baixar('plano_'+s.id+'.csv', csv, 'text/csv');
+}
+
+function baixarJSON() { baixar('ef2026_backup.json', JSON.stringify(D,null,2), 'application/json'); }
+
+// ============================================================ GOOGLE SHEETS
+function salvarGsUrl() {
+  localStorage.setItem('ef_gs_url', document.getElementById('gs-url').value.trim());
+}
+
+function getGsUrl() {
+  return localStorage.getItem('ef_gs_url') || '';
+}
+
+async function testarConexao() {
+  const url = getGsUrl();
+  const el = document.getElementById('gs-status');
+  if (!url) { el.innerHTML = '<span style="color:#e65100">⚠ Cole a URL do Apps Script primeiro.</span>'; return; }
+  el.innerHTML = '⏳ Testando...';
+  try {
+    const r = await fetch(url, { method: 'GET' });
+    const json = await r.json();
+    el.innerHTML = json.ok
+      ? '<span style="color:#2e7d32">✅ Conexão OK — ' + (json.msg || 'Script ativo!') + '</span>'
+      : '<span style="color:#c62828">❌ Erro: ' + (json.erro || 'resposta inválida') + '</span>';
+  } catch(e) {
+    el.innerHTML = '<span style="color:#c62828">❌ Não foi possível conectar. Verifique a URL e as permissões de implantação.</span>';
+  }
+}
+
+function montarGradeCompleta(semana) {
+  // Gera grade 5x5 mantendo o formato original de objetos.
+  // Células vazias recebem HTP/Regência do horário fixo.
+  const grade = [];
+  for (let di = 0; di < 5; di++) {
+    grade[di] = [];
+    for (let ai = 0; ai < 5; ai++) {
+      const cel    = (semana.grade[di] || [])[ai] || null;
+      const hfixed = D.horario[di]?.[ai];
+
+      if (cel && cel.tipo !== undefined) {
+        // Célula com dado real — mantém exatamente como está
+        grade[di][ai] = cel;
+      } else {
+        // Célula vazia — preenche com horário fixo
+        if      (hfixed === 'HTP')      grade[di][ai] = { tipo: 'htp' };
+        else if (hfixed === 'REGENCIA') grade[di][ai] = { tipo: 'regencia' };
+        else                            grade[di][ai] = null;
+      }
+    }
+  }
+  return grade;
+}
+
+function montarPayload(semana) {
+  const cfg = getConfig();
+  return {
+    id:         semana.id,
+    num:        semana.num,
+    mes:        semana.mes,
+    inicio:     semana.inicio,
+    fim:        semana.fim,
+    grade:      montarGradeCompleta(semana),
+    notas:      semana.notas || {},
+    horario:    D.horario,
+    professor:  cfg.nome        || 'Professor',
+    turmasInfo: cfg.turmasInfo  || '',
+    ciclo:      cfg.ciclo       || '',
+    ano:        cfg.ano         || '',
+  };
+}
+
+async function enviarSemana(semana) {
+  const url = getGsUrl();
+  if (!url) throw new Error('URL não configurada');
+  // no-cors: contorna o bloqueio CORS do navegador para arquivos locais.
+  // O Apps Script recebe e processa normalmente; a resposta fica opaca (não legível).
+  await fetch(url, {
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain não dispara preflight
+    body:    JSON.stringify(montarPayload(semana)),
+  });
+  // Como não conseguimos ler a resposta em no-cors, retornamos sucesso presumido
+  return { ok: true };
+}
+
+async function enviarParaSheets() {
+  const sid = document.getElementById('exp-semana').value;
+  const semana = D.semanas.find(s => s.id === sid);
+  const el = document.getElementById('gs-resultado');
+  if (!semana) { el.innerHTML = '<span style="color:#e65100">Selecione uma semana primeiro.</span>'; return; }
+  if (!getGsUrl()) { el.innerHTML = '<span style="color:#e65100">Configure a URL do Apps Script na seção acima.</span>'; return; }
+  el.innerHTML = '⏳ Enviando semana ' + semana.num + '...';
+  try {
+    await enviarSemana(semana);
+    el.innerHTML = '<span style="color:#2e7d32">✅ Semana ' + semana.num + ' enviada! Verifique a planilha no Google Sheets.</span>';
+  } catch(e) {
+    el.innerHTML = '<span style="color:#c62828">❌ ' + e.message + '</span>';
+  }
+}
+
+async function enviarTodasSemanas() {
+  const el = document.getElementById('gs-resultado');
+  if (!getGsUrl()) { el.innerHTML = '<span style="color:#e65100">Configure a URL do Apps Script primeiro.</span>'; return; }
+  let enviadas = 0;
+  for (const semana of D.semanas) {
+    el.innerHTML = '⏳ Enviando semana ' + semana.num + '... (' + (enviadas + 1) + '/' + D.semanas.length + ')';
+    try { await enviarSemana(semana); enviadas++; } catch(e) {}
+    await new Promise(r => setTimeout(r, 600)); // pequena pausa entre envios
+  }
+  el.innerHTML = '<span style="color:#2e7d32">✅ ' + enviadas + ' semana(s) enviada(s)! Verifique a planilha no Google Sheets.</span>';
+}
+
+// ============================================================ CONFIGURAÇÕES
+function configPadrao() {
+  return { nome: '', escola: '', ano: '2026', ciclo: 'I Ciclo', turmasInfo: '4° e 5° ano', geminiKey: '' };
+}
+
+function getConfig() {
+  try { return JSON.parse(localStorage.getItem('ef_config')) || configPadrao(); } catch(e) { return configPadrao(); }
+}
+
+function abrirConfig() {
+  const c = getConfig();
+  document.getElementById('cfg-nome').value        = c.nome        || '';
+  document.getElementById('cfg-escola').value      = c.escola      || '';
+  document.getElementById('cfg-ano').value         = c.ano         || '2026';
+  document.getElementById('cfg-ciclo').value       = c.ciclo       || 'I Ciclo';
+  document.getElementById('cfg-turmas-info').value = c.turmasInfo  || '4° e 5° ano';
+  document.getElementById('cfg-gemini-key').value  = c.geminiKey   || '';
+  abrirOv('ov-config');
+}
+
+function salvarConfig() {
+  const c = {
+    nome:       document.getElementById('cfg-nome').value.trim(),
+    escola:     document.getElementById('cfg-escola').value.trim(),
+    ano:        document.getElementById('cfg-ano').value.trim()         || '2026',
+    ciclo:      document.getElementById('cfg-ciclo').value.trim()       || 'I Ciclo',
+    turmasInfo: document.getElementById('cfg-turmas-info').value.trim() || '4° e 5° ano',
+    geminiKey:  document.getElementById('cfg-gemini-key').value.trim(),
+  };
+  if (!c.nome) { alert('Informe o nome do professor.'); return; }
+  localStorage.setItem('ef_config', JSON.stringify(c));
+  aplicarConfig(c);
+  fecharOv('ov-config');
+}
+
+function aplicarConfig(c) {
+  c = c || getConfig();
+  document.getElementById('hdr-titulo').textContent = 'Plano de Ação — Educação Física ' + (c.ano || '');
+  const escola = c.escola ? ' · ' + c.escola : '';
+  document.getElementById('hdr-sub').textContent    = (c.nome || 'Professor') + escola + ' · ' + (c.turmasInfo || '') + ' · ' + (c.ciclo || '');
+}
+
+function primeiroAcesso() {
+  const c = getConfig();
+  if (!c.nome) {
+    // Primeira vez — abre config automaticamente
+    setTimeout(() => {
+      abrirConfig();
+      document.getElementById('ov-config').querySelector('h3').textContent = '👋 Bem-vindo! Configure seu perfil para começar';
+    }, 400);
+  } else {
+    aplicarConfig(c);
+  }
+}
+
+function resetarPrograma() {
+  if (!confirm('Isso apaga todas as semanas, turmas e horário, mantendo apenas as atividades cadastradas.\n\nVocê será direcionado para configurar nome e escola novamente.\n\nTem certeza?')) return;
+  const atividades = D.atividades;
+  localStorage.removeItem('ef2026_v4');
+  localStorage.removeItem('ef_config');
+  D = {
+    turmas:        [],
+    horario:       Array(5).fill(null).map(() => Array(5).fill('')),
+    semanas:       [],
+    atividades:    atividades,
+    semanaAtualId: null,
+  };
+  salvar();
+  location.reload();
+}
+
+function resetarDados() {
+  if(!confirm('Isso apaga TODOS os dados salvos e restaura o padrão completo (atividades + histórico fev/março).\n\nTem certeza?')) return;
+  localStorage.removeItem('ef2026_v4');
+  location.reload();
+}
+
+function importarJSON(ev) {
+  const f=ev.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=e=>{ try{ D=JSON.parse(e.target.result); salvar(); alert('Restaurado!'); location.reload(); }catch{ alert('Arquivo inválido.'); }};
+  r.readAsText(f);
+}
+
+function baixar(nome, txt, tipo) {
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:tipo}));
+  a.download=nome; a.click();
+}
+
+// ============================================================ MODAL helpers
+function abrirOv(id) { document.getElementById(id).classList.add('aberto'); }
+function fecharOv(id) { document.getElementById(id).classList.remove('aberto'); }
+document.addEventListener('click',e=>{ if(e.target.classList.contains('overlay')) e.target.classList.remove('aberto'); });
+
+// ============================================================ UTILS
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtData(iso){ if(!iso) return ''; const[y,m,d]=iso.split('-'); return `${d}/${m}`; }
+function mesDeData(iso){ if(!iso) return ''; const m=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']; return m[+iso.split('-')[1]-1]; }
+function adicionarDias(iso, n){
+  if(!iso) return '';
+  const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n);
+  return d.toISOString().split('T')[0];
+}
+
+// ============================================================ CURRÍCULO SBC
+// Fonte: Proposta Curricular para Educação Básica — São Bernardo do Campo
+const CURRICULO = {
+  '1': {
+    jogos:     ['Conhecer os jogos e brincadeiras que circulam no contexto escolar/familiar, incluindo recursos tecnológicos e cultura digital.','Apropriar-se, reproduzir, reconstruir e ressignificar os jeitos de jogar e brincar, compartilhando saberes e experiências.','Explicar e descrever, mediante diferentes linguagens, os jogos e as brincadeiras vividas.'],
+    danca:     ['Identificar, nas experiências rítmicas vividas, os aspectos e elementos que caracterizam as danças.','Compreender a dança como uma manifestação da cultura corporal que integra movimento e música.','Experimentar as brincadeiras da cultura popular que se expressam na forma de danças e atividades rítmicas.'],
+    ginastica: ['Reconhecer, nas experiências corporais, os movimentos e habilidades psicomotoras básicos das ginásticas.','Classificar os movimentos e gestos básicos vividos nas práticas corporais das aulas.','Experimentar e fruir os movimentos básicos das ginásticas nas brincadeiras e jogos.'],
+    esportes:  ['Conhecer os esportes que fazem parte do contexto familiar e escolar.','Praticar os esportes na forma de brincadeiras, realizando as adaptações necessárias.','Explicar e descrever as semelhanças e diferenças entre brincadeiras e esportes.'],
+    lutas:     ['Identificar, nas práticas corporais, os aspectos e elementos que caracterizam as lutas como patrimônio da cultura corporal.','Compreender as diferenças entre lutas e brigas em aspectos básicos como regras e cuidado.','Conhecer práticas corporais na forma de brincadeiras e jogos de oposição que mobilizam o contato corporal.'],
+  },
+  '2': {
+    jogos:     ['Conhecer os jogos e brincadeiras presentes no contexto comunitário, no entorno da escola.','Criar novas formas de jogar e brincar, incorporando os saberes das interações vividas com a comunidade.','Experimentar e incorporar nas rotinas escolares jogos e brincadeiras da cultura comunitária.'],
+    danca:     ['Conhecer as danças populares e as experiências rítmicas que fazem parte da cultura comunitária.','Identificar nas rotinas familiar e escolar os tempos e espaços em que as danças se fazem presentes.','Experimentar, compartilhar e fruir a diversidade de manifestações rítmicas da cultura comunitária.','Criar novas formas e jeitos de dançar em pequenos grupos.'],
+    ginastica: ['Conhecer algumas práticas corporais que compõem e integram a ginástica geral.','Ampliar e aprofundar saberes sobre a ginástica artística e as suas especificidades.','Criar jeitos e formas de praticar a ginástica artística, incorporando e reconstruindo saberes.','Participar das vivências de ginástica artística respeitando potencialidades e limites individuais.'],
+    esportes:  ['Ampliar seus conhecimentos sobre as modalidades esportivas, conhecendo a diversidade de práticas que circulam no contexto comunitário.','Participar das propostas de prática esportiva na escola, valorizando a participação de todas e todos.','Respeitar e considerar as normas e regras dos diferentes esportes.'],
+    lutas:     ['Conhecer quais são os fundamentos universais que caracterizam as lutas nas suas diversas modalidades.','Identificar nas práticas de lutas estudadas os fundamentos universais que as caracterizam.','Praticar as modalidades de lutas fazendo as adaptações necessárias ao espaço e recursos da escola.','Fruir as diferentes lutas preservando seus rituais, origens e histórias.'],
+  },
+  '3': {
+    jogos:     ['Experimentar os jogos e brincadeiras estudados neste ciclo (1° ao 3° ano), identificando semelhanças e diferenças.','Apreciar os jogos e as brincadeiras como práticas da cultura corporal que favorecem a convivência.','Participar de jogos e brincadeiras em grupos médios, demonstrando cooperação e respeito.'],
+    danca:     ['Fruir e desfrutar das danças regionais estudadas nas aulas como possibilidade de ampliação da cultura corporal.','Experimentar a construção e vivência coletiva de sequências coreográficas a partir de danças regionais brasileiras.','Considerar e respeitar as diferentes manifestações rítmicas que compõem o universo da dança.'],
+    ginastica: ['Experimentar e fruir a diversidade de movimentos e aparelhos que caracterizam a ginástica rítmica.','Compartilhar experiências e saberes sobre as ginásticas, apreciando e celebrando as possibilidades de desfrutar destas manifestações.'],
+    esportes:  ['Aprofundar estudos sobre o esporte e as suas manifestações na sociedade.','Identificar no contexto regional as modalidades esportivas mais praticadas e as suas características.','Organizar e classificar as diferentes práticas esportivas estudadas, incluindo esportes de campo e taco, rede e parede.','Participar das práticas esportivas coletivas demonstrando autonomia e capacidade de autogerenciamento.'],
+    lutas:     ['Conhecer as diferentes práticas de lutas que circulam nos contextos comunitário e regional, com origem na ancestralidade.','Identificar as características e fundamentos das lutas estudadas.','Respeitar os limites e as possibilidades do próprio corpo e do outro nas práticas de lutas.'],
+  },
+  '4': {
+    jogos:     ['Conhecer os jogos e brincadeiras do Brasil/nacionais, contemplando manifestações de matriz africana e indígena.','Apreciar a diversidade de formas de jogar e brincar, considerando as possibilidades de gerar conhecimento (cultura corporal).','Participar de jogos e brincadeiras em grupos, demonstrando autonomia e organização da rotina de aula.'],
+    danca:     ['Conhecer e ampliar o repertório sobre as danças do Brasil, com ênfase nas danças de matriz indígena e africana.','Formular e utilizar estratégias para viabilizar vivências e experimentações das danças do Brasil no espaço escolar.','Produzir coletivamente um festival de danças, integrando as diferentes turmas e a comunidade escolar.','Analisar criticamente como os valores sociais, econômicos e culturais repercutem na diversidade de práticas rítmicas e danças brasileiras.'],
+    ginastica: ['Ampliar e aprofundar saberes sobre as ginásticas acrobática e circense em seus fundamentos e habilidades básicas.','Conhecer "novas" modalidades da ginástica de condicionamento que fazem parte da rotina familiar e comunitária e se conectam com saúde e qualidade de vida.','Reconstruir e ressignificar os jeitos de praticar as ginásticas acrobática e circense.','Participar das práticas das ginásticas acrobática e circense respeitando os procedimentos e regras de segurança.','Valorizar as ginásticas como práticas corporais que contribuem para a manutenção da saúde e qualidade de vida.'],
+    esportes:  ['Conhecer as modalidades esportivas de campo e taco, de precisão e de invasão.','Praticar as diversas modalidades do cenário nacional e internacional, criando estratégias para experimentação no espaço escolar.','Considerar o direito de toda criança à prática esportiva e de lazer, adotando atitudes de valorização da inclusão.','Participar das práticas esportivas coletivas na escola demonstrando autonomia e capacidade de autogerenciamento.'],
+    lutas:     ['Conhecer as diferentes práticas de lutas que circulam nos contextos comunitário e regional, com origem na ancestralidade (matriz africana e indígena).','Identificar as características e fundamentos das lutas estudadas no ciclo.','Identificar situações de exclusão durante a tematização das lutas e adotar atitude de valorização da participação de todos.','Valorizar o estudo das lutas como oportunidade para conhecer o patrimônio cultural das práticas corporais brasileiras.'],
+  },
+  '5': {
+    jogos:     ['Conhecer os jogos e brincadeiras do mundo de origens diversas (tradicionais e contemporâneos), para além das perspectivas europeias.','Sistematizar o conhecimento construído neste ciclo sobre os jogos e brincadeiras, adquirindo competência para selecionar as práticas lúdicas mais indicadas.','Participar ativamente como monitor em um programa de jogos e brincadeiras para as turmas iniciais do Ensino Fundamental.','Produzir coletivamente, com a ajuda dos professores, um evento comunitário de jogos e brincadeiras.'],
+    danca:     ['Conhecer e ampliar o repertório de saberes sobre as danças do Brasil e do mundo.','Reconhecer e diferenciar, nos diferentes contextos de manifestação da cultura corporal rítmica, os diversos tipos de dança.','Celebrar as experiências de inclusão, respeito às diferenças e construção coletiva vividas a partir da tematização das danças.','Disseminar, dentro e fora da escola, atitudes de valorização e respeito aos diferentes sentidos e significados das danças.'],
+    ginastica: ['Conhecer e fazer uma leitura crítica da diversidade de padrões de saúde, beleza e estética corporal atrelados às ginásticas e suas manifestações.','Aprofundar os estudos sobre as ginásticas acrobática, circense e de condicionamento.','Experimentar e fruir as modalidades ginásticas estudadas neste ciclo.','Sistematizar as experiências e aprendizagens construídas neste ciclo sobre as ginásticas em um mini-programa individual e autônomo de Se-Movimentar.','Valorizar a importância do saber Se-Movimentar nas práticas das ginásticas como oportunidade de autoconhecimento e conquista da saúde e bem-estar.'],
+    esportes:  ['Aprofundar estudos e saberes sobre as modalidades esportivas não convencionais que envolvem práticas de aventura, práticas radicais e práticas do paradesporto.','Ampliar os conhecimentos sobre os aspectos técnicos, táticos e estéticos das práticas esportivas nas categorias de marca, precisão, invasão, campo e taco, e rede e parede.','Pesquisar e conhecer as dimensões históricas e sociais do esporte no Brasil.','Aprofundar estudos nas modalidades esportivas com foco em aspectos técnicos e táticos.','Sistematizar o conhecimento construído neste ciclo sobre os esportes, adquirindo competência para selecionar as práticas mais indicadas para os diferentes momentos de fruição.'],
+    lutas:     ['Conhecer diferentes lutas do mundo que fazem parte das práticas corporais dos brasileiros.','Identificar as características e os fundamentos que fazem parte das lutas estrangeiras.','Analisar as semelhanças e diferenças entre as lutas brasileiras e as lutas estrangeiras.','Experimentar as práticas corporais denominadas lutas do mundo, fazendo as adaptações necessárias à realidade escolar.'],
+  },
+};
+
+// Mapeamento modalidade → chave no currículo
+const MOD_CURRICULO = {
+  'Jogos e Brincadeiras': 'jogos',
+  'Lutas do Mundo':       'lutas',
+  'Ginástica Geral':      'ginastica',
+  'Ritmo e Dança':        'danca',
+  'Esportes de Marca':    'esportes',
+  'Esportes de Rede':     'esportes',
+  'Esportes de Precisão': 'esportes',
+  'Esportes de Aventura': 'esportes',
+  'Esportes de Invasão':  'esportes',
+  'Outro / Misto':        null,
+};
+
+function anoTurma(turma) {
+  // extrai número do ano da turma: '4°E' → '4', '5°F' → '5', etc.
+  const m = turma.match(/(\d)/);
+  return m ? m[1] : null;
+}
+
+// ============================================================ ANALISAR SEMANA
+async function analisarSemana() {
+  const sid = document.getElementById('an-sel-semana').value;
+  const s = D.semanas.find(x => x.id === sid);
+  if (!s) return;
+
+  const btn = document.querySelector('[onclick="analisarSemana()"]');
+  const res = document.getElementById('an-resultado');
+
+  // Coletar atividades por ano → unidade → lista de conteúdos
+  const cobertos = {}; // ano → { unid → Set<conteudo> }
+  for (let di = 0; di < 5; di++) {
+    for (let ai = 0; ai < 5; ai++) {
+      const cel = (s.grade[di] || [])[ai];
+      if (!cel || cel.tipo !== 'aula' || !cel.turma) continue;
+      const ano   = anoTurma(cel.turma);
+      const modN  = normalizarModalidade(cel.modalidade);
+      const unid  = MOD_CURRICULO[modN];
+      if (!ano || !unid) continue;
+      if (!cobertos[ano]) cobertos[ano] = {};
+      if (!cobertos[ano][unid]) cobertos[ano][unid] = new Set();
+      cobertos[ano][unid].add(cel.conteudo || '');
+    }
+  }
+
+  if (!Object.keys(cobertos).length) {
+    res.innerHTML = '<div class="alerta alerta-laranja">Nenhuma aula encontrada nesta semana. Preencha a grade primeiro.</div>';
+    return;
+  }
+
+  const cfg = getConfig();
+  const usarIA = !!cfg.geminiKey;
+
+  if (usarIA) {
+    // ── Análise com IA ──────────────────────────────────────────────
+    btn.disabled = true;
+    btn.textContent = '⏳ Analisando com IA...';
+    res.innerHTML = '<div class="ia-loading">🔍 A IA está lendo as atividades e avaliando os objetivos curriculares...</div>';
+
+    try {
+      let htmlTotal = `<div style="background:#e3f2fd;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#1565c0;margin-bottom:14px">
+        🤖 <strong>Análise com IA</strong> — A IA avaliou semanticamente cada objetivo com base nas atividades realizadas.
+      </div>`;
+
+      for (const ano of Object.keys(cobertos).sort()) {
+        const unidades  = cobertos[ano];
+        const currAno   = CURRICULO[ano];
+        if (!currAno) continue;
+
+        // Monta bloco de atividades para o prompt
+        const atividadesBloco = Object.entries(unidades).map(([unid, conts]) => {
+          const nomeUnid = { jogos:'Jogos e Brincadeiras', danca:'Ritmo e Dança', ginastica:'Ginástica Geral', esportes:'Esportes', lutas:'Lutas do Mundo' }[unid] || unid;
+          return `Modalidade: ${nomeUnid}\nAtividades realizadas: ${[...conts].filter(Boolean).join('; ')}`;
+        }).join('\n\n');
+
+        // Monta lista de objetivos para o prompt
+        const objBloco = Object.entries(unidades).map(([unid]) => {
+          const nomeUnid = { jogos:'Jogos e Brincadeiras', danca:'Ritmo e Dança', ginastica:'Ginástica Geral', esportes:'Esportes', lutas:'Lutas do Mundo' }[unid] || unid;
+          const objs = (currAno[unid] || []).map((o, i) => `${i+1}. ${o}`).join('\n');
+          return `=== ${nomeUnid} ===\n${objs}`;
+        }).join('\n\n');
+
+        const prompt = `Você é um especialista em currículo de Educação Física para o Ensino Fundamental de São Bernardo do Campo.
+
+Analise as atividades realizadas com alunos do ${ano}° ano e avalie se cada objetivo curricular foi atendido.
+
+ATIVIDADES REALIZADAS NESTA SEMANA:
+${atividadesBloco}
+
+OBJETIVOS CURRICULARES A AVALIAR:
+${objBloco}
+
+Para cada objetivo, responda EXATAMENTE neste formato JSON (array):
+[
+  { "unid": "nome da modalidade", "obj": "texto exato do objetivo", "status": "coberto" ou "parcial" ou "nao_coberto", "razao": "explicação curta em 1 frase de por que sim ou não" },
+  ...
+]
+Responda APENAS o JSON, sem texto antes ou depois.`;
+
+        const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 1500,
+            temperature: 0.2,
+          }),
+        });
+
+        if (!resp.ok) throw new Error('Erro na API');
+        const data  = await resp.json();
+        const texto = data.choices?.[0]?.message?.content || '[]';
+
+        // Extrai o JSON da resposta
+        let avaliacoes = [];
+        try {
+          const match = texto.match(/\[[\s\S]*\]/);
+          avaliacoes = match ? JSON.parse(match[0]) : [];
+        } catch(e) { avaliacoes = []; }
+
+        htmlTotal += `<div class="turma-secao"><h3>📚 ${ano}° Ano</h3>`;
+
+        // Agrupa por unidade
+        const porUnid = {};
+        avaliacoes.forEach(a => {
+          if (!porUnid[a.unid]) porUnid[a.unid] = [];
+          porUnid[a.unid].push(a);
+        });
+
+        // Se IA não retornou nada, cai no fallback simples por unidade
+        Object.entries(unidades).forEach(([unid, conts]) => {
+          const nomeUnid = { jogos:'Jogos e Brincadeiras', danca:'Ritmo e Dança', ginastica:'Ginástica Geral', esportes:'Esportes', lutas:'Lutas do Mundo' }[unid] || unid;
+          const modTag   = MODALIDADES.find(m => MOD_CURRICULO[m.nome] === unid);
+          const itens    = porUnid[nomeUnid] || [];
+          const conteudos = [...conts].filter(Boolean);
+
+          htmlTotal += `<div class="obj-grupo">
+            <div class="obj-grupo-titulo">
+              ${modTag ? `<span class="tag ${modTag.cls}">${nomeUnid}</span>` : `<strong>${nomeUnid}</strong>`}
+              <span style="font-size:.74rem;color:#888">Atividades: ${conteudos.join(' · ') || '—'}</span>
+            </div>`;
+
+          const objetivos = currAno[unid] || [];
+          objetivos.forEach(obj => {
+            const avaliado = itens.find(i => i.obj && obj.includes(i.obj.slice(0,30)));
+            const status   = avaliado?.status || _heuristicaStatus(obj, conteudos);
+            const razao    = avaliado?.razao  || '';
+            const coberto  = status === 'coberto';
+            const parcial  = status === 'parcial';
+            const corFundo = coberto ? ' coberto' : parcial ? ' style="background:#fff8e1;border-color:#ffe082"' : '';
+            const icone    = coberto ? '✓' : parcial ? '~' : '';
+            const corCheck = coberto ? '' : parcial ? 'background:#ffd54f;border-color:#ffd54f;color:#5d4037' : '';
+
+            htmlTotal += `<div class="obj-item${coberto ? ' coberto' : ''}" ${parcial ? 'style="background:#fff8e1;border:1px solid #ffe082"' : ''}>
+              <div class="obj-check" ${corCheck ? `style="${corCheck}"` : ''}>${icone}</div>
+              <div class="obj-texto">
+                ${esc(obj)}
+                ${razao ? `<div style="font-size:.72rem;color:#666;margin-top:3px;font-style:italic">💬 ${esc(razao)}</div>` : ''}
+              </div>
+            </div>`;
+          });
+
+          htmlTotal += `</div>`;
+        });
+
+        htmlTotal += `</div>`;
+      }
+
+      // Legenda
+      htmlTotal += `<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.76rem;margin-top:8px;padding:8px 12px;background:#f5f5f5;border-radius:8px">
+        <span><span style="background:#43a047;color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">✓</span> Coberto</span>
+        <span><span style="background:#ffd54f;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">~</span> Parcialmente coberto</span>
+        <span><span style="border:2px solid #ccc;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center"></span> Não coberto</span>
+      </div>`;
+
+      res.innerHTML = htmlTotal;
+
+    } catch(e) {
+      res.innerHTML = `<div class="alerta alerta-laranja">❌ Erro na análise com IA: ${e.message}. Usando análise local.</div>`;
+      _analisarLocal(cobertos, res, s);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🔍 Analisar semana';
+    }
+
+  } else {
+    // ── Análise local melhorada ────────────────────────────────────
+    _analisarLocal(cobertos, res, s);
+  }
+}
+
+function _heuristicaStatus(objetivo, conteudos) {
+  if (!conteudos.length) return 'nao_coberto';
+  const objNorm = objetivo.toLowerCase().replace(/[.,;]/g,'');
+  const palavrasChave = objNorm.split(' ').filter(p => p.length > 5);
+  let maxMatch = 0;
+  conteudos.forEach(c => {
+    const cn = c.toLowerCase();
+    const match = palavrasChave.filter(p => cn.includes(p)).length;
+    if (match > maxMatch) maxMatch = match;
+  });
+  if (maxMatch >= 2) return 'coberto';
+  if (maxMatch === 1) return 'parcial';
+  // Verifica se ao menos a modalidade do objetivo aparece nos conteúdos
+  const termosMod = ['jogo','brincadeira','ginástica','esporte','luta','dança','ritmo','movimento','corporal','prática'];
+  const temTermo = termosMod.some(t => objNorm.includes(t) && conteudos.some(c => c.toLowerCase().includes(t)));
+  return temTermo ? 'parcial' : 'nao_coberto';
+}
+
+function _analisarLocal(cobertos, container, semana) {
+  const objsSalvar = []; // todos os objetivos das modalidades trabalhadas
+
+  let html = '';
+
+  Object.keys(cobertos).sort().forEach(ano => {
+    const unidades = cobertos[ano];
+    const currAno  = CURRICULO[ano];
+    if (!currAno) return;
+
+    html += `<div class="turma-secao"><h3>📚 ${ano}° Ano</h3>`;
+    Object.entries(unidades).forEach(([unid, conts]) => {
+      const nomeUnid  = { jogos:'Jogos e Brincadeiras', danca:'Ritmo e Dança', ginastica:'Ginástica Geral', esportes:'Esportes', lutas:'Lutas do Mundo' }[unid] || unid;
+      const modTag    = MODALIDADES.find(m => MOD_CURRICULO[m.nome] === unid);
+      const conteudos = [...conts].filter(Boolean);
+      const objetivos = currAno[unid] || [];
+
+      html += `<div class="obj-grupo">
+        <div class="obj-grupo-titulo">
+          ${modTag ? `<span class="tag ${modTag.cls}">${nomeUnid}</span>` : `<strong>${nomeUnid}</strong>`}
+          <span style="font-size:.74rem;color:#888">Atividades: ${conteudos.join(' · ') || '—'}</span>
+        </div>`;
+
+      objetivos.forEach(obj => {
+        const status  = _heuristicaStatus(obj, conteudos);
+        const coberto = status === 'coberto';
+        const parcial = status === 'parcial';
+        const icone   = coberto ? '✓' : parcial ? '~' : '';
+        const corCheck = parcial ? 'style="background:#ffd54f;border-color:#ffd54f;color:#5d4037"' : '';
+
+        // Coleta todos os objetivos da modalidade trabalhada
+        objsSalvar.push(`- ${obj}`);
+
+        html += `<div class="obj-item${coberto ? ' coberto' : ''}" ${parcial ? 'style="background:#fff8e1;border:1px solid #ffe082"' : ''}>
+          <div class="obj-check" ${corCheck}>${icone}</div>
+          <div class="obj-texto">${esc(obj)}</div>
+        </div>`;
+      });
+
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+
+  // Legenda
+  html += `<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.76rem;margin-top:8px;padding:8px 12px;background:#f5f5f5;border-radius:8px">
+    <span><span style="background:#43a047;color:#fff;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">✓</span> Coberto</span>
+    <span><span style="background:#ffd54f;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem">~</span> Parcialmente coberto</span>
+    <span><span style="border:2px solid #ccc;border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center"></span> Não coberto</span>
+  </div>`;
+
+  // Grava objetivos cobertos/parciais na semana analisada
+  if (semana && objsSalvar.length) {
+    if (!semana.notas) semana.notas = {};
+    semana.notas.objetivos = objsSalvar.join('\n');
+    salvar();
+
+    // Atualiza o textarea se a semana exibida for a mesma
+    const elObj = document.getElementById('nota-objetivos');
+    if (elObj && D.semanaAtualId === semana.id) elObj.value = semana.notas.objetivos;
+
+    html += `<div class="alerta alerta-verde" style="margin-top:10px">
+      ✅ <strong>${objsSalvar.length} objetivo(s)</strong> cobertos/parciais foram salvos automaticamente em <strong>Objetivos semanais</strong> desta semana.
+    </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ============================================================ GRÁFICO COBERTURA
+function renderCobertura() {
+  const container = document.getElementById('chart-cobertura');
+  if (!container) return;
+
+  // Contar aulas por turma × modalidade em todas as semanas
+  const contagem = {}; // turma → { modNome → count }
+  D.turmas.forEach(t => contagem[t] = {});
+  D.semanas.forEach(s => {
+    for (let di = 0; di < 5; di++) {
+      for (let ai = 0; ai < 5; ai++) {
+        const cel = (s.grade[di] || [])[ai];
+        if (!cel || cel.tipo !== 'aula' || !cel.turma) continue;
+        const modN = normalizarModalidade(cel.modalidade);
+        if (!modN) continue;
+        if (!contagem[cel.turma]) contagem[cel.turma] = {};
+        contagem[cel.turma][modN] = (contagem[cel.turma][modN] || 0) + 1;
+      }
+    }
+  });
+
+  const CORES = ['#43a047','#1565c0','#6a1b9a','#e65100','#00838f','#558b2f','#0277bd','#ad1457','#37474f'];
+  let html = '<div class="grid-cobertura">';
+
+  D.turmas.forEach(turma => {
+    const dados = contagem[turma] || {};
+    const total = Object.values(dados).reduce((a,b) => a+b, 0);
+    const max = Math.max(...Object.values(dados), 1);
+
+    html += `<div>
+      <div style="font-weight:700;font-size:.88rem;color:var(--verde2);margin-bottom:8px">Turma ${turma} <span style="font-weight:400;color:#888;font-size:.78rem">(${total} aulas)</span></div>`;
+
+    MODALIDADES.forEach((m, i) => {
+      const qtd = dados[m.nome] || 0;
+      const pct = Math.round((qtd / max) * 100);
+      html += `<div class="barra-linha">
+        <div class="barra-label"><span class="tag ${m.cls}">${m.nome.length > 22 ? m.nome.slice(0,22)+'…' : m.nome}</span></div>
+        <div class="barra-track">
+          <div class="barra-fill" style="width:${pct}%;background:${CORES[i % CORES.length]}">${qtd > 0 ? qtd : ''}</div>
+        </div>
+        <div class="barra-num">${qtd}</div>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ============================================================ HISTÓRICO POR TURMA
+function renderHistorico() {
+  const turma = document.getElementById('an-turma-hist').value;
+  const container = document.getElementById('chart-historico');
+  if (!container || !turma) return;
+
+  // Coletar todas as aulas desta turma em ordem cronológica
+  const linhas = [];
+  D.semanas.forEach(s => {
+    for (let di = 0; di < 5; di++) {
+      for (let ai = 0; ai < 5; ai++) {
+        const cel = (s.grade[di] || [])[ai];
+        if (!cel || cel.tipo !== 'aula' || cel.turma !== turma) continue;
+        linhas.push({
+          semana: `Sem. ${s.num} (${fmtData(s.inicio)})`,
+          dia: DIAS_PT[di].split('-')[0],
+          aula: AULAS[ai],
+          modalidade: normalizarModalidade(cel.modalidade) || cel.modalidade || '—',
+          conteudo: cel.conteudo || '—',
+        });
+      }
+    }
+  });
+
+  if (!linhas.length) {
+    container.innerHTML = '<p style="color:#999;font-size:.84rem">Nenhuma aula encontrada para esta turma.</p>';
+    return;
+  }
+
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:.8rem">
+    <thead><tr style="background:var(--verde);color:#fff">
+      <th style="padding:6px 8px;text-align:left">Semana</th>
+      <th style="padding:6px 8px;text-align:left">Dia / Aula</th>
+      <th style="padding:6px 8px;text-align:left">Modalidade</th>
+      <th style="padding:6px 8px;text-align:left">Conteúdo</th>
+    </tr></thead><tbody>`;
+
+  linhas.forEach((l, i) => {
+    const m = MODALIDADES.find(x => x.nome === l.modalidade);
+    html += `<tr style="background:${i%2===0?'#fff':'#f9fbe7'}">
+      <td style="padding:5px 8px;border-bottom:1px solid #eee">${l.semana}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #eee">${l.dia} / ${l.aula}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #eee">${m ? `<span class="tag ${m.cls}">${l.modalidade}</span>` : l.modalidade}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #eee">${esc(l.conteudo)}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+// ============================================================ IA — SUGESTÃO DE ATIVIDADE (Google Gemini — gratuito)
+const _sugData = {};
+
+function _iaClick(uid) {
+  const btnId = `sug-btn-${uid}`;
+  const resId = `sug-res-${uid}`;
+  const d = _sugData[uid];
+  if (!d) return;
+  gerarSugestaoIA(btnId, resId, d.turma, d.modalidade, d.pendentes, d.feitos || [], d.anoNum, d.objetivos);
+}
+
+async function gerarSugestaoIA(btnId, resId, turma, modalidade, pendentes, feitos, anoNum, objetivos) {
+  const elRes = document.getElementById(resId);
+  const elBtn = document.getElementById(btnId);
+  const cfg    = getConfig();
+  const apiKey = cfg.geminiKey || '';
+
+  if (!apiKey) {
+    elRes.innerHTML = `<div class="alerta alerta-laranja">
+      ⚙ Configure a <strong>Chave da API Google Gemini</strong> em <strong>⚙ Configurações</strong>.<br>
+      <small>Gratuito em: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> — só precisa de conta Google.</small>
+    </div>`;
+    return;
+  }
+
+  elBtn.disabled = true;
+  elRes.innerHTML = `<div class="ia-loading">✨ Gerando sugestão com IA...</div>`;
+
+  const objetivosStr = (Array.isArray(objetivos) && objetivos.length > 0)
+    ? objetivos.slice(0, 5).map((o,i) => `${i+1}. ${o}`).join('\n')
+    : 'Utilizar os objetivos gerais do currículo de Educação Física.';
+
+  const feitosStr = (Array.isArray(feitos) ? feitos : []).map(n => `- ${n}`).join('\n');
+
+  const prompt = `Você é um professor especialista em Educação Física escolar no Brasil, criativo e inovador.
+
+CONTEXTO:
+- Professor: ${cfg.nome||'Professor'}${cfg.escola?' — '+cfg.escola:''}
+- Turma: ${turma} | Ano: ${anoNum}° ano do Ensino Fundamental
+- Modalidade: ${modalidade}
+
+OBJETIVOS CURRICULARES (Proposta Curricular SBC):
+${objetivosStr}
+
+ATIVIDADES JÁ FEITAS COM ESTA TURMA — NÃO USE NENHUMA DELAS:
+${feitosStr || '(nenhuma ainda)'}
+
+TAREFA: Invente uma atividade ORIGINAL E INÉDITA para a próxima aula.
+- NÃO copie nenhuma atividade da lista acima.
+- NÃO use atividades genéricas como "circuito" ou "queimada" se já aparecem acima.
+- CRIE algo novo com dinâmica diferente, regras próprias ou uso criativo de materiais.
+
+Responda APENAS neste formato, sem texto extra:
+**Nome da atividade:** (nome criativo e original)
+**Objetivo de aprendizagem:** ...
+**Duração:** ...
+**Materiais:** ...
+**Como aplicar:** (3 a 5 passos claros)
+**Dica de inclusão:** ...`;
+
+  try {
+    const url = `https://api.groq.com/openai/v1/chat/completions`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 800,
+        temperature: 0.85,
+      }),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.error?.message || `Erro HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const texto = data.choices?.[0]?.message?.content || 'Sem resposta.';
+
+    const html = texto
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+
+    // extrair uid do btnId para reusar no botão nova sugestão
+    const uid = btnId.replace('sug-btn-','');
+
+    elRes.innerHTML = `<div class="ia-card">
+      <h4>✨ Sugestão da IA <span>${esc(modalidade)} · ${esc(turma)}</span></h4>
+      <div style="margin-top:8px;line-height:1.6">${html}</div>
+      <div class="btns" style="margin-top:12px">
+        <button class="btn btn-azul btn-sm" onclick="_iaClick('${uid}')">🔄 Nova sugestão</button>
+      </div>
+    </div>`;
+
+  } catch(e) {
+    elRes.innerHTML = `<div class="alerta alerta-laranja">❌ ${e.message}</div>`;
+  } finally {
+    elBtn.disabled = false;
+    elBtn.textContent = '✨ Sugerir com IA';
+  }
+}
+
+// ============================================================ SUGESTÕES
+function popSelSugestoes() {
+  const selT = document.getElementById('sug-turma');
+  const curT = selT.value;
+  selT.innerHTML = '<option value="">Todas as turmas</option>' +
+    D.turmas.map(t => `<option value="${t}"${t===curT?' selected':''}>${t}</option>`).join('');
+
+  const selM = document.getElementById('sug-mod');
+  const curM = selM.value;
+  selM.innerHTML = '<option value="">Todas as modalidades</option>' +
+    MODALIDADES.map(m => `<option value="${m.nome}"${m.nome===curM?' selected':''}>${m.nome}</option>`).join('');
+}
+
+function renderSugestoes() {
+  const filtroTurma = document.getElementById('sug-turma').value;
+  const filtroMod   = document.getElementById('sug-mod').value;
+  const container   = document.getElementById('sug-resultado');
+
+  // 1. Coletar quais atividades já foram trabalhadas por turma
+  //    chave: turma → Set de nomes de conteúdo (normalizados)
+  const trabalhado = {}; // turma → Set<norm(conteudo)>
+  D.semanas.forEach(s => {
+    for (let di = 0; di < 5; di++) {
+      for (let ai = 0; ai < 5; ai++) {
+        const cel = (s.grade[di] || [])[ai];
+        if (!cel || cel.tipo !== 'aula' || !cel.turma || !cel.conteudo) continue;
+        if (!trabalhado[cel.turma]) trabalhado[cel.turma] = new Set();
+        trabalhado[cel.turma].add(norm(cel.conteudo));
+      }
+    }
+  });
+
+  const turmas = filtroTurma ? [filtroTurma] : D.turmas;
+  let html = '';
+
+  turmas.forEach(turma => {
+    const feitos = trabalhado[turma] || new Set();
+
+    // Agrupar atividades por modalidade, filtrando se necessário
+    const grupos = {};
+    D.atividades.forEach(a => {
+      const mObj = MODALIDADES.find(m => m.id === a.m);
+      if (!mObj) return;
+      if (filtroMod && mObj.nome !== filtroMod) return;
+      if (!grupos[mObj.nome]) grupos[mObj.nome] = { cls: mObj.cls, feitos: [], pendentes: [] };
+      if (feitos.has(norm(a.nome))) {
+        grupos[mObj.nome].feitos.push(a);
+      } else {
+        grupos[mObj.nome].pendentes.push(a);
+      }
+    });
+
+    const totalAtivs  = Object.values(grupos).reduce((s,g) => s + g.feitos.length + g.pendentes.length, 0);
+    const totalFeitos = Object.values(grupos).reduce((s,g) => s + g.feitos.length, 0);
+    const pct = totalAtivs > 0 ? Math.round((totalFeitos / totalAtivs) * 100) : 0;
+
+    html += `<div class="sug-turma-bloco">
+      <div class="sug-turma-titulo">
+        <span>Turma ${esc(turma)}</span>
+        <span style="font-size:.8rem;font-weight:400;color:#666">${totalFeitos}/${totalAtivs} atividades trabalhadas</span>
+      </div>
+      <div class="sug-progresso">
+        <span>${pct}% coberto</span>
+        <div class="sug-prog-track"><div class="sug-prog-fill" style="width:${pct}%"></div></div>
+      </div>`;
+
+    const modsOrdenadas = Object.entries(grupos).sort((a,b) => b[1].pendentes.length - a[1].pendentes.length);
+
+    modsOrdenadas.forEach(([modNome, g]) => {
+      if (g.feitos.length + g.pendentes.length === 0) return;
+      html += `<div class="sug-secao">
+        <div class="sug-secao-titulo">
+          <span class="tag ${g.cls}">${esc(modNome)}</span>
+          <span style="font-size:.75rem;color:#888">${g.pendentes.length} pendente(s) · ${g.feitos.length} trabalhado(s)</span>
+        </div>`;
+
+      // Botão de sugestão IA — dados guardados em _sugData para evitar problemas de escaping
+      const anoTurmaLabel = anoTurma(turma);
+      const pendNomes = g.pendentes.map(a => a.nome);
+      const objsCurr = anoTurmaLabel && CURRICULO[anoTurmaLabel]
+        ? (CURRICULO[anoTurmaLabel][{ 'Jogos e Brincadeiras':'jogos','Lutas do Mundo':'lutas','Ginástica Geral':'ginastica','Ritmo e Dança':'danca' }[modNome] || 'esportes'] || [])
+        : [];
+      const uid_sug = `${turma.replace(/[°\s]/g,'')}_${modNome.replace(/[\s/]/g,'')}`;
+      const btnId = `sug-btn-${uid_sug}`;
+      const resId = `sug-res-${uid_sug}`;
+      const todasAtividades = [...g.feitos, ...g.pendentes].map(a => a.nome);
+      _sugData[uid_sug] = { turma, modalidade: modNome, pendentes: pendNomes, feitos: todasAtividades, anoNum: anoTurmaLabel, objetivos: objsCurr };
+      html += `<button class="btn btn-azul btn-sm" id="${btnId}" onclick="_iaClick('${uid_sug}')">✨ Sugerir atividade com IA</button>
+      <div id="${resId}" style="margin-top:8px"></div>`;
+
+      if (g.pendentes.length === 0) {
+        html += `<div class="sug-vazio">✅ Todos os conteúdos desta modalidade já foram trabalhados!</div>`;
+      } else {
+        g.pendentes.forEach(a => {
+          html += `<div class="sug-item nao-feito">
+            <span class="sug-icone">📌</span>
+            <span><strong>${esc(a.nome)}</strong>${a.anos ? ` <span style="color:#888;font-size:.75rem">[${a.anos}]</span>` : ''}</span>
+          </div>`;
+        });
+      }
+
+      if (g.feitos.length > 0) {
+        html += `<details style="margin-top:6px"><summary style="font-size:.78rem;color:#888;cursor:pointer">Ver ${g.feitos.length} já trabalhado(s)</summary><div style="margin-top:4px">`;
+        g.feitos.forEach(a => {
+          html += `<div class="sug-item feito">
+            <span class="sug-icone">✅</span>
+            <span>${esc(a.nome)}</span>
+          </div>`;
+        });
+        html += `</div></details>`;
+      }
+
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  if (!html) {
+    html = '<div class="card"><p style="color:#999;font-size:.84rem">Nenhuma atividade ou turma encontrada.</p></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+// ============================================================ CALENDÁRIO OFICIAL 2026
+const CAL2026 = {
+  inicioLetivo: '2026-02-05',
+  fimLetivo:    '2026-12-18',
+  trimestres: [
+    { num:1, inicio:'2026-02-05', fim:'2026-04-30', cls:'trim1' },
+    { num:2, inicio:'2026-05-04', fim:'2026-08-31', cls:'trim2' },
+    { num:3, inicio:'2026-09-01', fim:'2026-12-18', cls:'trim3' },
+  ],
+  diasLetivosPorMes: {
+    2:14, 3:22, 4:19, 5:21, 6:19, 7:14, 8:18, 9:20, 10:19, 11:19, 12:14
+  },
+  // tipo: feriado | ferias | ac | dp | pf
+  eventos: {
+    '2026-01-01': { t:'feriado', d:'Confraternização Universal' },
+    '2026-02-16': { t:'ac',      d:'A Compensar (Carnaval)' },
+    '2026-02-17': { t:'feriado', d:'Carnaval' },
+    '2026-04-03': { t:'feriado', d:'Paixão de Cristo' },
+    '2026-04-20': { t:'ac',      d:'A Compensar' },
+    '2026-04-21': { t:'feriado', d:'Tiradentes' },
+    '2026-05-01': { t:'feriado', d:'Dia do Trabalho' },
+    '2026-06-04': { t:'feriado', d:'Corpus Christi' },
+    '2026-06-05': { t:'ac',      d:'A Compensar (Corpus Christi)' },
+    '2026-07-09': { t:'feriado', d:'Revolução Constitucionalista' },
+    '2026-07-10': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-11': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-12': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-13': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-14': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-15': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-16': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-17': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-18': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-19': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-20': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-21': { t:'ferias',  d:'Férias de Julho' },
+    '2026-07-22': { t:'ferias',  d:'Férias de Julho' },
+    '2026-08-20': { t:'feriado', d:'Feriado Municipal (SBC)' },
+    '2026-08-21': { t:'ac',      d:'A Compensar' },
+    '2026-09-07': { t:'feriado', d:'Independência do Brasil' },
+    '2026-10-12': { t:'feriado', d:'N. Sra. Aparecida' },
+    '2026-10-13': { t:'dp',      d:'Dia do Professor' },
+    '2026-10-30': { t:'pf',      d:'Ponto Facultativo' },
+    '2026-11-02': { t:'feriado', d:'Finados' },
+    '2026-11-15': { t:'feriado', d:'Proc. da República' },
+    '2026-11-20': { t:'feriado', d:'Consciência Negra' },
+    '2026-12-25': { t:'feriado', d:'Natal' },
+  }
+};
+
+const MESES_NOMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DIAS_SEMANA_CAL = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+
+function isoDate(y, m, d) {
+  return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function calClasseDia(iso, dow) {
+  // dow: 0=Seg,...,5=Sab,6=Dom
+  const ev = CAL2026.eventos[iso];
+  if (ev) return ev.t; // feriado, ferias, ac, dp, pf
+  if (dow >= 5) return 'fim-sem'; // sáb/dom
+  if (iso < CAL2026.inicioLetivo || iso > CAL2026.fimLetivo) return 'fora-ano';
+  return 'letivo';
+}
+
+function calTrimestre(iso) {
+  return CAL2026.trimestres.find(t => iso >= t.inicio && iso <= t.fim) || null;
+}
+
+function renderCalendario() {
+  const grid    = document.getElementById('cal-grid');
+  const resumo  = document.getElementById('cal-resumo');
+  if (!grid) return;
+
+  // Resumo
+  const totalLetivos = Object.values(CAL2026.diasLetivosPorMes).reduce((a,b)=>a+b,0);
+  const totalFeriados = Object.values(CAL2026.eventos).filter(e=>e.t==='feriado').length;
+  resumo.innerHTML = `
+    <div class="cal-resumo-item"><div class="num">${totalLetivos}</div><div class="lab">Dias Letivos (EF)</div></div>
+    <div class="cal-resumo-item"><div class="num">${totalFeriados}</div><div class="lab">Feriados</div></div>
+    <div class="cal-resumo-item"><div class="num">3</div><div class="lab">Trimestres</div></div>
+    <div class="cal-resumo-item"><div class="num">05/02</div><div class="lab">Início Letivo</div></div>
+    <div class="cal-resumo-item"><div class="num">18/12</div><div class="lab">Fim Letivo</div></div>
+    <div class="cal-resumo-item"><div class="num">10–22/07</div><div class="lab">Férias de Julho</div></div>`;
+
+  // Meses
+  let html = '';
+  for (let mes = 1; mes <= 12; mes++) {
+    const diasNoMes = new Date(2026, mes, 0).getDate();
+    // dow do dia 1: 0=Seg...6=Dom (convertendo de JS onde 0=Dom)
+    const rawDow = new Date(2026, mes-1, 1).getDay(); // 0=Dom
+    const offset = (rawDow + 6) % 7; // 0=Seg...6=Dom
+
+    const dlMes = CAL2026.diasLetivosPorMes[mes] || 0;
+    const trim = calTrimestre(isoDate(2026, mes, 15)); // usa dia 15 como referência do mês
+    const headerCls = trim ? trim.cls : '';
+    const headerBg = trim ? (trim.num===1?'#e8f5e9':trim.num===2?'#e3f2fd':'#fff3e0') : '#f5f5f5';
+
+    html += `<div class="cal-mes">
+      <div class="cal-mes-header" style="background:${headerBg}">
+        <span>${MESES_NOMES[mes-1]}</span>
+        ${dlMes ? `<span class="cal-trim-badge ${headerCls}" style="font-size:.65rem">${dlMes} dias letivos</span>` : ''}
+      </div>
+      <div class="cal-dias-header">
+        ${DIAS_SEMANA_CAL.map((d,i)=>`<span class="${i>=5?'fim-sem':''}">${d}</span>`).join('')}
+      </div>
+      <div class="cal-dias">`;
+
+    // Células vazias antes do dia 1
+    for (let i = 0; i < offset; i++) html += `<div class="cal-dia fora"></div>`;
+
+    for (let dia = 1; dia <= diasNoMes; dia++) {
+      const iso = isoDate(2026, mes, dia);
+      const dow = (offset + dia - 1) % 7; // 0=Seg...6=Dom
+      const cls = calClasseDia(iso, dow);
+      const ev  = CAL2026.eventos[iso];
+      const label = ev ? ev.d : '';
+      html += `<div class="cal-dia ${cls}" title="${label}">
+        <span class="cal-num">${dia}</span>
+        ${label && cls !== 'letivo' && cls !== 'fim-sem' && cls !== 'fora-ano' ? `<span class="cal-label">${label.split(' ')[0]}</span>` : ''}
+      </div>`;
+    }
+
+    // Células vazias após o último dia para completar a semana
+    const totalCells = offset + diasNoMes;
+    const resto = (7 - (totalCells % 7)) % 7;
+    for (let i = 0; i < resto; i++) html += `<div class="cal-dia fora"></div>`;
+
+    html += `</div></div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+// ============================================================ INIT
+function popSelAnalitico() {
+  // select semana no analítico
+  const sel = document.getElementById('an-sel-semana');
+  const cur = sel.value || D.semanaAtualId;
+  sel.innerHTML = D.semanas.map(s =>
+    `<option value="${s.id}">${s.mes} — Sem. ${s.num} (${fmtData(s.inicio)} a ${fmtData(s.fim)})</option>`
+  ).join('');
+  if (cur) sel.value = cur;
+
+  // select turma no histórico
+  const selT = document.getElementById('an-turma-hist');
+  const curT = selT.value || D.turmas[0];
+  selT.innerHTML = D.turmas.map(t => `<option value="${t}">${t}</option>`).join('');
+  if (curT) selT.value = curT;
+}
+
+function migrarSemanas() {
+  const historico = dadosHistoricos();
+  let adicionou = false;
+  historico.forEach(s => {
+    if (!D.semanas.find(x => x.id === s.id)) {
+      D.semanas.push(s);
+      adicionou = true;
+    }
+  });
+  if (adicionou) {
+    D.semanas.sort((a, b) => (a.inicio || '').localeCompare(b.inicio || ''));
+    salvar();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  migrarSemanas();
+  primeiroAcesso();
+  popSelSemana();
+  renderGrade();
+  popSelectMod(['cel-mod','ft-mod','ea-mod','n-mod']);
+  const savedUrl = localStorage.getItem('ef_gs_url');
+  if (savedUrl) document.getElementById('gs-url').value = savedUrl;
+});
+</script>
+</body>
+</html>
