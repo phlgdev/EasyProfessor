@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Regras do Firestore para o EasyProfessor.
+// Este e o bloqueio REAL de acesso — a lista de e-mails no HTML
+// serve so para a experiencia de uso e pode ser burlada.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Lista de contas liberadas. Mantenha igual a EMAILS_PERMITIDOS
+    // do index.html.
+    function emailLiberado() {
+      return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email in [
+               'phlg12an@gmail.com'
+             ];
+    }
+
+    // Cada usuario le e escreve apenas o proprio documento.
+    match /usuarios/{uid} {
+      allow read, write: if emailLiberado() && request.auth.uid == uid;
+    }
+
+    // Todo o resto e negado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
