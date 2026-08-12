@@ -1,24 +1,27 @@
 rules_version = '2';
 
 // Regras do Firestore para o EasyProfessor.
-// Este e o bloqueio REAL de acesso — a lista de e-mails no HTML
-// serve so para a experiencia de uso e pode ser burlada.
+// Modelo: acesso aberto — qualquer conta Google entra e recebe um
+// espaco proprio, isolado dos demais.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Lista de contas liberadas. Mantenha igual a EMAILS_PERMITIDOS
-    // do index.html.
-    function emailLiberado() {
-      return request.auth != null
-          && request.auth.token.email_verified == true
-          && request.auth.token.email in [
-               'phlg12an@gmail.com'
-             ];
+    // ── Dados de cada professor ──────────────────────────────────
+    // Cada um le e escreve somente o documento cujo ID e o proprio
+    // uid. Ninguem alcanca o documento de outra pessoa.
+    match /usuarios/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Cada usuario le e escreve apenas o proprio documento.
-    match /usuarios/{uid} {
-      allow read, write: if emailLiberado() && request.auth.uid == uid;
+    // ── Isencao de anuncios ──────────────────────────────────────
+    // Um documento por e-mail isento, criado por voce no console.
+    // Cada usuario so consegue ler o documento do proprio e-mail:
+    // isso evita listar quem e isento. Escrita bloqueada para todos
+    // (so pelo console do Firebase), senao qualquer um se isentava.
+    match /isentos/{email} {
+      allow read:  if request.auth != null
+                   && request.auth.token.email.lower() == email.lower();
+      allow write: if false;
     }
 
     // Todo o resto e negado.

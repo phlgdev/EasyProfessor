@@ -268,6 +268,13 @@ table.grade td.td-aula {
 #login-msg { margin-top: 18px; font-size: .85rem; min-height: 20px; }
 #login-msg.erro { color: #c62828; }
 #login-msg.info { color: #777; }
+/* Faixas de anuncio: so aparecem quando um bloco e injetado */
+.faixa-anuncio { display: none; max-width: 1260px; margin: 12px auto; padding: 0 18px; min-height: 90px; }
+.faixa-anuncio::before {
+  content: 'Publicidade'; display: block; text-align: center;
+  font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+  color: #999; margin-bottom: 4px;
+}
 /* Indicador de sincronizacao */
 #sync-badge { font-size: .72rem; opacity: .85; white-space: nowrap; }
 #hdr-user { display: flex; align-items: center; gap: 8px; font-size: .78rem; opacity: .9; }
@@ -318,6 +325,8 @@ table.grade td.td-aula {
   <button onclick="ir('analitico',this)">📊 Analítico</button>
   <button onclick="ir('exportar',this)">📤 Exportar</button>
 </nav>
+
+<div class="faixa-anuncio" data-slot="topo"></div>
 
 <main>
 
@@ -608,6 +617,8 @@ table.grade td.td-aula {
 </div>
 
 </main>
+
+<div class="faixa-anuncio" data-slot="rodape"></div>
 
 <!-- MODAL: Configurações do professor -->
 <div class="overlay" id="ov-config">
@@ -3407,12 +3418,9 @@ const FIREBASE_CONFIG = {
   appId:             "1:700359742684:web:ad15de2f1ca6d2ef099019"
 };
 
-// Somente estes e-mails podem entrar. A checagem aqui e so de
-// experiencia; o bloqueio real esta nas regras do Firestore.
-const EMAILS_PERMITIDOS = [
-  "phlg12an@gmail.com"
-];
-
+// Acesso aberto: qualquer conta Google entra e recebe seu proprio
+// espaco isolado. O isolamento real vem das regras do Firestore,
+// que so liberam o documento cujo id e igual ao uid de quem pediu.
 const CONFIG_PENDENTE = FIREBASE_CONFIG.apiKey === "COLE_AQUI";
 
 let auth = null, db = null, usuarioAtual = null;
@@ -3482,15 +3490,6 @@ async function aoMudarLogin(user) {
     return;
   }
 
-  const email = (user.email || '').toLowerCase();
-  const liberado = EMAILS_PERMITIDOS.map(e => e.toLowerCase()).includes(email);
-  if (!liberado) {
-    msgLogin('A conta ' + email + ' nao tem acesso a este plano.', 'erro');
-    await auth.signOut();
-    btn.disabled = false;
-    return;
-  }
-
   usuarioAtual = user;
   msgLogin('Carregando seus dados…', 'info');
   try {
@@ -3505,11 +3504,72 @@ async function aoMudarLogin(user) {
   const foto = document.getElementById('hdr-user-foto');
   if (user.photoURL) { foto.src = user.photoURL; foto.style.display = ''; }
   else foto.style.display = 'none';
-  document.getElementById('hdr-user-nome').textContent = user.displayName || email;
+  document.getElementById('hdr-user-nome').textContent = user.displayName || user.email;
   document.getElementById('hdr-user').style.display = 'flex';
+
+  await definirAnuncios(user);
 
   bootApp();
   document.getElementById('login-gate').style.display = 'none';
+}
+
+/* ── Isencao de anuncios ────────────────────────────────────────
+   Por padrao todo mundo ve anuncios. Quem tiver um documento na
+   colecao "isentos" com o proprio e-mail como ID nao ve.
+   Para liberar alguem: Firestore > colecao "isentos" > adicionar
+   documento cujo ID e o e-mail da pessoa (o conteudo nao importa).
+   As regras deixam cada um ler apenas o proprio documento, entao
+   ninguem consegue listar quem esta isento — nem se cadastrar.   */
+let semAnuncios = false;
+
+async function definirAnuncios(user) {
+  semAnuncios = false;
+  try {
+    const email = (user.email || '').toLowerCase();
+    const snap = await db.collection('isentos').doc(email).get();
+    semAnuncios = snap.exists;
+  } catch (e) {
+    // Sem permissao ou offline: mantem os anuncios (padrao seguro).
+    semAnuncios = false;
+  }
+  document.body.classList.toggle('com-anuncios', !semAnuncios);
+  if (!semAnuncios) iniciarAnuncios();
+}
+
+/* ── Anuncios (Google AdSense) ──────────────────────────────────
+   Preencha ADSENSE_ID depois que a conta do AdSense for aprovada,
+   no formato "ca-pub-0000000000000000", e SLOTS com os ids de
+   cada bloco criado no painel. Enquanto estiver vazio nenhum
+   script de anuncio e carregado.                                */
+const ADSENSE_ID = "";
+const SLOTS = { topo: "", rodape: "" };
+
+let anunciosIniciados = false;
+
+function iniciarAnuncios() {
+  if (anunciosIniciados || !ADSENSE_ID) return;
+  anunciosIniciados = true;
+
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + ADSENSE_ID;
+  s.crossOrigin = 'anonymous';
+  document.head.appendChild(s);
+
+  document.querySelectorAll('.faixa-anuncio').forEach(box => {
+    const slot = SLOTS[box.dataset.slot];
+    if (!slot) return;
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', ADSENSE_ID);
+    ins.setAttribute('data-ad-slot', slot);
+    ins.setAttribute('data-ad-format', 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
+    box.appendChild(ins);
+    box.style.display = 'block';
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  });
 }
 
 // ── Leitura / escrita do documento do usuario ───────────────────
