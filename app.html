@@ -133,6 +133,20 @@ textarea { resize: vertical; min-height: 58px; }
 .m9 { background:#ede7f6; color:#311b92; } /* Outro */
 
 /* Grade */
+/* Conectar planilha */
+.passo-conectar {
+  background: var(--verde-bg); border: 1px solid #CFE3EF;
+  border-radius: var(--radius); padding: 18px;
+}
+.passo-conectar > p { font-size: .88rem; color: var(--texto); margin-bottom: 14px; }
+.aviso-permissao { font-size: .76rem; color: var(--texto-suave); margin-top: 12px; }
+.config-avancada { margin-top: 16px; }
+.config-avancada summary {
+  cursor: pointer; font-size: .82rem; color: var(--texto-suave);
+  font-weight: 600; padding: 6px 0;
+}
+.config-avancada summary:hover { color: var(--verde2); }
+
 .estado-vazio { text-align: center; padding: 44px 24px; }
 .estado-vazio img { width: 96px; margin: 0 auto 18px; display: block; opacity: .95; }
 .estado-vazio h3 { font-size: 1.15rem; color: var(--verde); margin-bottom: 8px; }
@@ -604,32 +618,49 @@ table.grade td.td-aula {
   <div class="card">
     <div class="card-title">🟢 Enviar para Google Sheets</div>
     <div id="gs-config">
-      <p style="font-size:.82rem;color:#666;margin-bottom:10px">
-        Cole abaixo a URL do Apps Script instalado na sua planilha.
-        <a href="#" onclick="document.getElementById('gs-instrucoes').style.display=document.getElementById('gs-instrucoes').style.display==='none'?'block':'none';return false" style="color:var(--azul)">Ver instruções</a>
-      </p>
-      <div id="gs-instrucoes" style="display:none;background:#e3f2fd;border-radius:8px;padding:12px;font-size:.8rem;margin-bottom:10px;line-height:1.7">
-        <strong>Como instalar (uma única vez):</strong><br>
-        1. Abra a planilha no Google Sheets<br>
-        2. Menu: <strong>Extensões → Apps Script</strong><br>
-        3. Apague o conteúdo existente e cole o código do arquivo <code>PlanoEF_AppScript.gs</code> (está na mesma pasta do programa)<br>
-        4. Salve (Ctrl+S)<br>
-        5. Clique em <strong>Implantar → Nova implantação</strong><br>
-        6. Tipo: <em>Aplicativo da Web</em> · Executar como: <em>Eu mesmo</em> · Acesso: <em>Qualquer pessoa</em><br>
-        7. Clique em <strong>Implantar</strong>, autorize e copie a URL<br>
-        8. Cole a URL abaixo e clique em Salvar
-      </div>
-      <div class="row" style="align-items:flex-end">
-        <div style="flex:3"><label>URL do Apps Script</label>
-          <input type="text" id="gs-url" placeholder="https://script.google.com/macros/s/..." oninput="salvarGsUrl()">
+      <div class="passo-conectar">
+        <p><b>Conecte sua planilha em um clique.</b>
+          Cole o link da sua planilha do Google Sheets e o EasyProfessor
+          instala sozinho o complemento necessário dentro dela.</p>
+        <div class="row" style="align-items:flex-end">
+          <div style="flex:3"><label>Link da sua planilha</label>
+            <input type="text" id="planilha-url" placeholder="https://docs.google.com/spreadsheets/d/..." oninput="salvarPlanilhaUrl()">
+          </div>
+          <div style="flex:0 0 auto">
+            <button class="btn btn-verde" id="btn-instalar" onclick="instalarScriptNaPlanilha()">
+              ⚡ Instalar na planilha
+            </button>
+          </div>
         </div>
-        <div><button class="btn btn-azul btn-sm" onclick="testarConexao()">Testar conexão</button></div>
+        <div id="inst-status" style="font-size:.82rem;margin-top:10px;line-height:1.6"></div>
+        <p class="aviso-permissao">
+          Ao instalar, o Google vai pedir permissão para o EasyProfessor criar
+          o complemento na planilha que você indicou. Nenhum outro arquivo do
+          seu Drive é acessado.
+        </p>
       </div>
-      <div class="row">
-        <div><label>Link da sua planilha (opcional)</label>
-          <input type="text" id="planilha-url" placeholder="https://docs.google.com/spreadsheets/d/..." oninput="salvarPlanilhaUrl()">
+
+      <details class="config-avancada">
+        <summary>Já tenho o script instalado (configuração manual)</summary>
+        <div class="row" style="align-items:flex-end;margin-top:12px">
+          <div style="flex:3"><label>URL do Apps Script</label>
+            <input type="text" id="gs-url" placeholder="https://script.google.com/macros/s/..." oninput="salvarGsUrl()">
+          </div>
+          <div><button class="btn btn-cinza btn-sm" onclick="testarConexao()">Testar conexão</button></div>
         </div>
-      </div>
+        <div id="gs-instrucoes" style="background:var(--verde-bg);border-radius:8px;padding:12px;font-size:.8rem;margin-top:10px;line-height:1.7">
+          <strong>Instalação manual, se preferir:</strong><br>
+          1. Abra a planilha no Google Sheets<br>
+          2. Menu: <strong>Extensões → Apps Script</strong><br>
+          3. Apague o conteúdo e cole o código de
+             <a href="script-planilha.gs" target="_blank" rel="noopener">script-planilha.gs</a><br>
+          4. Salve (Ctrl+S)<br>
+          5. <strong>Implantar → Nova implantação</strong><br>
+          6. Tipo: <em>Aplicativo da Web</em> · Executar como: <em>Eu mesmo</em> · Acesso: <em>Qualquer pessoa</em><br>
+          7. <strong>Implantar</strong>, autorize e copie a URL<br>
+          8. Cole a URL acima
+        </div>
+      </details>
       <div id="gs-status" style="font-size:.8rem;margin-top:6px"></div>
     </div>
     <div class="btns" style="margin-top:14px">
@@ -2461,6 +2492,162 @@ function exportCSV() {
 function baixarJSON() { baixar('ef2026_backup.json', JSON.stringify(D,null,2), 'application/json'); }
 
 // ============================================================ GOOGLE SHEETS
+/* ═══════════════════════════════════════════════════════════════
+   Instalacao automatica do Apps Script na planilha do usuario.
+
+   Fluxo: pede a permissao do Google na hora (nao no login), cria um
+   projeto de script vinculado a planilha, envia o codigo, publica
+   como aplicativo web e guarda a URL — os mesmos passos que antes
+   eram feitos a mao.
+   ═══════════════════════════════════════════════════════════════ */
+
+const MANIFESTO_SCRIPT = {
+  timeZone: 'America/Sao_Paulo',
+  exceptionLogging: 'STACKDRIVER',
+  runtimeVersion: 'V8',
+  webapp: { access: 'ANYONE_ANONYMOUS', executeAs: 'USER_DEPLOYING' }
+};
+
+function idDaPlanilha(url) {
+  const m = String(url || '').match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  return m ? m[1] : null;
+}
+
+function statusInstalacao(texto, tipo) {
+  const el = document.getElementById('inst-status');
+  if (!el) return;
+  el.innerHTML = texto;
+  el.style.color = tipo === 'erro' ? '#C0392B'
+                 : tipo === 'ok'   ? '#2E7CB0' : '#5B6B79';
+}
+
+// Pede as permissoes extras so quando forem necessarias.
+async function obterTokenDoScript() {
+  const guardado = sessionStorage.getItem('ef_token_google');
+  if (guardado) return guardado;
+  const r = await auth.currentUser.reauthenticateWithPopup(provedorGoogle(true));
+  guardarToken(r);
+  if (!tokenGoogle) throw new Error('O Google nao devolveu a autorizacao.');
+  return tokenGoogle;
+}
+
+async function chamarApiScript(caminho, opcoes, token) {
+  const r = await fetch('https://script.googleapis.com/v1/' + caminho, {
+    ...opcoes,
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      ...(opcoes.headers || {})
+    }
+  });
+  const corpo = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const msg = (corpo.error && corpo.error.message) || ('HTTP ' + r.status);
+    const err = new Error(msg);
+    err.status = r.status;
+    throw err;
+  }
+  return corpo;
+}
+
+async function instalarScriptNaPlanilha() {
+  const url = document.getElementById('planilha-url').value.trim();
+  const idPlanilha = idDaPlanilha(url);
+  if (!idPlanilha) {
+    statusInstalacao('Cole o link completo da sua planilha do Google Sheets.', 'erro');
+    return;
+  }
+
+  const botao = document.getElementById('btn-instalar');
+  botao.disabled = true;
+
+  try {
+    statusInstalacao('Pedindo autorização ao Google…');
+    const token = await obterTokenDoScript();
+
+    statusInstalacao('Buscando o código do script…');
+    const fonte = await fetch('script-planilha.gs').then(r => r.text());
+
+    statusInstalacao('Criando o script dentro da sua planilha…');
+    const projeto = await chamarApiScript('projects', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: 'EasyProfessor — Plano de Ação',
+        parentId: idPlanilha
+      })
+    }, token);
+
+    statusInstalacao('Enviando o código…');
+    await chamarApiScript('projects/' + projeto.scriptId + '/content', {
+      method: 'PUT',
+      body: JSON.stringify({
+        files: [
+          { name: 'Codigo',     type: 'SERVER_JS', source: fonte },
+          { name: 'appsscript', type: 'JSON',      source: JSON.stringify(MANIFESTO_SCRIPT, null, 2) }
+        ]
+      })
+    }, token);
+
+    statusInstalacao('Publicando…');
+    const versao = await chamarApiScript('projects/' + projeto.scriptId + '/versions', {
+      method: 'POST',
+      body: JSON.stringify({ description: 'Instalado pelo EasyProfessor' })
+    }, token);
+
+    const implantacao = await chamarApiScript('projects/' + projeto.scriptId + '/deployments', {
+      method: 'POST',
+      body: JSON.stringify({
+        versionNumber: versao.versionNumber,
+        manifestFileName: 'appsscript',
+        description: 'EasyProfessor'
+      })
+    }, token);
+
+    const entrada = (implantacao.entryPoints || [])
+      .find(e => e.entryPointType === 'WEB_APP' && e.webApp && e.webApp.url);
+    const enderecoWeb = entrada
+      ? entrada.webApp.url
+      : 'https://script.google.com/macros/s/' + implantacao.deploymentId + '/exec';
+
+    localStorage.setItem('ef_gs_url', enderecoWeb);
+    localStorage.setItem('ef_script_id', projeto.scriptId);
+    document.getElementById('gs-url').value = enderecoWeb;
+    aplicarPlanilhaUrl();
+
+    statusInstalacao(
+      '✅ Script instalado na sua planilha. '
+      + 'Na primeira exportação o Google vai pedir sua autorização — é normal, '
+      + 'aceite e a exportação passa a funcionar sozinha.', 'ok');
+
+  } catch (e) {
+    console.error('Falha ao instalar o script:', e);
+    const msg = String(e.message || '');
+
+    if (/Apps Script API/i.test(msg) || /has not enabled/i.test(msg)) {
+      // Exigencia do Google: cada conta precisa ligar esse interruptor.
+      statusInstalacao(
+        'Falta ligar a API do Apps Script na sua conta Google — o Google exige '
+        + 'isso uma única vez, por conta.<br><br>'
+        + '1. Abra <a href="https://script.google.com/home/usersettings" target="_blank" rel="noopener">'
+        + 'script.google.com/home/usersettings</a><br>'
+        + '2. Ligue a chave <b>API Google Apps Script</b><br>'
+        + '3. Volte aqui e clique em Instalar de novo', 'erro');
+    } else if (e.status === 403) {
+      statusInstalacao('O Google recusou o acesso: ' + msg
+        + '<br>Confira se você é o dono da planilha e se autorizou as permissões.', 'erro');
+    } else if (e.status === 404) {
+      statusInstalacao('Planilha não encontrada. Confira se o link está correto '
+        + 'e se a planilha pertence à conta com que você entrou.', 'erro');
+    } else if (e.code === 'auth/popup-blocked') {
+      statusInstalacao('O navegador bloqueou a janela de autorização do Google.', 'erro');
+    } else {
+      statusInstalacao('Não consegui instalar: ' + msg, 'erro');
+    }
+  } finally {
+    botao.disabled = false;
+  }
+}
+
 function salvarPlanilhaUrl() {
   const url = document.getElementById('planilha-url').value.trim();
   localStorage.setItem('ef_planilha_url', url);
@@ -3599,7 +3786,7 @@ if (CONFIG_PENDENTE) {
   msgLogin('', 'info');
 
   // Retorno do login sem pop-up.
-  auth.getRedirectResult().catch(e => {
+  auth.getRedirectResult().then(guardarToken).catch(e => {
     console.error('Falha no retorno do redirecionamento:', e);
     if (e.code === 'auth/unauthorized-domain') {
       msgLogin('O endereco ' + location.hostname + ' nao esta liberado no Firebase.', 'erro');
@@ -3610,10 +3797,31 @@ if (CONFIG_PENDENTE) {
 }
 
 // ── Entrar / sair ───────────────────────────────────────────────
-function provedorGoogle() {
+/* Permissoes extras pedidas ao Google para criar o Apps Script
+   dentro da planilha de quem usa. Sao concedidas na mesma tela de
+   login; o token resultante vale cerca de uma hora. */
+const ESCOPOS_SCRIPT = [
+  'https://www.googleapis.com/auth/script.projects',
+  'https://www.googleapis.com/auth/script.deployments',
+  'https://www.googleapis.com/auth/drive.file'
+];
+
+// Token OAuth do Google (diferente do token do Firebase).
+let tokenGoogle = null;
+
+function provedorGoogle(comEscoposDoScript) {
   const p = new firebase.auth.GoogleAuthProvider();
   p.setCustomParameters({ prompt: 'select_account' });
+  if (comEscoposDoScript) ESCOPOS_SCRIPT.forEach(e => p.addScope(e));
   return p;
+}
+
+function guardarToken(resultado) {
+  const cred = resultado && resultado.credential;
+  if (cred && cred.accessToken) {
+    tokenGoogle = cred.accessToken;
+    sessionStorage.setItem('ef_token_google', tokenGoogle);
+  }
 }
 
 let temporizadorPopup = null;
@@ -3632,7 +3840,7 @@ async function entrarComGoogle() {
   }, 40000);
 
   try {
-    await auth.signInWithPopup(provedorGoogle());
+    guardarToken(await auth.signInWithPopup(provedorGoogle(false)));
     clearTimeout(temporizadorPopup);
   } catch (e) {
     clearTimeout(temporizadorPopup);
@@ -3663,7 +3871,7 @@ function mostrarAlternativa() {
 function entrarPorRedirecionamento() {
   if (CONFIG_PENDENTE) return;
   msgLogin('Redirecionando para o Google…', 'info');
-  auth.signInWithRedirect(provedorGoogle());
+  auth.signInWithRedirect(provedorGoogle(false));
 }
 
 function sairDaConta() {
