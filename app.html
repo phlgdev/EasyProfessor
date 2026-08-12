@@ -133,6 +133,11 @@ textarea { resize: vertical; min-height: 58px; }
 .m9 { background:#ede7f6; color:#311b92; } /* Outro */
 
 /* Grade */
+.estado-vazio { text-align: center; padding: 44px 24px; }
+.estado-vazio img { width: 96px; margin: 0 auto 18px; display: block; opacity: .95; }
+.estado-vazio h3 { font-size: 1.15rem; color: var(--verde); margin-bottom: 8px; }
+.estado-vazio p { color: var(--texto-suave); max-width: 44ch; margin: 0 auto 6px; font-size: .92rem; }
+
 .grade-wrap { overflow-x: auto; }
 table.grade { width: 100%; border-collapse: collapse; min-width: 760px; }
 table.grade th {
@@ -414,9 +419,22 @@ table.grade td.td-aula {
       <button class="btn btn-cinza btn-sm" onclick="if(confirm('Limpar toda esta semana?'))limparSemanaAtual()">🗑 Limpar semana</button>
       <button class="btn btn-cinza btn-sm" onclick="abrirEditarSemana()">✏️ Editar nome</button>
       <button class="btn btn-verm btn-sm" onclick="apagarSemanaAtual()">🗑 Apagar semana</button>
-      <a href="https://docs.google.com/spreadsheets/d/1d7hKonJa52AeImRCGnbfQ-no8spBKoh_q1PX6Ulc4xQ/edit?gid=1354516493#gid=1354516493" target="_blank" class="btn btn-azul btn-sm" style="text-decoration:none">📂 Abrir plano de ação no Drive</a>
+      <a id="btn-planilha" href="#" target="_blank" rel="noopener" class="btn btn-azul btn-sm" style="text-decoration:none;display:none">📂 Abrir plano de ação no Drive</a>
     </div>
     <div id="info-semana" style="margin-top:8px;font-size:.82rem;color:#666"></div>
+  </div>
+
+  <div class="card estado-vazio" id="estado-vazio" style="display:none">
+    <img src="logo-simbolo.png" alt="">
+    <h3>Seu plano está em branco</h3>
+    <p>
+      Comece cadastrando suas turmas e o horário fixo das aulas na aba
+      <b>Turmas &amp; Horário</b>. Depois volte aqui e crie a primeira semana.
+    </p>
+    <div class="btns" style="justify-content:center">
+      <button class="btn btn-verde" onclick="irParaAba('turmas')">Cadastrar turmas e horário</button>
+      <button class="btn btn-cinza" onclick="abrirNovaSmana()">Criar primeira semana</button>
+    </div>
   </div>
 
   <div class="card" style="padding:10px">
@@ -606,6 +624,11 @@ table.grade td.td-aula {
           <input type="text" id="gs-url" placeholder="https://script.google.com/macros/s/..." oninput="salvarGsUrl()">
         </div>
         <div><button class="btn btn-azul btn-sm" onclick="testarConexao()">Testar conexão</button></div>
+      </div>
+      <div class="row">
+        <div><label>Link da sua planilha (opcional)</label>
+          <input type="text" id="planilha-url" placeholder="https://docs.google.com/spreadsheets/d/..." oninput="salvarPlanilhaUrl()">
+        </div>
       </div>
       <div id="gs-status" style="font-size:.8rem;margin-top:6px"></div>
     </div>
@@ -1076,13 +1099,15 @@ function inicDados() {
     const s = localStorage.getItem('ef2026_v4');
     if (s) return JSON.parse(s);
   } catch(e){}
+  // Perfil novo comeca vazio: quem usa cadastra as proprias turmas,
+  // o horario, as semanas e as atividades.
   return {
-    turmas: ['4°E','4°F','5°F','5°G','5°H','5°I'],
-    horario: HORARIO_PADRAO,
-    semanas: dadosHistoricos(),
-    atividades: ativPadrao(),
+    turmas: [],
+    horario: Array(5).fill(null).map(() => Array(5).fill('')),
+    semanas: [],
+    atividades: [],
     periodos: [],
-    semanaAtualId: 's9',
+    semanaAtualId: null,
   };
 }
 
@@ -1247,7 +1272,7 @@ function ir(aba, btn) {
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('ativo'));
   document.getElementById('aba-'+aba).classList.add('ativa');
   btn.classList.add('ativo');
-  if(aba==='plano') { popSelSemana(); renderGrade(); }
+  if(aba==='plano') { popSelSemana(); renderGrade(); atualizarEstadoVazio(); }
   if(aba==='turmas') { renderTurmas(); renderHorario(); renderPeriodos(); }
   if(aba==='atividades') { popSelectMod(['n-mod','f-mod']); renderAtivs(); document.getElementById('f-mod').insertAdjacentHTML('afterbegin','<option value="">Todas</option>'); }
   if(aba==='exportar') { popSelSemana(); document.getElementById('exp-semana').value = D.semanaAtualId||''; }
@@ -1281,14 +1306,23 @@ function carregarSemana() {
   renderGrade();
 }
 
+// Segunda-feira da semana que vem, para quem ainda nao tem nenhuma.
+function proximaSegunda() {
+  const d = new Date();
+  d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7));
+  return d.toISOString().slice(0, 10);
+}
+
 function abrirNovaSmana() {
   const ultima = D.semanas[D.semanas.length-1];
-  const novaData = adicionarDias(ultima.fim, 3); // próxima segunda
-  document.getElementById('ns-num').value = ultima.num+1;
-  document.getElementById('ns-inicio').value = novaData;
-  document.getElementById('ns-fim').value = adicionarDias(novaData, 4);
+  const inicio = ultima ? adicionarDias(ultima.fim, 3) : proximaSegunda();
+  document.getElementById('ns-num').value = ultima ? ultima.num+1 : 1;
+  document.getElementById('ns-inicio').value = inicio;
+  document.getElementById('ns-fim').value = adicionarDias(inicio, 4);
   document.getElementById('ns-mes').value = '';
-  document.getElementById('ns-sugestao').textContent = '💡 Ao criar, o conteúdo da última semana é sugerido como ponto de partida.';
+  document.getElementById('ns-sugestao').textContent = ultima
+    ? '💡 Ao criar, o conteúdo da última semana é sugerido como ponto de partida.'
+    : '💡 Esta é a sua primeira semana: ela nasce em branco, pronta para preencher.';
   abrirOv('ov-semana');
 }
 
@@ -1299,8 +1333,11 @@ function criarSemana() {
   const mes = document.getElementById('ns-mes').value.trim() || mesDeData(ini);
   if(!ini||!fim) { alert('Informe as datas.'); return; }
   const ultima = D.semanas[D.semanas.length-1];
-  // Copiar grade da última semana como base
-  const novaGrade = JSON.parse(JSON.stringify(ultima.grade));
+  // Copia a grade da ultima semana como ponto de partida; na primeira
+  // semana do perfil nao ha o que copiar, entao nasce vazia.
+  const novaGrade = ultima
+    ? JSON.parse(JSON.stringify(ultima.grade))
+    : [[], [], [], [], []];
   const novaSemana = {
     id: uid(), num, inicio:ini, fim, mes,
     grade: novaGrade,
@@ -1313,6 +1350,7 @@ function criarSemana() {
   fecharOv('ov-semana');
   popSelSemana();
   renderGrade();
+  atualizarEstadoVazio();
 }
 
 function abrirEditarSemana() {
@@ -1344,6 +1382,7 @@ function apagarSemanaAtual() {
   salvar();
   popSelSemana();
   renderGrade();
+  atualizarEstadoVazio();
 }
 
 function limparSemanaAtual() {
@@ -2422,6 +2461,27 @@ function exportCSV() {
 function baixarJSON() { baixar('ef2026_backup.json', JSON.stringify(D,null,2), 'application/json'); }
 
 // ============================================================ GOOGLE SHEETS
+function salvarPlanilhaUrl() {
+  const url = document.getElementById('planilha-url').value.trim();
+  localStorage.setItem('ef_planilha_url', url);
+  aplicarPlanilhaUrl();
+}
+
+// O botao "Abrir no Drive" so aparece para quem informou a propria
+// planilha — antes ele apontava para a planilha de uma pessoa so.
+function aplicarPlanilhaUrl() {
+  const url = localStorage.getItem('ef_planilha_url') || '';
+  const bt = document.getElementById('btn-planilha');
+  if (!bt) return;
+  if (/^https:\/\/docs\.google\.com\//.test(url)) {
+    bt.href = url;
+    bt.style.display = '';
+  } else {
+    bt.removeAttribute('href');
+    bt.style.display = 'none';
+  }
+}
+
 function salvarGsUrl() {
   localStorage.setItem('ef_gs_url', document.getElementById('gs-url').value.trim());
 }
@@ -2602,8 +2662,11 @@ function resetarPrograma() {
 }
 
 function resetarDados() {
-  if(!confirm('Isso apaga TODOS os dados salvos e restaura o padrão completo (atividades + histórico fev/março).\n\nTem certeza?')) return;
+  if(!confirm('Isso apaga TODOS os dados salvos: turmas, horário, semanas e atividades.\n\nO plano volta a ficar em branco, como no primeiro acesso.\n\nTem certeza?')) return;
   localStorage.removeItem('ef2026_v4');
+  localStorage.removeItem('ef_config');
+  D = inicDados();
+  salvar();
   location.reload();
 }
 
@@ -3440,19 +3503,29 @@ function popSelAnalitico() {
   if (curT) selT.value = curT;
 }
 
+// Mantinha o historico de exemplo sempre presente, reinjetando as
+// semanas a cada carregamento. Agora so ordena o que o usuario criou
+// — nada e adicionado automaticamente.
 function migrarSemanas() {
-  const historico = dadosHistoricos();
-  let adicionou = false;
-  historico.forEach(s => {
-    if (!D.semanas.find(x => x.id === s.id)) {
-      D.semanas.push(s);
-      adicionou = true;
-    }
+  if (!Array.isArray(D.semanas)) D.semanas = [];
+  D.semanas.sort((a, b) => (a.inicio || '').localeCompare(b.inicio || ''));
+}
+
+// Troca de aba a partir de um botao fora da barra de navegacao.
+function irParaAba(aba) {
+  const indice = ['plano','turmas','calendario','atividades','sugestoes','analitico','exportar'].indexOf(aba);
+  const botao = document.querySelectorAll('nav button')[indice];
+  if (botao) ir(aba, botao);
+}
+
+// Mostra o convite de boas-vindas enquanto nao houver semana criada.
+function atualizarEstadoVazio() {
+  const vazio = !D.semanas.length;
+  const painel = document.getElementById('estado-vazio');
+  if (painel) painel.style.display = vazio ? 'block' : 'none';
+  document.querySelectorAll('#aba-plano .card').forEach(c => {
+    if (c.id !== 'estado-vazio') c.style.display = vazio ? 'none' : '';
   });
-  if (adicionou) {
-    D.semanas.sort((a, b) => (a.inicio || '').localeCompare(b.inicio || ''));
-    salvar();
-  }
 }
 
 // Antes rodava no DOMContentLoaded; agora quem chama e o login,
@@ -3462,9 +3535,13 @@ function bootApp() {
   primeiroAcesso();
   popSelSemana();
   renderGrade();
+  atualizarEstadoVazio();
   popSelectMod(['cel-mod','ft-mod','ea-mod','n-mod']);
   const savedUrl = localStorage.getItem('ef_gs_url');
   if (savedUrl) document.getElementById('gs-url').value = savedUrl;
+  const planilha = localStorage.getItem('ef_planilha_url');
+  if (planilha) document.getElementById('planilha-url').value = planilha;
+  aplicarPlanilhaUrl();
 }
 window.bootApp = bootApp;
 </script>
