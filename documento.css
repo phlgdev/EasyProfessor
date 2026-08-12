@@ -1,0 +1,95 @@
+/* Estilo das paginas de texto (privacidade, termos).
+   Mesma paleta da landing, extraida da logo. */
+:root {
+  --azul:        #2E7CB0;
+  --azul-forte:  #1B3A57;
+  --azul-bg:     #EAF3F9;
+  --texto:       #1D2A35;
+  --texto-suave: #5B6B79;
+  --borda:       #DDE5EC;
+  --fundo-alt:   #F6F9FB;
+  --largura:     820px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--texto);
+  background: #fff;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--azul); }
+
+.container { max-width: var(--largura); margin: 0 auto; padding: 0 24px; }
+
+/* Cabecalho */
+header.topo {
+  background: #fff;
+  border-bottom: 1px solid var(--borda);
+  position: sticky; top: 0; z-index: 50;
+}
+header.topo .container {
+  max-width: 1120px;
+  display: flex; align-items: center; height: 68px;
+}
+.marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+.marca img { width: 40px; height: 40px; }
+.marca span { font-weight: 700; font-size: 1.05rem; color: var(--azul-forte); }
+.marca span b { color: var(--azul); }
+header.topo nav { margin-left: auto; }
+
+.botao {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 11px 22px; border-radius: 999px; border: none;
+  background: var(--azul); color: #fff;
+  font-size: .93rem; font-weight: 600; text-decoration: none;
+  box-shadow: 0 2px 10px rgba(46,124,176,.3);
+}
+.botao:hover { background: #266b9a; }
+
+/* Corpo do documento */
+.documento { padding: 54px 24px 76px; }
+.documento h1 {
+  font-size: 2.1rem; letter-spacing: -.02em;
+  color: var(--azul-forte); margin-bottom: 6px;
+}
+.documento .atualizado {
+  color: var(--texto-suave); font-size: .88rem;
+  padding-bottom: 22px; margin-bottom: 30px;
+  border-bottom: 1px solid var(--borda);
+}
+.documento h2 {
+  font-size: 1.28rem; color: var(--azul-forte);
+  margin: 40px 0 12px; letter-spacing: -.01em;
+}
+.documento h3 {
+  font-size: 1.03rem; color: var(--azul-forte);
+  margin: 24px 0 8px;
+}
+.documento p { margin-bottom: 14px; color: #35434F; }
+.documento ul { margin: 0 0 16px 22px; color: #35434F; }
+.documento li { margin-bottom: 7px; }
+.documento strong { color: var(--texto); }
+
+/* Rodape */
+footer.rodape {
+  background: var(--azul-forte); color: #B8CBD9;
+  padding: 34px 0; font-size: .88rem;
+}
+footer.rodape .container {
+  max-width: 1120px;
+  display: flex; flex-wrap: wrap; gap: 18px; align-items: center;
+}
+footer.rodape a { color: #DCE8F1; text-decoration: none; }
+footer.rodape a:hover { text-decoration: underline; }
+footer.rodape .links { margin-left: auto; display: flex; gap: 22px; }
+
+@media (max-width: 700px) {
+  .documento { padding: 36px 20px 56px; }
+  .documento h1 { font-size: 1.7rem; }
+  footer.rodape .links { margin-left: 0; }
+}
