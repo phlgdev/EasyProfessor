@@ -307,6 +307,11 @@ table.grade td.td-aula {
 #login-gate .card > img { width: 96px; margin: 0 auto 16px; display: block; }
 #login-gate h2 { color: var(--verde); font-size: 1.28rem; margin-bottom: 8px; letter-spacing: -.01em; }
 #login-gate p.sub { color: var(--texto-suave); font-size: .88rem; margin-bottom: 26px; }
+.link-alternativo {
+  background: none; border: none; cursor: pointer; font-family: inherit;
+  color: var(--verde2); font-size: .85rem; font-weight: 600;
+  text-decoration: underline; padding: 6px;
+}
 #login-gate .rodape-login { margin-top: 24px; font-size: .76rem; color: #9AA8B4; }
 #login-gate .rodape-login a { color: #7E8C99; }
 #btn-google {
@@ -351,6 +356,11 @@ table.grade td.td-aula {
       Entrar com Google
     </button>
     <div id="login-msg" class="info">Carregando…</div>
+    <div id="login-alternativa" style="display:none">
+      <button class="link-alternativo" onclick="entrarPorRedirecionamento()">
+        Entrar sem janela pop-up
+      </button>
+    </div>
     <p class="rodape-login">
       Ao entrar você concorda com os
       <a href="termos.html">Termos de Uso</a> e a
@@ -3510,29 +3520,73 @@ if (CONFIG_PENDENTE) {
   db   = firebase.firestore();
   auth.onAuthStateChanged(aoMudarLogin);
   msgLogin('', 'info');
+
+  // Retorno do login sem pop-up.
+  auth.getRedirectResult().catch(e => {
+    console.error('Falha no retorno do redirecionamento:', e);
+    if (e.code === 'auth/unauthorized-domain') {
+      msgLogin('O endereco ' + location.hostname + ' nao esta liberado no Firebase.', 'erro');
+    } else if (e.code) {
+      msgLogin('Falha ao entrar: ' + e.code, 'erro');
+    }
+  });
 }
 
 // ── Entrar / sair ───────────────────────────────────────────────
+function provedorGoogle() {
+  const p = new firebase.auth.GoogleAuthProvider();
+  p.setCustomParameters({ prompt: 'select_account' });
+  return p;
+}
+
+let temporizadorPopup = null;
+
 async function entrarComGoogle() {
   if (CONFIG_PENDENTE) return;
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: 'select_account' });
   document.getElementById('btn-google').disabled = true;
   msgLogin('Abrindo janela do Google…', 'info');
-  try {
-    await auth.signInWithPopup(provider);
-  } catch (e) {
+
+  // Se o pop-up nao devolver resposta, oferece o modo sem janela.
+  clearTimeout(temporizadorPopup);
+  temporizadorPopup = setTimeout(() => {
     document.getElementById('btn-google').disabled = false;
+    msgLogin('A janela do Google nao respondeu.', 'erro');
+    mostrarAlternativa();
+  }, 40000);
+
+  try {
+    await auth.signInWithPopup(provedorGoogle());
+    clearTimeout(temporizadorPopup);
+  } catch (e) {
+    clearTimeout(temporizadorPopup);
+    document.getElementById('btn-google').disabled = false;
+    console.error('Falha no login:', e);
     if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
       msgLogin('', 'info');
     } else if (e.code === 'auth/popup-blocked') {
-      msgLogin('O navegador bloqueou a janela. Libere os pop-ups e tente de novo.', 'erro');
+      msgLogin('O navegador bloqueou a janela.', 'erro');
+      mostrarAlternativa();
     } else if (e.code === 'auth/unauthorized-domain') {
-      msgLogin('Este dominio nao esta autorizado no Firebase.', 'erro');
+      msgLogin('O endereco ' + location.hostname + ' nao esta liberado no Firebase '
+             + '(Authentication → Settings → Dominios autorizados).', 'erro');
+    } else if (e.code === 'auth/operation-not-allowed') {
+      msgLogin('O login com Google nao esta ativado no projeto Firebase.', 'erro');
     } else {
-      msgLogin('Falha ao entrar: ' + (e.message || e.code), 'erro');
+      msgLogin('Falha ao entrar: ' + (e.code || e.message), 'erro');
+      mostrarAlternativa();
     }
   }
+}
+
+function mostrarAlternativa() {
+  document.getElementById('login-alternativa').style.display = 'block';
+}
+
+// Login sem pop-up: sai da pagina, autentica e volta.
+function entrarPorRedirecionamento() {
+  if (CONFIG_PENDENTE) return;
+  msgLogin('Redirecionando para o Google…', 'info');
+  auth.signInWithRedirect(provedorGoogle());
 }
 
 function sairDaConta() {
@@ -3552,12 +3606,23 @@ async function aoMudarLogin(user) {
 
   usuarioAtual = user;
   msgLogin('Carregando seus dados…', 'info');
+  let nuvemOk = true;
   try {
     await carregarDaNuvem(user);
   } catch (e) {
-    msgLogin('Nao consegui ler seus dados: ' + (e.message || e.code), 'erro');
-    btn.disabled = false;
-    return;
+    nuvemOk = false;
+    const cod = e.code || e.message || '';
+    console.error('Falha ao carregar da nuvem:', e);
+    if (String(cod).startsWith('TEMPO_ESGOTADO')) {
+      // Quase sempre: banco Firestore ainda nao criado no projeto.
+      badgeSync('sem sincronizacao — banco indisponivel');
+    } else if (cod === 'permission-denied') {
+      badgeSync('sem sincronizacao — sem permissao');
+    } else {
+      badgeSync('sem sincronizacao');
+    }
+    // Segue em frente com os dados locais: e melhor abrir o app
+    // funcionando do que prender a pessoa na tela de login.
   }
 
   // Identificacao no cabecalho
@@ -3586,7 +3651,8 @@ async function definirAnuncios(user) {
   semAnuncios = false;
   try {
     const email = (user.email || '').toLowerCase();
-    const snap = await db.collection('isentos').doc(email).get();
+    const snap = await comLimite(
+      db.collection('isentos').doc(email).get(), 8000, 'isentos');
     semAnuncios = snap.exists;
   } catch (e) {
     // Sem permissao ou offline: mantem os anuncios (padrao seguro).
@@ -3637,8 +3703,19 @@ function refDoUsuario(user) {
   return db.collection('usuarios').doc(user.uid);
 }
 
+// O SDK do Firestore nao rejeita quando o banco nao existe: ele
+// fica tentando reconectar indefinidamente. Sem um limite de tempo
+// o login trava para sempre na tela de entrada.
+function comLimite(promessa, ms, rotulo) {
+  return Promise.race([
+    promessa,
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error('TEMPO_ESGOTADO:' + rotulo)), ms))
+  ]);
+}
+
 async function carregarDaNuvem(user) {
-  const snap = await refDoUsuario(user).get();
+  const snap = await comLimite(refDoUsuario(user).get(), 12000, 'leitura');
   if (snap.exists && snap.data().dados) {
     D = JSON.parse(snap.data().dados);
     localStorage.setItem('ef2026_v4', JSON.stringify(D));
@@ -3659,14 +3736,15 @@ async function salvarNaNuvem() {
   }
   badgeSync('salvando…');
   try {
-    await refDoUsuario(usuarioAtual).set({
+    await comLimite(refDoUsuario(usuarioAtual).set({
       dados: payload,
       email: usuarioAtual.email,
       atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    }), 12000, 'escrita');
     badgeSync('sincronizado');
   } catch (e) {
-    badgeSync('erro ao salvar na nuvem');
+    // O dado continua salvo no localStorage; so a copia na nuvem falhou.
+    badgeSync('salvo neste aparelho — nuvem indisponivel');
     console.error('Falha ao salvar na nuvem:', e);
   }
 }
