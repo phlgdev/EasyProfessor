@@ -2020,7 +2020,7 @@ function _listaMods(lista) {
 
 async function _preencherComIA(campoId, chaveNota, promptIA, fallbackFn, btnEl) {
   const cfg = getConfig();
-  if (!cfg.geminiKey) { fallbackFn(); return; }
+  if (!iaDisponivel()) { fallbackFn(); return; }
 
   const el = document.getElementById(campoId);
   const orig = btnEl.textContent;
@@ -2029,9 +2029,9 @@ async function _preencherComIA(campoId, chaveNota, promptIA, fallbackFn, btnEl) 
   el.value = 'Gerando com IA...';
 
   try {
-    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const resp = await fetch(enderecoIA(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+      headers: await cabecalhosIA(),
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: promptIA }],
@@ -2092,7 +2092,7 @@ async function analisarSemanaObjetivos(btnEl) {
     salvarNota('objetivos', texto);
   };
 
-  if (!cfg.geminiKey) { fallback(); return; }
+  if (!iaDisponivel()) { fallback(); return; }
 
   // Com Groq
   const orig = btnEl.textContent;
@@ -2119,9 +2119,9 @@ Responda APENAS com um JSON neste formato:
 Onde os números são os índices dos objetivos cobertos. Sem texto extra.`;
 
   try {
-    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const resp = await fetch(enderecoIA(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+      headers: await cabecalhosIA(),
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
@@ -2648,6 +2648,36 @@ async function instalarScriptNaPlanilha() {
   }
 }
 
+/* ═══ Acesso a IA ═══════════════════════════════════════════════
+   Quem cadastrou a propria chave da Groq fala direto com ela.
+   Os demais passam pelo intermediario, que guarda a chave do site
+   e aplica cota diaria por usuario. Enquanto WORKER_IA nao estiver
+   preenchido, so funciona com chave propria.                      */
+const WORKER_IA = "";
+
+function iaDisponivel() {
+  const cfg = getConfig();
+  return !!cfg.geminiKey || (!!WORKER_IA && !!usuarioAtual);
+}
+
+function enderecoIA() {
+  return getConfig().geminiKey
+    ? 'https://api.groq.com/openai/v1/chat/completions'
+    : WORKER_IA;
+}
+
+async function cabecalhosIA() {
+  const cfg = getConfig();
+  if (cfg.geminiKey) {
+    return { 'Content-Type': 'application/json',
+             'Authorization': 'Bearer ' + cfg.geminiKey };
+  }
+  // Sem chave propria: identifica-se com o token do Firebase.
+  const token = await usuarioAtual.getIdToken();
+  return { 'Content-Type': 'application/json',
+           'Authorization': 'Bearer ' + token };
+}
+
 function salvarPlanilhaUrl() {
   const url = document.getElementById('planilha-url').value.trim();
   localStorage.setItem('ef_planilha_url', url);
@@ -2976,7 +3006,7 @@ async function analisarSemana() {
   }
 
   const cfg = getConfig();
-  const usarIA = !!cfg.geminiKey;
+  const usarIA = iaDisponivel();
 
   if (usarIA) {
     // ── Análise com IA ──────────────────────────────────────────────
@@ -3024,9 +3054,9 @@ Para cada objetivo, responda EXATAMENTE neste formato JSON (array):
 ]
 Responda APENAS o JSON, sem texto antes ou depois.`;
 
-        const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        const resp = await fetch(enderecoIA(), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${cfg.geminiKey}` },
+          headers: await cabecalhosIA(),
           body: JSON.stringify({
             model: 'llama-3.3-70b-versatile',
             messages: [{ role: 'user', content: prompt }],
@@ -3321,12 +3351,11 @@ async function gerarSugestaoIA(btnId, resId, turma, modalidade, pendentes, feito
   const elRes = document.getElementById(resId);
   const elBtn = document.getElementById(btnId);
   const cfg    = getConfig();
-  const apiKey = cfg.geminiKey || '';
-
-  if (!apiKey) {
+  if (!iaDisponivel()) {
     elRes.innerHTML = `<div class="alerta alerta-laranja">
-      ⚙ Configure a <strong>Chave da API Google Gemini</strong> em <strong>⚙ Configurações</strong>.<br>
-      <small>Gratuito em: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> — só precisa de conta Google.</small>
+      ⚙ As sugestões por IA estão indisponíveis no momento.<br>
+      <small>Você pode cadastrar sua própria chave da Groq em <strong>⚙ Configurações</strong> —
+      é gratuita em <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</small>
     </div>`;
     return;
   }
@@ -3367,13 +3396,9 @@ Responda APENAS neste formato, sem texto extra:
 **Dica de inclusão:** ...`;
 
   try {
-    const url = `https://api.groq.com/openai/v1/chat/completions`;
-    const resp = await fetch(url, {
+    const resp = await fetch(enderecoIA(), {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
+      headers: await cabecalhosIA(),
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
