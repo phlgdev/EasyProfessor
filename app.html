@@ -2888,9 +2888,40 @@ function resetarDados() {
 }
 
 function importarJSON(ev) {
-  const f=ev.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=e=>{ try{ D=JSON.parse(e.target.result); salvar(); alert('Restaurado!'); location.reload(); }catch{ alert('Arquivo inválido.'); }};
+  const f = ev.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = async (e) => {
+    let novo;
+    try {
+      novo = JSON.parse(e.target.result);
+    } catch {
+      alert('Arquivo inválido.');
+      return;
+    }
+    if (!novo || !Array.isArray(novo.semanas)) {
+      alert('Este arquivo não parece um backup do EasyProfessor.');
+      return;
+    }
+
+    D = novo;
+    salvar();
+
+    // O envio para a nuvem é adiado em 1,5s; recarregar antes disso
+    // descartaria a importação e traria de volta o dado antigo.
+    if (typeof usuarioAtual !== 'undefined' && usuarioAtual
+        && typeof salvarNaNuvem === 'function') {
+      try {
+        await salvarNaNuvem();
+      } catch (err) {
+        console.error('Falha ao enviar a importação para a nuvem:', err);
+        if (!confirm('Importado neste aparelho, mas não consegui salvar na sua conta.\n\n'
+                   + 'Recarregar agora pode descartar a importação. Recarregar mesmo assim?')) return;
+      }
+    }
+    alert('Restaurado! ' + D.semanas.length + ' semana(s) e '
+        + (D.atividades || []).length + ' atividade(s).');
+    location.reload();
+  };
   r.readAsText(f);
 }
 
