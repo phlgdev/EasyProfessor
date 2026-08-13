@@ -1,0 +1,30 @@
+{
+  // Intermediário do Gemini para o EasyProfessor.
+  // Publicar com:  npx wrangler deploy   (dentro desta pasta)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "easyprofessor-ia",
+  "main": "index.js",
+  "compatibility_date": "2026-08-12",
+
+  // Guarda o contador de uso diário por pessoa.
+  // O id é preenchido ao criar o namespace:
+  //   npx wrangler kv namespace create COTAS
+  "kv_namespaces": [
+    {
+      "binding": "COTAS",
+      "id": "PREENCHER_APOS_CRIAR"
+    }
+  ],
+
+  // Valores públicos. A chave do Gemini NÃO entra aqui — ela é um
+  // segredo, definido por fora com:
+  //   npx wrangler secret put GEMINI_API_KEY
+  "vars": {
+    "PROJETO_FIREBASE": "easyprofessor-c9a61",
+    "ORIGENS_LIBERADAS": "https://easyprofessor.com.br,https://www.easyprofessor.com.br"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
