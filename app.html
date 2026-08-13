@@ -2907,6 +2907,23 @@ function importarJSON(ev) {
       return;
     }
 
+    // Confirma o destino: o erro classico e importar com a conta
+    // errada logada e so descobrir depois.
+    const conta = (typeof usuarioAtual !== 'undefined' && usuarioAtual)
+      ? (usuarioAtual.email || 'a conta atual')
+      : null;
+    if (conta) {
+      const aviso = [
+        'Importar ' + novo.semanas.length + ' semana(s) e '
+          + (novo.atividades || []).length + ' atividade(s) para a conta:',
+        '',
+        conta,
+        '',
+        'Isto substitui o que estiver nesta conta. Continuar?'
+      ].join('\n');
+      if (!confirm(aviso)) return;
+    }
+
     D = novo;
     salvar();
 
@@ -3935,7 +3952,15 @@ function entrarPorRedirecionamento() {
 }
 
 function sairDaConta() {
-  if (auth) auth.signOut().then(() => location.reload());
+  if (!auth) return;
+  auth.signOut().then(() => {
+    // Nao deixa a copia local para a proxima pessoa que usar este
+    // navegador: os dados ja estao salvos na nuvem da conta.
+    localStorage.removeItem('ef2026_v4');
+    localStorage.removeItem(CHAVE_DONO);
+    sessionStorage.removeItem('ef_token_google');
+    location.reload();
+  });
 }
 
 // ── Reacao ao estado de login ───────────────────────────────────
@@ -4059,16 +4084,33 @@ function comLimite(promessa, ms, rotulo) {
   ]);
 }
 
+/* O localStorage e por site, nao por conta: se duas pessoas usam o
+   mesmo navegador, os dados de uma ficam la quando a outra entra.
+   Por isso guardamos de quem e a copia local e so a reaproveitamos
+   para o mesmo dono. */
+const CHAVE_DONO = 'ef2026_dono';
+
 async function carregarDaNuvem(user) {
   const snap = await comLimite(refDoUsuario(user).get(), 12000, 'leitura');
+
   if (snap.exists && snap.data().dados) {
     D = JSON.parse(snap.data().dados);
     localStorage.setItem('ef2026_v4', JSON.stringify(D));
+    localStorage.setItem(CHAVE_DONO, user.uid);
     badgeSync('sincronizado');
-  } else {
-    // Primeiro acesso: sobe o que ja existe neste navegador.
-    await salvarNaNuvem();
+    return;
   }
+
+  // Conta sem dados na nuvem.
+  const dono = localStorage.getItem(CHAVE_DONO);
+  if (dono && dono !== user.uid) {
+    // A copia local pertence a outra conta: comeca do zero, senao o
+    // plano de uma pessoa seria copiado para a conta da outra.
+    D = inicDados();
+    localStorage.setItem('ef2026_v4', JSON.stringify(D));
+  }
+  localStorage.setItem(CHAVE_DONO, user.uid);
+  await salvarNaNuvem();
 }
 
 async function salvarNaNuvem() {
