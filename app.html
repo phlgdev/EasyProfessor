@@ -3983,6 +3983,15 @@ async function aoMudarLogin(user) {
     nuvemOk = false;
     const cod = e.code || e.message || '';
     console.error('Falha ao carregar da nuvem:', e);
+
+    // Sem resposta da nuvem, nao da para saber o que esta nesta conta.
+    // Se a copia local e de outra pessoa, mostrar o plano dela seria
+    // pior do que mostrar nada.
+    if (localStorage.getItem(CHAVE_DONO) !== user.uid) {
+      D = inicDados();
+      localStorage.setItem('ef2026_v4', JSON.stringify(D));
+      localStorage.removeItem(CHAVE_DONO);
+    }
     if (String(cod).startsWith('TEMPO_ESGOTADO')) {
       // Quase sempre: banco Firestore ainda nao criado no projeto.
       badgeSync('sem sincronizacao — banco indisponivel');
