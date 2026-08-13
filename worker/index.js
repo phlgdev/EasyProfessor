@@ -1,12 +1,12 @@
 /**
- * Intermediário da Groq para o EasyProfessor.
+ * Intermediário do Google Gemini para o EasyProfessor.
  *
- * O site é estático e público: a chave da Groq não pode ficar nele.
+ * O site é estático e público: a chave não pode ficar nele.
  * Este Worker guarda a chave, confere se quem pediu está de fato
  * logado no Firebase e aplica uma cota diária por pessoa.
  *
  * Variáveis (painel do Cloudflare → Settings → Variables):
- *   GROQ_API_KEY   segredo — a chave da sua conta Groq
+ *   GEMINI_API_KEY   segredo — a chave do Google AI Studio
  *   PROJETO_FIREBASE   easyprofessor-c9a61
  *   ORIGENS_LIBERADAS  https://easyprofessor.com.br,https://www.easyprofessor.com.br
  *
@@ -15,9 +15,13 @@
  */
 
 const LIMITE_DIARIO = 40;          // pedidos por usuário por dia
+// O Gemini expõe um endpoint no formato da OpenAI, então o corpo do
+// pedido é repassado como veio.
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
 const MODELOS_ACEITOS = new Set([
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant',
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
 ]);
 
 export default {
@@ -58,7 +62,7 @@ export default {
         `O contador zera amanhã.`, cabecalhos);
     }
 
-    // ── Repassa para a Groq ─────────────────────────────────────
+    // ── Repassa para o Gemini ───────────────────────────────────
     let corpo;
     try {
       corpo = await pedido.json();
@@ -73,16 +77,16 @@ export default {
     corpo.max_tokens = Math.min(corpo.max_tokens || 1024, 2048);
     corpo.stream = false;
 
-    const resposta = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const resposta = await fetch(GEMINI_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+        'Authorization': `Bearer ${env.GEMINI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(corpo),
     });
 
-    // Só consome cota quando a Groq de fato respondeu.
+    // Só consome cota quando o Gemini de fato respondeu.
     if (resposta.ok) {
       await env.COTAS.put(chave, String(usados + 1), { expirationTtl: 60 * 60 * 48 });
     }
@@ -98,7 +102,7 @@ export default {
 /* ── Verificação do token do Firebase ──────────────────────────
    Confere a assinatura RS256 contra as chaves públicas do Google,
    além de emissor, público-alvo e validade. Sem isso qualquer um
-   chamaria o Worker e gastaria a sua conta da Groq.             */
+   chamaria o Worker e gastaria a sua cota do Gemini.            */
 async function verificarTokenFirebase(token, projeto) {
   const [cabecalhoB64, cargaB64, assinaturaB64] = token.split('.');
   if (!cabecalhoB64 || !cargaB64 || !assinaturaB64) throw new Error('formato inválido');

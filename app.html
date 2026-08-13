@@ -767,10 +767,10 @@ table.grade td.td-aula {
   </div>
   <hr style="margin:14px 0;border-color:#eee">
   <div class="form-row">
-    <label>🤖 Chave da API Groq <span style="font-weight:400;color:#888">(sugestões com IA — 100% gratuito)</span></label>
-    <input type="password" id="cfg-gemini-key" placeholder="gsk_...">
+    <label>🤖 Chave da API Google Gemini <span style="font-weight:400;color:#888">(sugestões com IA — camada gratuita)</span></label>
+    <input type="password" id="cfg-gemini-key" placeholder="AIza...">
     <small style="color:#888;font-size:.75rem;margin-top:3px;display:block">
-      Obtenha gratuitamente em <a href="https://console.groq.com/keys" target="_blank" style="color:var(--azul)">console.groq.com/keys</a> — sem cartão de crédito. Crie conta → API Keys → Create API Key.
+      Obtenha gratuitamente em <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--azul)">aistudio.google.com/app/apikey</a> — basta a conta Google, sem cartão. Entre → Get API key → Create API key.
     </small>
   </div>
   <div class="btns">
@@ -2033,7 +2033,7 @@ async function _preencherComIA(campoId, chaveNota, promptIA, fallbackFn, btnEl) 
       method: 'POST',
       headers: await cabecalhosIA(),
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: MODELO_IA,
         messages: [{ role: 'user', content: promptIA }],
         max_tokens: 400,
         temperature: 0.7,
@@ -2052,7 +2052,7 @@ async function _preencherComIA(campoId, chaveNota, promptIA, fallbackFn, btnEl) 
   }
 }
 
-// ============================================================ ANALISAR SEMANA → OBJETIVOS SEMANAIS (Groq)
+// ============================================================ ANALISAR SEMANA → OBJETIVOS SEMANAIS (IA)
 async function analisarSemanaObjetivos(btnEl) {
   const s = semanaAtual(); if (!s) return;
   const { modAnos, atividades } = _coletarDadosSemana(s);
@@ -2094,7 +2094,7 @@ async function analisarSemanaObjetivos(btnEl) {
 
   if (!iaDisponivel()) { fallback(); return; }
 
-  // Com Groq
+  // Com IA
   const orig = btnEl.textContent;
   btnEl.disabled = true;
   btnEl.textContent = '⏳ Analisando...';
@@ -2123,7 +2123,7 @@ Onde os números são os índices dos objetivos cobertos. Sem texto extra.`;
       method: 'POST',
       headers: await cabecalhosIA(),
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: MODELO_IA,
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 300,
         temperature: 0.1,
@@ -2649,7 +2649,7 @@ async function instalarScriptNaPlanilha() {
 }
 
 /* ═══ Acesso a IA ═══════════════════════════════════════════════
-   Quem cadastrou a propria chave da Groq fala direto com ela.
+   Quem cadastrou a propria chave do Gemini fala direto com ele.
    Os demais passam pelo intermediario, que guarda a chave do site
    e aplica cota diaria por usuario. Enquanto WORKER_IA nao estiver
    preenchido, so funciona com chave propria.                      */
@@ -2660,10 +2660,14 @@ function iaDisponivel() {
   return !!cfg.geminiKey || (!!WORKER_IA && !!usuarioAtual);
 }
 
+/* O Gemini oferece um endpoint no mesmo formato da OpenAI, que e o
+   formato ja usado aqui — por isso a troca nao mexe nas chamadas nem
+   na leitura das respostas. */
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions';
+const MODELO_IA  = 'gemini-3.6-flash';
+
 function enderecoIA() {
-  return getConfig().geminiKey
-    ? 'https://api.groq.com/openai/v1/chat/completions'
-    : WORKER_IA;
+  return getConfig().geminiKey ? GEMINI_URL : WORKER_IA;
 }
 
 async function cabecalhosIA() {
@@ -3089,7 +3093,7 @@ Responda APENAS o JSON, sem texto antes ou depois.`;
           method: 'POST',
           headers: await cabecalhosIA(),
           body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
+            model: MODELO_IA,
             messages: [{ role: 'user', content: prompt }],
             max_tokens: 1500,
             temperature: 0.2,
@@ -3385,8 +3389,8 @@ async function gerarSugestaoIA(btnId, resId, turma, modalidade, pendentes, feito
   if (!iaDisponivel()) {
     elRes.innerHTML = `<div class="alerta alerta-laranja">
       ⚙ As sugestões por IA estão indisponíveis no momento.<br>
-      <small>Você pode cadastrar sua própria chave da Groq em <strong>⚙ Configurações</strong> —
-      é gratuita em <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>.</small>
+      <small>Você pode cadastrar sua própria chave do Gemini em <strong>⚙ Configurações</strong> —
+      é gratuita em <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com</a>.</small>
     </div>`;
     return;
   }
@@ -3431,7 +3435,7 @@ Responda APENAS neste formato, sem texto extra:
       method: 'POST',
       headers: await cabecalhosIA(),
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: MODELO_IA,
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 800,
         temperature: 0.85,

@@ -23,7 +23,9 @@ const conta = (padrao) => (html.match(padrao) || []).length;
 
 const checagens = [
   ['chamadas de IA pelo helper',      conta(/fetch\(enderecoIA\(\)/g), (n) => n === 4],
-  ['referência direta à Groq',        conta(/api\.groq\.com\/openai/g), (n) => n === 1],
+  ['endereço do Gemini no helper',    conta(/generativelanguage\.googleapis\.com/g), (n) => n === 1],
+  ['sobra de Groq',                   conta(/groq/gi),                  (n) => n === 0],
+  ['modelo antigo (llama)',           conta(/llama-3/g),                (n) => n === 0],
   ['variável apiKey órfã',            conta(/Bearer \$\{apiKey\}/g),    (n) => n === 0],
   ['planilha fixa de um usuário',     conta(/1d7hKonJa52AeImRCGnbfQ/g), (n) => n === 0],
   ['ids duplicados (planilha-url)',   conta(/id="planilha-url"/g),      (n) => n === 1],
